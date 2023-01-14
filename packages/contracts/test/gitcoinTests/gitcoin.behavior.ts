@@ -3,13 +3,12 @@ import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
 import { Contract } from "ethers";
 import { ethers } from "hardhat";
-
-import { RoundImplementation } from "../../types/contracts/gitcoin/round/RoundImplementation";
+import { IRoundImplementation } from "../../types/contracts/interfaces/IRoundImplementation";
 import { deployGitcoinMumbaiFixture } from "./gitcoin.fixture";
 
 export const shouldBehaveLikeGrantsRound = () => {
   let _WETH: Contract;
-  let _roundImplementation: RoundImplementation;
+  let _roundImplementation: IRoundImplementation;
   let _payoutStrategy: Contract;
   let _votingStrategy: Contract;
   let _admin: SignerWithAddress;

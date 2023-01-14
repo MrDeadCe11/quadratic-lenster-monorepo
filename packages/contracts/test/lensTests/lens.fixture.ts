@@ -1,4 +1,4 @@
-import { LensHub } from './../../types/contracts/lens/LensHub';
+import { ILensHub } from './../../types/contracts/interfaces/ILensHub';
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 //import CollectNFT from "../../importedABI/CollectNFT.json"
 import { expect } from "chai";
@@ -10,7 +10,7 @@ import LensHubABI from "../../importedABI/LensHub.json";
 import ModuleGlobals from "../../importedABI/ModuleGlobals.json";
 import { lensMumbaiAddresses } from "../utils/constants";
 import { FreeCollectModule } from "./../../types/contracts/lens/modules/FreeCollectModule";
-import { ModuleBase } from '../../types/contracts/lens/ModuleBase';
+import { IModuleGlobals } from '../../types/contracts/interfaces/IModuleGlobals';
 import { QuadraticVoteCollectModule } from '../../types/contracts/QuadraticVoteCollectModule';
 
 export async function deployLensMumbaiFixture() {
@@ -25,11 +25,11 @@ export async function deployLensMumbaiFixture() {
   //   }]
   // });
 
-  const lensMumbai = <LensHub>new ethers.Contract(lensMumbaiAddresses.LensHubProxy, LensHubABI.abi, admin);
+  const lensMumbai = <ILensHub>new ethers.Contract(lensMumbaiAddresses.LensHubProxy, LensHubABI.abi, admin);
   const tx = await lensMumbai.getFollowNFTImpl();
   expect(tx).to.equal("0x1A2BB1bc90AA5716f5Eb85FD1823338BD1b6f772");
 
-  const moduleGlobals = <ModuleBase>new ethers.Contract(lensMumbaiAddresses.moduleGlobals, ModuleGlobals.abi, admin);
+  const moduleGlobals = <IModuleGlobals>new ethers.Contract(lensMumbaiAddresses.moduleGlobals, ModuleGlobals.abi, admin);
 
   /* get free collect module */
   const freeCollectModule: FreeCollectModule = <FreeCollectModule>(

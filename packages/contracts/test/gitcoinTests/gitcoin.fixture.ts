@@ -1,13 +1,13 @@
+import { IRoundImplementation } from '../../types/contracts/interfaces/IRoundImplementation';
+import { IPayoutStrategy } from './../../types/contracts/mocks/IPayoutStrategy';
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
 import wethAbi from "../../importedABI/WETH.json";
-import { ERC20 } from "../../types/@openzeppelin/contracts/token/ERC20/ERC20";
-import { MerklePayoutStrategy } from "../../types/contracts/gitcoin/payoutStrategy/MerklePayoutStrategy";
-import { RoundImplementation } from "../../types/contracts/gitcoin/round/RoundImplementation";
 import { QuadraticFundingVotingStrategyImplementation } from "../../types/contracts/mocks/QuadraticFundingVotingStrategyImplementation"
 import { encodeRoundParameters } from "../utils/utils";
+import { IERC20 } from '../../types/@openzeppelin/contracts/token/ERC20/IERC20';
 
 /* deploy gitcoin grants implementation on mumbai fork */
 export async function deployGitcoinMumbaiFixture() {
@@ -24,11 +24,11 @@ export async function deployGitcoinMumbaiFixture() {
 
   // Payout Strategy
   const payoutStrategyFactory = await ethers.getContractFactory("MerklePayoutStrategy");
-  const payoutStrategy = <MerklePayoutStrategy> await payoutStrategyFactory.deploy();
+  const payoutStrategy = <IPayoutStrategy> await payoutStrategyFactory.deploy();
   await payoutStrategy.deployed();
 
   /* get WETH contract */
-  const WETH = <ERC20>new ethers.Contract("0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa", wethAbi, admin);
+  const WETH = <IERC20>new ethers.Contract("0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa", wethAbi, admin);
   /* impersonate weth whale account */
   const whale = <SignerWithAddress>await ethers.getImpersonatedSigner("0x9883d5e7dc023a441a01ef95af406c69926a0ab6");
 
@@ -59,7 +59,7 @@ export async function deployGitcoinMumbaiFixture() {
   ];
 
   const RoundImplementation = await ethers.getContractFactory("RoundImplementation");
-  const roundImplementation = <RoundImplementation>await RoundImplementation.deploy();
+  const roundImplementation = <IRoundImplementation>await RoundImplementation.deploy();
   await roundImplementation.deployed();
   await roundImplementation.initialize(encodeRoundParameters(params));
 

@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { ethers, network } from "hardhat";
 
 import CollectNFT from "../../importedABI/CollectNFT.json";
-import { LensHub } from "../../types/contracts/lens/LensHub";
+import { ILensHub } from "../../types/contracts/interfaces/ILensHub";
 import { FIRST_PROFILE_ID } from "../utils/constants";
 import { getTimestamp } from "../utils/utils";
 import { deployLensMumbaiFixture } from "./lens.fixture";
@@ -14,7 +14,7 @@ export const shouldBehaveLikeLensHubMumbai = () => {
   let _admin: SignerWithAddress;
   let _user: SignerWithAddress;
 
-  let _lensMumbai: LensHub;
+  let _lensMumbai: ILensHub;
   before(async function () {
     const signers: SignerWithAddress[] = await ethers.getSigners();
     _admin = signers[0];
