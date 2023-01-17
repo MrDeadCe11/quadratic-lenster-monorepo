@@ -1,4 +1,4 @@
-const isBrowser = typeof window !== 'undefined';
+const isBrowser = typeof window !== "undefined";
 
 /**
  * Simple Analytics
@@ -9,8 +9,10 @@ export const Analytics = {
       try {
         (window as any)?.sa_event?.(name);
       } catch {
-        console.error('Error while sending analytics event to simple analytics');
+        console.error(
+          "Error while sending analytics event to simple analytics"
+        );
       }
     }
-  }
+  },
 };

@@ -1,20 +1,20 @@
-import { Button } from '@components/UI/Button';
-import { Modal } from '@components/UI/Modal';
-import { StarIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import formatHandle from '@lib/formatHandle';
-import { t } from '@lingui/macro';
-import type { Profile } from 'lens';
-import dynamic from 'next/dynamic';
-import type { Dispatch, FC } from 'react';
-import { useState } from 'react';
-import { PROFILE } from 'src/tracking';
+import { Button } from "@components/UI/Button";
+import { Modal } from "@components/UI/Modal";
+import { StarIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import formatHandle from "@lib/formatHandle";
+import { t } from "@lingui/macro";
+import type { Profile } from "lens";
+import dynamic from "next/dynamic";
+import type { Dispatch, FC } from "react";
+import { useState } from "react";
+import { PROFILE } from "src/tracking";
 
-import Loader from '../Loader';
-import Slug from '../Slug';
+import Loader from "../Loader";
+import Slug from "../Slug";
 
-const FollowModule = dynamic(() => import('./FollowModule'), {
-  loading: () => <Loader message={t`Loading super follow`} />
+const FollowModule = dynamic(() => import("./FollowModule"), {
+  loading: () => <Loader message={t`Loading super follow`} />,
 });
 
 interface Props {
@@ -24,7 +24,12 @@ interface Props {
   again?: boolean;
 }
 
-const SuperFollow: FC<Props> = ({ profile, setFollowing, showText = false, again = false }) => {
+const SuperFollow: FC<Props> = ({
+  profile,
+  setFollowing,
+  showText = false,
+  again = false,
+}) => {
   const [showFollowModal, setShowFollowModal] = useState(false);
 
   return (
@@ -45,7 +50,9 @@ const SuperFollow: FC<Props> = ({ profile, setFollowing, showText = false, again
       <Modal
         title={
           <span>
-            Super follow <Slug slug={formatHandle(profile?.handle)} prefix="@" /> {again ? 'again' : ''}
+            Super follow{" "}
+            <Slug slug={formatHandle(profile?.handle)} prefix="@" />{" "}
+            {again ? "again" : ""}
           </span>
         }
         icon={<StarIcon className="w-5 h-5 text-pink-500" />}

@@ -1,19 +1,26 @@
-import MenuTransition from '@components/Shared/MenuTransition';
-import { Checkbox } from '@components/UI/Checkbox';
-import { Tooltip } from '@components/UI/Tooltip';
-import { Menu } from '@headlessui/react';
-import { AdjustmentsIcon } from '@heroicons/react/outline';
-import { t } from '@lingui/macro';
-import clsx from 'clsx';
-import type { ChangeEvent } from 'react';
-import { useProfileFeedStore } from 'src/store/profile-feed';
+import MenuTransition from "@components/Shared/MenuTransition";
+import { Checkbox } from "@components/UI/Checkbox";
+import { Tooltip } from "@components/UI/Tooltip";
+import { Menu } from "@headlessui/react";
+import { AdjustmentsIcon } from "@heroicons/react/outline";
+import { t } from "@lingui/macro";
+import clsx from "clsx";
+import type { ChangeEvent } from "react";
+import { useProfileFeedStore } from "src/store/profile-feed";
 
 const MediaFilter = () => {
-  const mediaFeedFilters = useProfileFeedStore((state) => state.mediaFeedFilters);
-  const setMediaFeedFilters = useProfileFeedStore((state) => state.setMediaFeedFilters);
+  const mediaFeedFilters = useProfileFeedStore(
+    (state) => state.mediaFeedFilters
+  );
+  const setMediaFeedFilters = useProfileFeedStore(
+    (state) => state.setMediaFeedFilters
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setMediaFeedFilters({ ...mediaFeedFilters, [e.target.name]: e.target.checked });
+    setMediaFeedFilters({
+      ...mediaFeedFilters,
+      [e.target.name]: e.target.checked,
+    });
   };
 
   return (
@@ -32,8 +39,8 @@ const MediaFilter = () => {
             as="label"
             className={({ active }) =>
               clsx(
-                { 'dropdown-active': active },
-                'flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item'
+                { "dropdown-active": active },
+                "flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item"
               )
             }
           >
@@ -48,8 +55,8 @@ const MediaFilter = () => {
             as="label"
             className={({ active }) =>
               clsx(
-                { 'dropdown-active': active },
-                'flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item'
+                { "dropdown-active": active },
+                "flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item"
               )
             }
           >
@@ -64,8 +71,8 @@ const MediaFilter = () => {
             as="label"
             className={({ active }) =>
               clsx(
-                { 'dropdown-active': active },
-                'flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item'
+                { "dropdown-active": active },
+                "flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item"
               )
             }
           >

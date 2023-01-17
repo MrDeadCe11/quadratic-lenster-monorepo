@@ -1,32 +1,32 @@
-import { Card } from '@components/UI/Card';
-import getIPFSLink from '@lib/getIPFSLink';
-import { RARIBLE_URL, STATIC_IMAGES_URL } from 'data/constants';
-import type { Nft } from 'lens';
-import type { FC } from 'react';
-import { CHAIN_ID } from 'src/constants';
+import { Card } from "@components/UI/Card";
+import getIPFSLink from "@lib/getIPFSLink";
+import { RARIBLE_URL, STATIC_IMAGES_URL } from "data/constants";
+import type { Nft } from "lens";
+import type { FC } from "react";
+import { CHAIN_ID } from "src/constants";
 
 interface Props {
   nft: Nft;
 }
 
 const SingleNFT: FC<Props> = ({ nft }) => {
-  const nftURL = `${RARIBLE_URL}/token/${nft.chainId === CHAIN_ID ? 'polygon/' : ''}${nft.contractAddress}:${
-    nft.tokenId
-  }`.toLowerCase();
+  const nftURL = `${RARIBLE_URL}/token/${
+    nft.chainId === CHAIN_ID ? "polygon/" : ""
+  }${nft.contractAddress}:${nft.tokenId}`.toLowerCase();
 
   return (
     <Card>
       {nft?.originalContent?.animatedUrl ? (
         <div className="h-52 border-b sm:h-80 sm:rounded-t-[10px]">
-          {nft?.originalContent?.animatedUrl?.includes('.gltf') ? (
+          {nft?.originalContent?.animatedUrl?.includes(".gltf") ? (
             <a href={nftURL} target="_blank" rel="noreferrer noopener">
               <div
                 className="h-52 border-b sm:h-80 sm:rounded-t-[10px]"
                 style={{
                   backgroundImage: `url(${`${STATIC_IMAGES_URL}/placeholder.webp`})`,
-                  backgroundSize: 'contain',
-                  backgroundPosition: 'center center',
-                  backgroundRepeat: 'no-repeat'
+                  backgroundSize: "contain",
+                  backgroundPosition: "center center",
+                  backgroundRepeat: "no-repeat",
                 }}
               />
             </a>
@@ -49,17 +49,26 @@ const SingleNFT: FC<Props> = ({ nft }) => {
                   ? getIPFSLink(nft.originalContent.uri)
                   : `${STATIC_IMAGES_URL}/placeholder.webp`
               })`,
-              backgroundSize: 'contain',
-              backgroundPosition: 'center center',
-              backgroundRepeat: 'no-repeat'
+              backgroundSize: "contain",
+              backgroundPosition: "center center",
+              backgroundRepeat: "no-repeat",
             }}
           />
         </a>
       )}
       <div className="space-y-1 p-5">
-        {nft.collectionName && <div className="text-sm lt-text-gray-500 truncate">{nft.collectionName}</div>}
+        {nft.collectionName && (
+          <div className="text-sm lt-text-gray-500 truncate">
+            {nft.collectionName}
+          </div>
+        )}
         <div className="truncate">
-          <a className="font-bold" href={nftURL} target="_blank" rel="noreferrer noopener">
+          <a
+            className="font-bold"
+            href={nftURL}
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             {nft.name ? nft.name : `#${nft.tokenId}`}
           </a>
         </div>

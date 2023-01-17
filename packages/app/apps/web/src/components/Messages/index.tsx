@@ -1,13 +1,13 @@
-import MetaTags from '@components/Common/MetaTags';
-import { Card } from '@components/UI/Card';
-import { GridItemEight, GridLayout } from '@components/UI/GridLayout';
-import { Trans } from '@lingui/macro';
-import { APP_NAME } from 'data/constants';
-import type { NextPage } from 'next';
-import Custom404 from 'src/pages/404';
-import { useAppStore } from 'src/store/app';
+import MetaTags from "@components/Common/MetaTags";
+import { Card } from "@components/UI/Card";
+import { GridItemEight, GridLayout } from "@components/UI/GridLayout";
+import { Trans } from "@lingui/macro";
+import { APP_NAME } from "data/constants";
+import type { NextPage } from "next";
+import Custom404 from "src/pages/404";
+import { useAppStore } from "src/store/app";
 
-import PreviewList from './PreviewList';
+import PreviewList from "./PreviewList";
 
 const NoConversationSelected = () => {
   return (
@@ -18,7 +18,10 @@ const NoConversationSelected = () => {
           <Trans>Select a conversation</Trans>
         </h3>
         <p className="max-w-xs text-md lt-text-gray-500">
-          <Trans>Choose an existing conversation or create a new one to start messaging</Trans>
+          <Trans>
+            Choose an existing conversation or create a new one to start
+            messaging
+          </Trans>
         </p>
       </div>
     </div>

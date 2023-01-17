@@ -1,24 +1,24 @@
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import type { LexicalEditor } from 'lexical';
-import { TextNode } from 'lexical';
-import { useEffect } from 'react';
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import type { LexicalEditor } from "lexical";
+import { TextNode } from "lexical";
+import { useEffect } from "react";
 
-import { $createEmojiNode, EmojiNode } from '../Nodes/EmojiNode';
+import { $createEmojiNode, EmojiNode } from "../Nodes/EmojiNode";
 
 const emojis: Map<string, [string, string]> = new Map([
-  [':)', ['emoji happysmile', '🙂']],
-  [':(', ['emoji sadsmile', '🙁']],
-  [';)', ['emoji winksmile', '😉']],
-  [':D', ['emoji bigsmile', '😃']],
-  [':P', ['emoji tongue', '😛']],
-  [':O', ['emoji shock', '😮']],
-  [':|', ['emoji neutral', '😐']],
-  [':*', ['emoji kiss', '😘']],
-  [':$', ['emoji blush', '😳']],
-  [':@', ['emoji angry', '😠']],
-  [':s', ['emoji smirk', '😏']],
-  [':l', ['emoji sealed', '🌸']],
-  ['<3', ['emoji heart', '💜']]
+  [":)", ["emoji happysmile", "🙂"]],
+  [":(", ["emoji sadsmile", "🙁"]],
+  [";)", ["emoji winksmile", "😉"]],
+  [":D", ["emoji bigsmile", "😃"]],
+  [":P", ["emoji tongue", "😛"]],
+  [":O", ["emoji shock", "😮"]],
+  [":|", ["emoji neutral", "😐"]],
+  [":*", ["emoji kiss", "😘"]],
+  [":$", ["emoji blush", "😳"]],
+  [":@", ["emoji angry", "😠"]],
+  [":s", ["emoji smirk", "😏"]],
+  [":l", ["emoji sealed", "🌸"]],
+  ["<3", ["emoji heart", "💜"]],
 ]);
 
 const findAndTransformEmoji = (node: TextNode): null | TextNode => {
@@ -62,7 +62,7 @@ const textNodeTransform = (node: TextNode): void => {
 const useEmojis = (editor: LexicalEditor): void => {
   useEffect(() => {
     if (!editor.hasNodes([EmojiNode])) {
-      throw new Error('EmojisPlugin: EmojiNode not registered on editor');
+      throw new Error("EmojisPlugin: EmojiNode not registered on editor");
     }
 
     return editor.registerNodeTransform(TextNode, textNodeTransform);

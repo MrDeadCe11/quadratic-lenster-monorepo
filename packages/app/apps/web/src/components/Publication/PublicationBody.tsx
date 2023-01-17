@@ -1,16 +1,16 @@
-import Attachments from '@components/Shared/Attachments';
-import IFramely from '@components/Shared/IFramely';
-import Markup from '@components/Shared/Markup';
-import useStaffMode from '@components/utils/hooks/useStaffMode';
-import type { LensterPublication } from '@generated/types';
-import { EyeIcon } from '@heroicons/react/outline';
-import getURLs from '@lib/getURLs';
-import clsx from 'clsx';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
+import Attachments from "@components/Shared/Attachments";
+import IFramely from "@components/Shared/IFramely";
+import Markup from "@components/Shared/Markup";
+import useStaffMode from "@components/utils/hooks/useStaffMode";
+import type { LensterPublication } from "@generated/types";
+import { EyeIcon } from "@heroicons/react/outline";
+import getURLs from "@lib/getURLs";
+import clsx from "clsx";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import type { FC } from "react";
 
-import DecryptedPublicationBody from './DecryptedPublicationBody';
+import DecryptedPublicationBody from "./DecryptedPublicationBody";
 
 interface Props {
   publication: LensterPublication;
@@ -19,7 +19,8 @@ interface Props {
 const PublicationBody: FC<Props> = ({ publication }) => {
   const { pathname } = useRouter();
   const { allowed: staffMode } = useStaffMode();
-  const showMore = publication?.metadata?.content?.length > 450 && pathname !== '/posts/[id]';
+  const showMore =
+    publication?.metadata?.content?.length > 450 && pathname !== "/posts/[id]";
 
   if (staffMode && publication?.metadata?.encryptionParams) {
     return <DecryptedPublicationBody encryptedPublication={publication} />;
@@ -29,8 +30,8 @@ const PublicationBody: FC<Props> = ({ publication }) => {
     <div className="break-words">
       <Markup
         className={clsx(
-          { 'line-clamp-5': showMore },
-          'whitespace-pre-wrap break-words leading-md linkify text-md'
+          { "line-clamp-5": showMore },
+          "whitespace-pre-wrap break-words leading-md linkify text-md"
         )}
       >
         {publication?.metadata?.content}
@@ -42,7 +43,10 @@ const PublicationBody: FC<Props> = ({ publication }) => {
         </div>
       )}
       {publication?.metadata?.media?.length > 0 ? (
-        <Attachments attachments={publication?.metadata?.media} publication={publication} />
+        <Attachments
+          attachments={publication?.metadata?.media}
+          publication={publication}
+        />
       ) : (
         publication?.metadata?.content &&
         getURLs(publication?.metadata?.content)?.length > 0 && (

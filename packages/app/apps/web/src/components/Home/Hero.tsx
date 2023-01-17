@@ -1,6 +1,6 @@
-import { Trans } from '@lingui/macro';
-import { APP_NAME } from 'data/constants';
-import type { FC } from 'react';
+import { Trans } from "@lingui/macro";
+import { APP_NAME } from "data/constants";
+import type { FC } from "react";
 
 const Hero: FC = () => {
   return (
@@ -12,7 +12,8 @@ const Hero: FC = () => {
           </div>
           <div className="leading-7 text-gray-700 dark:text-gray-300">
             <Trans>
-              {APP_NAME} is a decentralized, and permissionless social media app built with Lens Protocol 🌿
+              {APP_NAME} is a decentralized, and permissionless social media app
+              built with Lens Protocol 🌿
             </Trans>
           </div>
         </div>

@@ -1,27 +1,27 @@
-import MetaTags from '@components/Common/MetaTags';
-import MessageHeader from '@components/Messages/MessageHeader';
-import Loader from '@components/Shared/Loader';
-import { Card } from '@components/UI/Card';
-import { GridItemEight, GridLayout } from '@components/UI/GridLayout';
-import useGetConversation from '@components/utils/hooks/useGetConversation';
-import useGetMessages from '@components/utils/hooks/useGetMessages';
-import useSendMessage from '@components/utils/hooks/useSendMessage';
-import useStreamMessages from '@components/utils/hooks/useStreamMessages';
-import { parseConversationKey } from '@lib/conversationKey';
-import formatHandle from '@lib/formatHandle';
-import { t } from '@lingui/macro';
-import { APP_NAME } from 'data/constants';
-import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import { useCallback, useState } from 'react';
-import Custom404 from 'src/pages/404';
-import { useAppStore } from 'src/store/app';
-import { useMessageStore } from 'src/store/message';
+import MetaTags from "@components/Common/MetaTags";
+import MessageHeader from "@components/Messages/MessageHeader";
+import Loader from "@components/Shared/Loader";
+import { Card } from "@components/UI/Card";
+import { GridItemEight, GridLayout } from "@components/UI/GridLayout";
+import useGetConversation from "@components/utils/hooks/useGetConversation";
+import useGetMessages from "@components/utils/hooks/useGetMessages";
+import useSendMessage from "@components/utils/hooks/useSendMessage";
+import useStreamMessages from "@components/utils/hooks/useStreamMessages";
+import { parseConversationKey } from "@lib/conversationKey";
+import formatHandle from "@lib/formatHandle";
+import { t } from "@lingui/macro";
+import { APP_NAME } from "data/constants";
+import type { NextPage } from "next";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import { useCallback, useState } from "react";
+import Custom404 from "src/pages/404";
+import { useAppStore } from "src/store/app";
+import { useMessageStore } from "src/store/message";
 
-import Composer from './Composer';
-import MessagesList from './MessagesList';
-import PreviewList from './PreviewList';
+import Composer from "./Composer";
+import MessagesList from "./MessagesList";
+import PreviewList from "./PreviewList";
 
 interface MessageProps {
   conversationKey: string;
@@ -29,8 +29,13 @@ interface MessageProps {
 
 const Message: FC<MessageProps> = ({ conversationKey }) => {
   const currentProfile = useAppStore((state) => state.currentProfile);
-  const profile = useMessageStore((state) => state.messageProfiles.get(conversationKey));
-  const { selectedConversation, missingXmtpAuth } = useGetConversation(conversationKey, profile);
+  const profile = useMessageStore((state) =>
+    state.messageProfiles.get(conversationKey)
+  );
+  const { selectedConversation, missingXmtpAuth } = useGetConversation(
+    conversationKey,
+    profile
+  );
   const [endTime, setEndTime] = useState<Map<string, Date>>(new Map());
   const { messages, hasMore } = useGetMessages(
     conversationKey,
@@ -55,10 +60,13 @@ const Message: FC<MessageProps> = ({ conversationKey }) => {
     return <Custom404 />;
   }
 
-  const showLoading = !missingXmtpAuth && (!profile || !currentProfile || !selectedConversation);
+  const showLoading =
+    !missingXmtpAuth && (!profile || !currentProfile || !selectedConversation);
 
   const userNameForTitle = profile?.name ?? formatHandle(profile?.handle);
-  const title = userNameForTitle ? `${userNameForTitle} • ${APP_NAME}` : APP_NAME;
+  const title = userNameForTitle
+    ? `${userNameForTitle} • ${APP_NAME}`
+    : APP_NAME;
 
   return (
     <GridLayout classNameChild="md:gap-8">
@@ -100,15 +108,19 @@ const Message: FC<MessageProps> = ({ conversationKey }) => {
 const MessagePage: NextPage = () => {
   const currentProfileId = useAppStore((state) => state.currentProfile?.id);
   const {
-    query: { conversationKey }
+    query: { conversationKey },
   } = useRouter();
 
   // Need to have a login page for when there is no currentProfileId
-  if (!conversationKey || !currentProfileId || !Array.isArray(conversationKey)) {
+  if (
+    !conversationKey ||
+    !currentProfileId ||
+    !Array.isArray(conversationKey)
+  ) {
     return <Custom404 />;
   }
 
-  const joinedConversationKey = conversationKey.join('/');
+  const joinedConversationKey = conversationKey.join("/");
   const parsed = parseConversationKey(joinedConversationKey);
 
   if (!parsed) {

@@ -1,17 +1,17 @@
-import UserProfile from '@components/Shared/UserProfile';
-import type { LensterPublication } from '@generated/types';
-import formatTime from '@lib/formatTime';
-import getAppName from '@lib/getAppName';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import type { FC } from 'react';
+import UserProfile from "@components/Shared/UserProfile";
+import type { LensterPublication } from "@generated/types";
+import formatTime from "@lib/formatTime";
+import getAppName from "@lib/getAppName";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import type { FC } from "react";
 
-import PublicationActions from './Actions';
-import PublicationMenu from './Actions/Menu';
-import HiddenPublication from './HiddenPublication';
-import PublicationBody from './PublicationBody';
-import PublicationStats from './PublicationStats';
-import PublicationType from './Type';
+import PublicationActions from "./Actions";
+import PublicationMenu from "./Actions/Menu";
+import HiddenPublication from "./HiddenPublication";
+import PublicationBody from "./PublicationBody";
+import PublicationStats from "./PublicationStats";
+import PublicationType from "./Type";
 
 dayjs.extend(relativeTime);
 
@@ -20,9 +20,13 @@ interface Props {
 }
 
 const FullPublication: FC<Props> = ({ publication }) => {
-  const isMirror = publication.__typename === 'Mirror';
-  const profile = isMirror ? publication?.mirrorOf?.profile : publication?.profile;
-  const timestamp = isMirror ? publication?.mirrorOf?.createdAt : publication?.createdAt;
+  const isMirror = publication.__typename === "Mirror";
+  const profile = isMirror
+    ? publication?.mirrorOf?.profile
+    : publication?.profile;
+  const timestamp = isMirror
+    ? publication?.mirrorOf?.createdAt
+    : publication?.createdAt;
 
   // Count check to show the publication stats only if the publication has a comment, like or collect
   const mirrorCount = isMirror
@@ -41,7 +45,10 @@ const FullPublication: FC<Props> = ({ publication }) => {
       <PublicationType publication={publication} showType />
       <div>
         <div className="flex justify-between pb-4 space-x-1.5">
-          <UserProfile profile={profile ?? publication?.collectedBy?.defaultProfile} showStatus />
+          <UserProfile
+            profile={profile ?? publication?.collectedBy?.defaultProfile}
+            showStatus
+          />
           <PublicationMenu publication={publication} />
         </div>
         <div className="ml-[53px]">
@@ -52,9 +59,11 @@ const FullPublication: FC<Props> = ({ publication }) => {
               <PublicationBody publication={publication} />
               <div className="text-sm lt-text-gray-500 my-3">
                 <span title={formatTime(timestamp)}>
-                  {dayjs(new Date(timestamp)).format('hh:mm A · MMM D, YYYY')}
+                  {dayjs(new Date(timestamp)).format("hh:mm A · MMM D, YYYY")}
                 </span>
-                {publication?.appId ? <span> · Posted via {getAppName(publication?.appId)}</span> : null}
+                {publication?.appId ? (
+                  <span> · Posted via {getAppName(publication?.appId)}</span>
+                ) : null}
               </div>
               {showStats && (
                 <>

@@ -1,12 +1,12 @@
-import getUniqueMessages from '@lib/getUniqueMessages';
-import type { Client, Conversation, DecodedMessage } from '@xmtp/xmtp-js';
-import { toNanoString } from '@xmtp/xmtp-js';
-import { LS_KEYS } from 'data/constants';
-import type { Profile } from 'lens';
-import create from 'zustand';
-import { persist } from 'zustand/middleware';
+import getUniqueMessages from "@lib/getUniqueMessages";
+import type { Client, Conversation, DecodedMessage } from "@xmtp/xmtp-js";
+import { toNanoString } from "@xmtp/xmtp-js";
+import { LS_KEYS } from "data/constants";
+import type { Profile } from "lens";
+import create from "zustand";
+import { persist } from "zustand/middleware";
 
-type TabValues = 'Following' | 'Requested';
+type TabValues = "Following" | "Requested";
 
 interface MessageState {
   client: Client | undefined;
@@ -71,7 +71,9 @@ export const useMessageStore = create<MessageState>((set) => ({
       } else {
         profiles = state.messageProfiles;
       }
-      const selectedTab: TabValues = profile.isFollowedByMe ? 'Following' : 'Requested';
+      const selectedTab: TabValues = profile.isFollowedByMe
+        ? "Following"
+        : "Requested";
       return { messageProfiles: profiles, selectedTab: selectedTab };
     }),
   previewMessages: new Map(),
@@ -82,9 +84,10 @@ export const useMessageStore = create<MessageState>((set) => ({
       return { previewMessages: newPreviewMessages };
     }),
   setPreviewMessages: (previewMessages) => set(() => ({ previewMessages })),
-  selectedProfileId: '',
-  setSelectedProfileId: (selectedProfileId) => set(() => ({ selectedProfileId })),
-  selectedTab: 'Following',
+  selectedProfileId: "",
+  setSelectedProfileId: (selectedProfileId) =>
+    set(() => ({ selectedProfileId })),
+  selectedTab: "Following",
   setSelectedTab: (selectedTab) => set(() => ({ selectedTab })),
   reset: () =>
     set((state) => {
@@ -94,9 +97,9 @@ export const useMessageStore = create<MessageState>((set) => ({
         messages: new Map(),
         messageProfiles: new Map(),
         previewMessages: new Map(),
-        selectedTab: 'Following'
+        selectedTab: "Following",
       };
-    })
+    }),
 }));
 
 // Each Map is storing a profileId as the key.
@@ -112,7 +115,8 @@ export const useMessagePersistStore = create(
     (set) => ({
       viewedMessagesAtNs: new Map(),
       showMessagesBadge: new Map(),
-      setShowMessagesBadge: (showMessagesBadge) => set(() => ({ showMessagesBadge })),
+      setShowMessagesBadge: (showMessagesBadge) =>
+        set(() => ({ showMessagesBadge })),
       clearMessagesBadge: (profileId: string) => {
         set((state) => {
           const viewedAt = new Map(state.viewedMessagesAtNs);
@@ -124,7 +128,7 @@ export const useMessagePersistStore = create(
           show.set(profileId, false);
           return { viewedMessagesAtNs: viewedAt, showMessagesBadge: show };
         });
-      }
+      },
     }),
     {
       name: LS_KEYS.MESSAGE_STORE,
@@ -136,8 +140,8 @@ export const useMessagePersistStore = create(
           state: {
             ...data.state,
             viewedMessagesAtNs: Array.from(data.state.viewedMessagesAtNs),
-            showMessagesBadge: Array.from(data.state.showMessagesBadge)
-          }
+            showMessagesBadge: Array.from(data.state.showMessagesBadge),
+          },
         });
       },
       deserialize: (value) => {
@@ -145,7 +149,7 @@ export const useMessagePersistStore = create(
         data.state.viewedMessagesAtNs = new Map(data.state.viewedMessagesAtNs);
         data.state.showMessagesBadge = new Map(data.state.showMessagesBadge);
         return data;
-      }
+      },
     }
   )
 );

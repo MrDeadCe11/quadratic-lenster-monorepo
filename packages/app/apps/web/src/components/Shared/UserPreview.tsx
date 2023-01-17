@@ -1,19 +1,19 @@
-import { BadgeCheckIcon } from '@heroicons/react/solid';
-import formatHandle from '@lib/formatHandle';
-import getAvatar from '@lib/getAvatar';
-import isVerified from '@lib/isVerified';
-import nFormatter from '@lib/nFormatter';
-import Tippy from '@tippyjs/react';
-import clsx from 'clsx';
-import type { Profile } from 'lens';
-import { useProfileLazyQuery } from 'lens';
-import type { FC, ReactNode } from 'react';
-import { useState } from 'react';
+import { BadgeCheckIcon } from "@heroicons/react/solid";
+import formatHandle from "@lib/formatHandle";
+import getAvatar from "@lib/getAvatar";
+import isVerified from "@lib/isVerified";
+import nFormatter from "@lib/nFormatter";
+import Tippy from "@tippyjs/react";
+import clsx from "clsx";
+import type { Profile } from "lens";
+import { useProfileLazyQuery } from "lens";
+import type { FC, ReactNode } from "react";
+import { useState } from "react";
 
-import Follow from './Follow';
-import Markup from './Markup';
-import Slug from './Slug';
-import SuperFollow from './SuperFollow';
+import Follow from "./Follow";
+import Markup from "./Markup";
+import Slug from "./Slug";
+import SuperFollow from "./SuperFollow";
 
 type Props = {
   profile: Profile;
@@ -28,13 +28,13 @@ const UserPreview: FC<Props> = ({
   isBig,
   followStatusLoading,
   children,
-  showUserPreview = true
+  showUserPreview = true,
 }) => {
   const [lazyProfile, setLazyProfile] = useState(profile);
   const [following, setFollowing] = useState(profile?.isFollowedByMe);
 
   const [loadProfile] = useProfileLazyQuery({
-    fetchPolicy: 'cache-first'
+    fetchPolicy: "cache-first",
   });
 
   const UserAvatar = () => (
@@ -42,8 +42,8 @@ const UserPreview: FC<Props> = ({
       src={getAvatar(lazyProfile)}
       loading="lazy"
       className={clsx(
-        isBig ? 'w-14 h-14' : 'w-10 h-10',
-        'bg-gray-200 rounded-full border dark:border-gray-700'
+        isBig ? "w-14 h-14" : "w-10 h-10",
+        "bg-gray-200 rounded-full border dark:border-gray-700"
       )}
       height={isBig ? 56 : 40}
       width={isBig ? 56 : 40}
@@ -54,12 +54,18 @@ const UserPreview: FC<Props> = ({
   const UserName = () => (
     <>
       <div className="flex gap-1 items-center max-w-sm truncate">
-        <div className={clsx(isBig ? 'font-bold' : 'text-md')}>
+        <div className={clsx(isBig ? "font-bold" : "text-md")}>
           {lazyProfile?.name ?? formatHandle(lazyProfile?.handle)}
         </div>
-        {isVerified(lazyProfile?.id) && <BadgeCheckIcon className="w-4 h-4 text-brand" />}
+        {isVerified(lazyProfile?.id) && (
+          <BadgeCheckIcon className="w-4 h-4 text-brand" />
+        )}
       </div>
-      <Slug className="text-sm" slug={formatHandle(lazyProfile?.handle)} prefix="@" />
+      <Slug
+        className="text-sm"
+        slug={formatHandle(lazyProfile?.handle)}
+        prefix="@"
+      />
     </>
   );
 
@@ -71,7 +77,8 @@ const UserPreview: FC<Props> = ({
           {!lazyProfile.isFollowedByMe &&
             (followStatusLoading ? (
               <div className="w-10 h-8 rounded-lg shimmer" />
-            ) : following ? null : lazyProfile?.followModule?.__typename === 'FeeFollowModuleSettings' ? (
+            ) : following ? null : lazyProfile?.followModule?.__typename ===
+              "FeeFollowModuleSettings" ? (
               <SuperFollow profile={lazyProfile} setFollowing={setFollowing} />
             ) : (
               <Follow profile={lazyProfile} setFollowing={setFollowing} />
@@ -82,18 +89,28 @@ const UserPreview: FC<Props> = ({
         <UserName />
         <div>
           {lazyProfile?.bio && (
-            <div className={clsx(isBig ? 'text-base' : 'text-sm', 'mt-2', 'linkify break-words leading-6')}>
+            <div
+              className={clsx(
+                isBig ? "text-base" : "text-sm",
+                "mt-2",
+                "linkify break-words leading-6"
+              )}
+            >
               <Markup>{lazyProfile?.bio}</Markup>
             </div>
           )}
         </div>
         <div className="flex space-x-3 items-center">
           <div className="flex items-center space-x-1">
-            <div className="text-base">{nFormatter(lazyProfile?.stats?.totalFollowing)}</div>
+            <div className="text-base">
+              {nFormatter(lazyProfile?.stats?.totalFollowing)}
+            </div>
             <div className="lt-text-gray-500 text-sm">Following</div>
           </div>
           <div className="flex items-center space-x-1 text-md">
-            <div className="text-base">{nFormatter(lazyProfile?.stats?.totalFollowers)}</div>
+            <div className="text-base">
+              {nFormatter(lazyProfile?.stats?.totalFollowers)}
+            </div>
             <div className="lt-text-gray-500 text-sm">Followers</div>
           </div>
         </div>
@@ -104,7 +121,9 @@ const UserPreview: FC<Props> = ({
   const onPreviewStart = async () => {
     if (!lazyProfile.id) {
       const { data } = await loadProfile({
-        variables: { request: { handle: formatHandle(lazyProfile?.handle, true) } }
+        variables: {
+          request: { handle: formatHandle(lazyProfile?.handle, true) },
+        },
       });
       const getProfile = data?.profile;
       if (getProfile) {

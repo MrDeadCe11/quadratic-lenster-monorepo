@@ -1,0 +1,3 @@
+[submodule "lenster"]
+	path = lenster
+	url = https://github.com/lensterxyz/lenster.git

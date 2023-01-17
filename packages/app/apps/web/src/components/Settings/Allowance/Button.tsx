@@ -1,17 +1,17 @@
-import { Button } from '@components/UI/Button';
-import { Modal } from '@components/UI/Modal';
-import { Spinner } from '@components/UI/Spinner';
-import { WarningMessage } from '@components/UI/WarningMessage';
-import { ExclamationIcon, MinusIcon, PlusIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import { getModule } from '@lib/getModule';
-import onError from '@lib/onError';
-import { t, Trans } from '@lingui/macro';
-import { useGenerateModuleCurrencyApprovalDataLazyQuery } from 'lens';
-import type { Dispatch, FC } from 'react';
-import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { useSendTransaction, useWaitForTransaction } from 'wagmi';
+import { Button } from "@components/UI/Button";
+import { Modal } from "@components/UI/Modal";
+import { Spinner } from "@components/UI/Spinner";
+import { WarningMessage } from "@components/UI/WarningMessage";
+import { ExclamationIcon, MinusIcon, PlusIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import { getModule } from "@lib/getModule";
+import onError from "@lib/onError";
+import { t, Trans } from "@lingui/macro";
+import { useGenerateModuleCurrencyApprovalDataLazyQuery } from "lens";
+import type { Dispatch, FC } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useSendTransaction, useWaitForTransaction } from "wagmi";
 
 interface Props {
   title?: string;
@@ -20,7 +20,12 @@ interface Props {
   setAllowed: Dispatch<boolean>;
 }
 
-const AllowanceButton: FC<Props> = ({ title = t`Allow`, module, allowed, setAllowed }) => {
+const AllowanceButton: FC<Props> = ({
+  title = t`Allow`,
+  module,
+  allowed,
+  setAllowed,
+}) => {
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [generateAllowanceQuery, { loading: queryLoading }] =
     useGenerateModuleCurrencyApprovalDataLazyQuery();
@@ -28,41 +33,45 @@ const AllowanceButton: FC<Props> = ({ title = t`Allow`, module, allowed, setAllo
   const {
     data: txData,
     isLoading: transactionLoading,
-    sendTransaction
+    sendTransaction,
   } = useSendTransaction({
     request: {},
-    mode: 'recklesslyUnprepared',
-    onError
+    mode: "recklesslyUnprepared",
+    onError,
   });
 
   const { isLoading: waitLoading } = useWaitForTransaction({
     hash: txData?.hash,
     onSuccess: () => {
-      toast.success(`Module ${allowed ? 'disabled' : 'enabled'} successfully!`);
+      toast.success(`Module ${allowed ? "disabled" : "enabled"} successfully!`);
       setShowWarningModal(false);
       setAllowed(!allowed);
-      Analytics.track(`module_${allowed ? 'disabled' : 'enabled'}`);
+      Analytics.track(`module_${allowed ? "disabled" : "enabled"}`);
     },
-    onError
+    onError,
   });
 
-  const handleAllowance = (currencies: string, value: string, selectedModule: string) => {
+  const handleAllowance = (
+    currencies: string,
+    value: string,
+    selectedModule: string
+  ) => {
     generateAllowanceQuery({
       variables: {
         request: {
           currency: currencies,
           value: value,
-          [getModule(module.module).field]: selectedModule
-        }
-      }
+          [getModule(module.module).field]: selectedModule,
+        },
+      },
     }).then((res) => {
       const data = res?.data?.generateModuleCurrencyApprovalData;
       sendTransaction?.({
         recklesslySetUnpreparedRequest: {
           from: data?.from,
           to: data?.to,
-          data: data?.data
-        }
+          data: data?.data,
+        },
       });
     });
   };
@@ -77,7 +86,7 @@ const AllowanceButton: FC<Props> = ({ title = t`Allow`, module, allowed, setAllo
           <MinusIcon className="w-4 h-4" />
         )
       }
-      onClick={() => handleAllowance(module.currency, '0', module.module)}
+      onClick={() => handleAllowance(module.currency, "0", module.module)}
     >
       <Trans>Revoke</Trans>
     </Button>
@@ -102,8 +111,9 @@ const AllowanceButton: FC<Props> = ({ title = t`Allow`, module, allowed, setAllo
             message={
               <div className="leading-6">
                 <Trans>
-                  Please be aware that by allowing this module, the amount indicated will be automatically
-                  deducted when you <b>collect</b> and <b>super follow</b>.
+                  Please be aware that by allowing this module, the amount
+                  indicated will be automatically deducted when you{" "}
+                  <b>collect</b> and <b>super follow</b>.
                 </Trans>
               </div>
             }
@@ -118,7 +128,11 @@ const AllowanceButton: FC<Props> = ({ title = t`Allow`, module, allowed, setAllo
               )
             }
             onClick={() =>
-              handleAllowance(module.currency, Number.MAX_SAFE_INTEGER.toString(), module.module)
+              handleAllowance(
+                module.currency,
+                Number.MAX_SAFE_INTEGER.toString(),
+                module.module
+              )
             }
           >
             {title}

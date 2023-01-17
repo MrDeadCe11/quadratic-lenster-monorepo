@@ -1,10 +1,10 @@
-import { Analytics } from '@lib/analytics';
-import { STATIC_IMAGES_URL } from 'data/constants';
-import { hashflags } from 'data/hashflags';
-import { Matcher } from 'interweave';
-import Link from 'next/link';
-import { createElement } from 'react';
-import { PUBLICATION } from 'src/tracking';
+import { Analytics } from "@lib/analytics";
+import { STATIC_IMAGES_URL } from "data/constants";
+import { hashflags } from "data/hashflags";
+import { Matcher } from "interweave";
+import Link from "next/link";
+import { createElement } from "react";
+import { PUBLICATION } from "src/tracking";
 
 export const Hashtag = ({ ...props }: any) => {
   const hashflag = props.display.slice(1).toLowerCase();
@@ -42,13 +42,13 @@ export class HashtagMatcher extends Matcher {
   }
 
   asTag(): string {
-    return 'a';
+    return "a";
   }
 
   match(value: string) {
     return this.doMatch(value, /\B(#\w*[A-Za-z]+\w*\b)(?!;)/, (matches) => {
       return {
-        display: matches[0]
+        display: matches[0],
       };
     });
   }

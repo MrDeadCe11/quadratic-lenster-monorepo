@@ -1,4 +1,4 @@
-import { MEDIA_PROXY_URL } from 'data/constants';
+import { MEDIA_PROXY_URL } from "data/constants";
 
 /**
  *

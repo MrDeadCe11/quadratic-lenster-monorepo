@@ -1,16 +1,16 @@
-import Beta from '@components/Shared/Badges/Beta';
-import { Card } from '@components/UI/Card';
-import { CheckCircleIcon, ExternalLinkIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import { Trans } from '@lingui/macro';
-import axios from 'axios';
-import { APP_NAME } from 'data/constants';
-import type { FC } from 'react';
-import { useEffect, useState } from 'react';
-import { useAppStore } from 'src/store/app';
-import { SETTINGS } from 'src/tracking';
+import Beta from "@components/Shared/Badges/Beta";
+import { Card } from "@components/UI/Card";
+import { CheckCircleIcon, ExternalLinkIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import { Trans } from "@lingui/macro";
+import axios from "axios";
+import { APP_NAME } from "data/constants";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
+import { useAppStore } from "src/store/app";
+import { SETTINGS } from "src/tracking";
 
-const REFLECT_URL = 'https://reflect.withlens.app';
+const REFLECT_URL = "https://reflect.withlens.app";
 
 const CrossPost: FC = () => {
   const currentProfile = useAppStore((state) => state.currentProfile);
@@ -18,7 +18,7 @@ const CrossPost: FC = () => {
 
   useEffect(() => {
     axios
-      .get('https://reflect.withlens.app/api/profile/' + currentProfile?.id)
+      .get("https://reflect.withlens.app/api/profile/" + currentProfile?.id)
       .then((response) => {
         if (response.data?.active) {
           setRepostingTo(response.data?.twitter_handle);
@@ -39,7 +39,10 @@ const CrossPost: FC = () => {
         <Beta />
       </div>
       <div className="pb-3">
-        <Trans>Reflect will auto-tweet new {APP_NAME} posts, so you can finally escape the bird site.</Trans>
+        <Trans>
+          Reflect will auto-tweet new {APP_NAME} posts, so you can finally
+          escape the bird site.
+        </Trans>
       </div>
       {repostingTo ? (
         <>

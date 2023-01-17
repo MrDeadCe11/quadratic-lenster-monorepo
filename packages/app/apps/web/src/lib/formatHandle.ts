@@ -1,4 +1,4 @@
-import { HANDLE_SUFFIX, LENSPROTOCOL_HANDLE } from 'data/constants';
+import { HANDLE_SUFFIX, LENSPROTOCOL_HANDLE } from "data/constants";
 
 /**
  *
@@ -8,7 +8,7 @@ import { HANDLE_SUFFIX, LENSPROTOCOL_HANDLE } from 'data/constants';
  */
 const formatHandle = (handle: string | null, keepSuffix = false): string => {
   if (!handle) {
-    return '';
+    return "";
   }
 
   if (handle?.toLowerCase() === LENSPROTOCOL_HANDLE) {
@@ -21,7 +21,7 @@ const formatHandle = (handle: string | null, keepSuffix = false): string => {
       : handle + HANDLE_SUFFIX;
   }
 
-  return handle.replace(HANDLE_SUFFIX, '');
+  return handle.replace(HANDLE_SUFFIX, "");
 };
 
 export default formatHandle;

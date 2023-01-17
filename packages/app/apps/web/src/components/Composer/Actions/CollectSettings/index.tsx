@@ -1,20 +1,22 @@
-import { Modal } from '@components/UI/Modal';
-import { Tooltip } from '@components/UI/Tooltip';
-import GetModuleIcon from '@components/utils/GetModuleIcon';
-import { CashIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import { getModule } from '@lib/getModule';
-import { t } from '@lingui/macro';
-import { motion } from 'framer-motion';
-import type { FC } from 'react';
-import { useState } from 'react';
-import { useCollectModuleStore } from 'src/store/collect-module';
-import { PUBLICATION } from 'src/tracking';
+import { Modal } from "@components/UI/Modal";
+import { Tooltip } from "@components/UI/Tooltip";
+import GetModuleIcon from "@components/utils/GetModuleIcon";
+import { CashIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import { getModule } from "@lib/getModule";
+import { t } from "@lingui/macro";
+import { motion } from "framer-motion";
+import type { FC } from "react";
+import { useState } from "react";
+import { useCollectModuleStore } from "src/store/collect-module";
+import { PUBLICATION } from "src/tracking";
 
-import CollectForm from './CollectForm';
+import CollectForm from "./CollectForm";
 
 const CollectSettings: FC = () => {
-  const selectedCollectModule = useCollectModuleStore((state) => state.selectedCollectModule);
+  const selectedCollectModule = useCollectModuleStore(
+    (state) => state.selectedCollectModule
+  );
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -25,7 +27,9 @@ const CollectSettings: FC = () => {
           type="button"
           onClick={() => {
             setShowModal(!showModal);
-            Analytics.track(PUBLICATION.NEW.COLLECT_MODULE.OPEN_COLLECT_SETTINGS);
+            Analytics.track(
+              PUBLICATION.NEW.COLLECT_MODULE.OPEN_COLLECT_SETTINGS
+            );
           }}
           aria-label="Choose Collect Module"
         >

@@ -1,12 +1,17 @@
-import type { NewLensterAttachment } from '@generated/types';
-import create from 'zustand';
+import type { NewLensterAttachment } from "@generated/types";
+import create from "zustand";
 
 interface PublicationState {
   showNewPostModal: boolean;
   setShowNewPostModal: (showNewPostModal: boolean) => void;
   publicationContent: string;
   setPublicationContent: (publicationContent: string) => void;
-  audioPublication: { title: string; author: string; cover: string; coverMimeType: string };
+  audioPublication: {
+    title: string;
+    author: string;
+    cover: string;
+    coverMimeType: string;
+  };
   setAudioPublication: (audioPublication: {
     title: string;
     author: string;
@@ -25,9 +30,15 @@ interface PublicationState {
 export const usePublicationStore = create<PublicationState>((set) => ({
   showNewPostModal: false,
   setShowNewPostModal: (showNewPostModal) => set(() => ({ showNewPostModal })),
-  publicationContent: '',
-  setPublicationContent: (publicationContent) => set(() => ({ publicationContent })),
-  audioPublication: { title: '', author: '', cover: '', coverMimeType: 'image/jpeg' },
+  publicationContent: "",
+  setPublicationContent: (publicationContent) =>
+    set(() => ({ publicationContent })),
+  audioPublication: {
+    title: "",
+    author: "",
+    cover: "",
+    coverMimeType: "image/jpeg",
+  },
   setAudioPublication: (audioPublication) => set(() => ({ audioPublication })),
   attachments: [],
   setAttachments: (attachments) => set(() => ({ attachments })),
@@ -58,5 +69,5 @@ export const usePublicationStore = create<PublicationState>((set) => ({
       return { attachments };
     }),
   isUploading: false,
-  setIsUploading: (isUploading) => set(() => ({ isUploading }))
+  setIsUploading: (isUploading) => set(() => ({ isUploading })),
 }));

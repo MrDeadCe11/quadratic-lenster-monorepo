@@ -1,4 +1,4 @@
-import { STATIC_IMAGES_URL } from 'data/constants';
+import { STATIC_IMAGES_URL } from "data/constants";
 
 /**
  *
@@ -6,7 +6,7 @@ import { STATIC_IMAGES_URL } from 'data/constants';
  * @returns wallet logo url
  */
 const getWalletLogo = (name: string): string => {
-  if (name === 'WalletConnect') {
+  if (name === "WalletConnect") {
     return `${STATIC_IMAGES_URL}/wallets/walletconnect.svg`;
   }
 

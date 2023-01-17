@@ -6,12 +6,12 @@ import type {
   LexicalNode,
   NodeKey,
   SerializedTextNode,
-  Spread
-} from 'lexical';
-import { TextNode } from 'lexical';
+  Spread,
+} from "lexical";
+import { TextNode } from "lexical";
 
 export type SerializedMentionNode = Spread<
-  { mentionName: string; type: 'mention'; version: 1 },
+  { mentionName: string; type: "mention"; version: 1 },
   SerializedTextNode
 >;
 
@@ -19,7 +19,7 @@ export class MentionNode extends TextNode {
   __mention: string;
 
   static getType(): string {
-    return 'mention';
+    return "mention";
   }
 
   static clone(node: MentionNode): MentionNode {
@@ -46,21 +46,21 @@ export class MentionNode extends TextNode {
     return {
       ...super.exportJSON(),
       mentionName: this.__mention,
-      type: 'mention',
-      version: 1
+      type: "mention",
+      version: 1,
     };
   }
 
   createDOM(config: EditorConfig): HTMLElement {
     const dom = super.createDOM(config);
-    dom.style.cssText = '';
-    dom.className = '';
+    dom.style.cssText = "";
+    dom.className = "";
 
     return dom;
   }
 
   exportDOM(): DOMExportOutput {
-    const element = document.createElement('span');
+    const element = document.createElement("span");
     element.textContent = this.__text;
 
     return { element };
@@ -69,16 +69,16 @@ export class MentionNode extends TextNode {
   static importDOM(): DOMConversionMap | null {
     return {
       span: (domNode: HTMLElement) => {
-        if (!domNode.hasAttribute('data-lexical-mention')) {
+        if (!domNode.hasAttribute("data-lexical-mention")) {
           return null;
         }
 
         return {
           // eslint-disable-next-line no-use-before-define
           conversion: convertMentionElement,
-          priority: 1
+          priority: 1,
         };
-      }
+      },
     };
   }
 
@@ -89,12 +89,14 @@ export class MentionNode extends TextNode {
 
 export const $createMentionNode = (mentionName: string): MentionNode => {
   const mentionNode = new MentionNode(mentionName);
-  mentionNode.setMode('segmented').toggleDirectionless();
+  mentionNode.setMode("segmented").toggleDirectionless();
 
   return mentionNode;
 };
 
-const convertMentionElement = (domNode: HTMLElement): DOMConversionOutput | null => {
+const convertMentionElement = (
+  domNode: HTMLElement
+): DOMConversionOutput | null => {
   const { textContent } = domNode;
 
   if (textContent !== null) {
@@ -105,6 +107,8 @@ const convertMentionElement = (domNode: HTMLElement): DOMConversionOutput | null
   return null;
 };
 
-export const $isMentionNode = (node: LexicalNode | null | undefined): node is MentionNode => {
+export const $isMentionNode = (
+  node: LexicalNode | null | undefined
+): node is MentionNode => {
   return node instanceof MentionNode;
 };

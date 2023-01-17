@@ -1,16 +1,19 @@
-import UserPreview from '@components/Shared/UserPreview';
-import { UserAddIcon } from '@heroicons/react/solid';
-import formatTime from '@lib/formatTime';
-import { defineMessage } from '@lingui/macro';
-import { Trans } from '@lingui/react';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import type { NewFollowerNotification } from 'lens';
-import type { FC } from 'react';
-import { useAppStore } from 'src/store/app';
+import UserPreview from "@components/Shared/UserPreview";
+import { UserAddIcon } from "@heroicons/react/solid";
+import formatTime from "@lib/formatTime";
+import { defineMessage } from "@lingui/macro";
+import { Trans } from "@lingui/react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import type { NewFollowerNotification } from "lens";
+import type { FC } from "react";
+import { useAppStore } from "src/store/app";
 
-import { NotificationProfileAvatar, NotificationProfileName } from '../Profile';
-import { NotificationWalletProfileAvatar, NotificationWalletProfileName } from '../WalletProfile';
+import { NotificationProfileAvatar, NotificationProfileName } from "../Profile";
+import {
+  NotificationWalletProfileAvatar,
+  NotificationWalletProfileName,
+} from "../WalletProfile";
 
 dayjs.extend(relativeTime);
 
@@ -19,16 +22,17 @@ interface Props {
 }
 
 const messageFollow = defineMessage({
-  id: '<0><1/> followed you</0>'
+  id: "<0><1/> followed you</0>",
 });
 
 const messageSuperFollow = defineMessage({
-  id: '<0><1/> super followed you</0>'
+  id: "<0><1/> super followed you</0>",
 });
 
 const FollowerNotification: FC<Props> = ({ notification }) => {
   const currentProfile = useAppStore((state) => state.currentProfile);
-  const isSuperFollow = currentProfile?.followModule?.__typename === 'FeeFollowModuleSettings';
+  const isSuperFollow =
+    currentProfile?.followModule?.__typename === "FeeFollowModuleSettings";
 
   return (
     <div className="flex justify-between items-start">
@@ -41,7 +45,9 @@ const FollowerNotification: FC<Props> = ({ notification }) => {
           )}
           {notification?.wallet?.defaultProfile ? (
             <UserPreview profile={notification?.wallet?.defaultProfile}>
-              <NotificationProfileAvatar profile={notification?.wallet?.defaultProfile} />
+              <NotificationProfileAvatar
+                profile={notification?.wallet?.defaultProfile}
+              />
             </UserPreview>
           ) : (
             <NotificationWalletProfileAvatar wallet={notification?.wallet} />
@@ -49,19 +55,26 @@ const FollowerNotification: FC<Props> = ({ notification }) => {
         </div>
         <div className="ml-9">
           <Trans
-            id={(isSuperFollow ? messageSuperFollow.id : messageFollow.id) || ''}
+            id={
+              (isSuperFollow ? messageSuperFollow.id : messageFollow.id) || ""
+            }
             components={[
               <span className="text-gray-600 dark:text-gray-400" key="" />,
               notification?.wallet?.defaultProfile ? (
-                <NotificationProfileName profile={notification?.wallet?.defaultProfile} />
+                <NotificationProfileName
+                  profile={notification?.wallet?.defaultProfile}
+                />
               ) : (
                 <NotificationWalletProfileName wallet={notification?.wallet} />
-              )
+              ),
             ]}
           />
         </div>
       </div>
-      <div className="text-gray-400 text-[12px]" title={formatTime(notification?.createdAt)}>
+      <div
+        className="text-gray-400 text-[12px]"
+        title={formatTime(notification?.createdAt)}
+      >
         {dayjs(new Date(notification?.createdAt)).fromNow()}
       </div>
     </div>

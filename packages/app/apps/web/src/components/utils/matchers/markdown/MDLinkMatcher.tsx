@@ -1,9 +1,12 @@
-import type { ChildrenNode } from 'interweave';
-import { Matcher } from 'interweave';
-import { v4 as uuid } from 'uuid';
+import type { ChildrenNode } from "interweave";
+import { Matcher } from "interweave";
+import { v4 as uuid } from "uuid";
 
-const createHyperlink = (href: string | undefined, title: string | undefined) => {
-  const keyId = '_' + href + '-' + uuid().slice(-7);
+const createHyperlink = (
+  href: string | undefined,
+  title: string | undefined
+) => {
+  const keyId = "_" + href + "-" + uuid().slice(-7);
   return (
     <a key={keyId} href={href} target="_blank" rel="noopener noreferrer">
       {title}
@@ -17,13 +20,13 @@ export class MDLinkMatcher extends Matcher {
   }
 
   asTag(): string {
-    return 'a';
+    return "a";
   }
 
   match(value: string) {
     return this.doMatch(value, /\[(.*?)\]\((.*?)\)/u, (matches) => ({
       href: matches[2],
-      title: matches[1]
+      title: matches[1],
     }));
   }
 }

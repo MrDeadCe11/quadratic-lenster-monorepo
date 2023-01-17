@@ -1,9 +1,9 @@
-import { Menu } from '@headlessui/react';
-import { EmojiHappyIcon } from '@heroicons/react/outline';
-import type { FC } from 'react';
+import { Menu } from "@headlessui/react";
+import { EmojiHappyIcon } from "@heroicons/react/outline";
+import type { FC } from "react";
 
-import MenuTransition from '../MenuTransition';
-import List from './List';
+import MenuTransition from "../MenuTransition";
+import List from "./List";
 
 interface Props {
   emoji: string | null;

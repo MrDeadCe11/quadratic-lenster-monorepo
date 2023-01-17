@@ -1,19 +1,19 @@
-import Loader from '@components/Shared/Loader';
-import { Modal } from '@components/UI/Modal';
-import { Tooltip } from '@components/UI/Tooltip';
-import type { IGif } from '@giphy/js-types';
-import { PhotographIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import { t } from '@lingui/macro';
-import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
-import type { FC } from 'react';
-import { useState } from 'react';
-import { usePublicationStore } from 'src/store/publication';
-import { PUBLICATION } from 'src/tracking';
+import Loader from "@components/Shared/Loader";
+import { Modal } from "@components/UI/Modal";
+import { Tooltip } from "@components/UI/Tooltip";
+import type { IGif } from "@giphy/js-types";
+import { PhotographIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import { t } from "@lingui/macro";
+import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+import type { FC } from "react";
+import { useState } from "react";
+import { usePublicationStore } from "src/store/publication";
+import { PUBLICATION } from "src/tracking";
 
-const GifSelector = dynamic(() => import('./GifSelector'), {
-  loading: () => <Loader message={t`Loading GIFs`} />
+const GifSelector = dynamic(() => import("./GifSelector"), {
+  loading: () => <Loader message={t`Loading GIFs`} />,
 });
 
 interface Props {
@@ -53,7 +53,10 @@ const Giphy: FC<Props> = ({ setGifAttachment }) => {
         show={showModal}
         onClose={() => setShowModal(false)}
       >
-        <GifSelector setShowModal={setShowModal} setGifAttachment={setGifAttachment} />
+        <GifSelector
+          setShowModal={setShowModal}
+          setGifAttachment={setGifAttachment}
+        />
       </Modal>
     </>
   );

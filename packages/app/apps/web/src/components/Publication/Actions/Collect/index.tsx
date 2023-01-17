@@ -1,25 +1,25 @@
-import Loader from '@components/Shared/Loader';
-import { Modal } from '@components/UI/Modal';
-import { Tooltip } from '@components/UI/Tooltip';
-import GetModuleIcon from '@components/utils/GetModuleIcon';
-import type { LensterPublication } from '@generated/types';
-import { CollectionIcon } from '@heroicons/react/outline';
-import { CollectionIcon as CollectionIconSolid } from '@heroicons/react/solid';
-import { Analytics } from '@lib/analytics';
-import { getModule } from '@lib/getModule';
-import humanize from '@lib/humanize';
-import nFormatter from '@lib/nFormatter';
-import { t } from '@lingui/macro';
-import { motion } from 'framer-motion';
-import type { ElectedMirror } from 'lens';
-import { CollectModules } from 'lens';
-import dynamic from 'next/dynamic';
-import type { FC } from 'react';
-import { useEffect, useState } from 'react';
-import { PUBLICATION } from 'src/tracking';
+import Loader from "@components/Shared/Loader";
+import { Modal } from "@components/UI/Modal";
+import { Tooltip } from "@components/UI/Tooltip";
+import GetModuleIcon from "@components/utils/GetModuleIcon";
+import type { LensterPublication } from "@generated/types";
+import { CollectionIcon } from "@heroicons/react/outline";
+import { CollectionIcon as CollectionIconSolid } from "@heroicons/react/solid";
+import { Analytics } from "@lib/analytics";
+import { getModule } from "@lib/getModule";
+import humanize from "@lib/humanize";
+import nFormatter from "@lib/nFormatter";
+import { t } from "@lingui/macro";
+import { motion } from "framer-motion";
+import type { ElectedMirror } from "lens";
+import { CollectModules } from "lens";
+import dynamic from "next/dynamic";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
+import { PUBLICATION } from "src/tracking";
 
-const CollectModule = dynamic(() => import('./CollectModule'), {
-  loading: () => <Loader message={t`Loading collect`} />
+const CollectModule = dynamic(() => import("./CollectModule"), {
+  loading: () => <Loader message={t`Loading collect`} />,
 });
 
 interface Props {
@@ -28,25 +28,38 @@ interface Props {
   electedMirror?: ElectedMirror;
 }
 
-const Collect: FC<Props> = ({ publication, isFullPublication, electedMirror }) => {
+const Collect: FC<Props> = ({
+  publication,
+  isFullPublication,
+  electedMirror,
+}) => {
   const [count, setCount] = useState(0);
   const [showCollectModal, setShowCollectModal] = useState(false);
-  const isFreeCollect = publication?.collectModule.__typename === 'FreeCollectModuleSettings';
-  const isUnknownCollect = publication?.collectModule.__typename === 'UnknownCollectModuleSettings';
-  const isMirror = publication.__typename === 'Mirror';
-  const hasCollected = isMirror ? publication?.mirrorOf?.hasCollectedByMe : publication?.hasCollectedByMe;
+  const isFreeCollect =
+    publication?.collectModule.__typename === "FreeCollectModuleSettings";
+  const isUnknownCollect =
+    publication?.collectModule.__typename === "UnknownCollectModuleSettings";
+  const isMirror = publication.__typename === "Mirror";
+  const hasCollected = isMirror
+    ? publication?.mirrorOf?.hasCollectedByMe
+    : publication?.hasCollectedByMe;
 
   useEffect(() => {
-    if (publication?.mirrorOf?.stats?.totalAmountOfCollects || publication?.stats?.totalAmountOfCollects) {
+    if (
+      publication?.mirrorOf?.stats?.totalAmountOfCollects ||
+      publication?.stats?.totalAmountOfCollects
+    ) {
       setCount(
-        publication.__typename === 'Mirror'
+        publication.__typename === "Mirror"
           ? publication?.mirrorOf?.stats?.totalAmountOfCollects
           : publication?.stats?.totalAmountOfCollects
       );
     }
   }, [publication]);
 
-  const iconClassName = isFullPublication ? 'w-[17px] sm:w-[20px]' : 'w-[15px] sm:w-[18px]';
+  const iconClassName = isFullPublication
+    ? "w-[17px] sm:w-[20px]"
+    : "w-[15px] sm:w-[18px]";
 
   return (
     <>
@@ -62,7 +75,7 @@ const Collect: FC<Props> = ({ publication, isFullPublication, electedMirror }) =
           <span className="p-1.5 rounded-full hover:bg-red-300 hover:bg-opacity-20">
             <Tooltip
               placement="top"
-              content={count > 0 ? `${humanize(count)} Collects` : 'Collect'}
+              content={count > 0 ? `${humanize(count)} Collects` : "Collect"}
               withDelay
             >
               {hasCollected ? (
@@ -88,7 +101,11 @@ const Collect: FC<Props> = ({ publication, isFullPublication, electedMirror }) =
         icon={
           <div className="text-brand">
             <GetModuleIcon
-              module={isFreeCollect ? CollectModules.FreeCollectModule : publication?.collectModule?.type}
+              module={
+                isFreeCollect
+                  ? CollectModules.FreeCollectModule
+                  : publication?.collectModule?.type
+              }
               size={5}
             />
           </div>

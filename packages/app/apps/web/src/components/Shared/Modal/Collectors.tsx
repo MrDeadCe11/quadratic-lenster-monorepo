@@ -1,17 +1,17 @@
-import UserProfile from '@components/Shared/UserProfile';
-import WalletProfile from '@components/Shared/WalletProfile';
-import { EmptyState } from '@components/UI/EmptyState';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import InfiniteLoader from '@components/UI/InfiniteLoader';
-import { CollectionIcon } from '@heroicons/react/outline';
-import { t } from '@lingui/macro';
-import { SCROLL_THRESHOLD } from 'data/constants';
-import type { Profile, Wallet } from 'lens';
-import { useCollectorsQuery } from 'lens';
-import type { FC } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import UserProfile from "@components/Shared/UserProfile";
+import WalletProfile from "@components/Shared/WalletProfile";
+import { EmptyState } from "@components/UI/EmptyState";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import InfiniteLoader from "@components/UI/InfiniteLoader";
+import { CollectionIcon } from "@heroicons/react/outline";
+import { t } from "@lingui/macro";
+import { SCROLL_THRESHOLD } from "data/constants";
+import type { Profile, Wallet } from "lens";
+import { useCollectorsQuery } from "lens";
+import type { FC } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-import Loader from '../Loader';
+import Loader from "../Loader";
 
 interface Props {
   publicationId: string;
@@ -23,7 +23,7 @@ const Collectors: FC<Props> = ({ publicationId }) => {
 
   const { data, loading, error, fetchMore } = useCollectorsQuery({
     variables: { request },
-    skip: !publicationId
+    skip: !publicationId,
   });
 
   const profiles = data?.whoCollectedPublication?.items;
@@ -32,7 +32,7 @@ const Collectors: FC<Props> = ({ publicationId }) => {
 
   const loadMore = async () => {
     await fetchMore({
-      variables: { request: { ...request, cursor: pageInfo?.next } }
+      variables: { request: { ...request, cursor: pageInfo?.next } },
     });
   };
 
@@ -54,7 +54,11 @@ const Collectors: FC<Props> = ({ publicationId }) => {
 
   return (
     <div className="overflow-y-auto max-h-[80vh]" id="scrollableDiv">
-      <ErrorMessage className="m-5" title={t`Failed to load collectors`} error={error} />
+      <ErrorMessage
+        className="m-5"
+        title={t`Failed to load collectors`}
+        error={error}
+      />
       <InfiniteScroll
         dataLength={profiles?.length ?? 0}
         scrollThreshold={SCROLL_THRESHOLD}

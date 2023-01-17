@@ -1,6 +1,6 @@
-import type { FC } from 'react';
+import type { FC } from "react";
 
-import { Spinner } from './Spinner';
+import { Spinner } from "./Spinner";
 
 interface Props {
   message?: string;

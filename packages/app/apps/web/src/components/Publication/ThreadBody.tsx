@@ -1,13 +1,13 @@
-import type { LensterPublication } from '@generated/types';
-import { Analytics } from '@lib/analytics';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import { PUBLICATION } from 'src/tracking';
+import type { LensterPublication } from "@generated/types";
+import { Analytics } from "@lib/analytics";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import { PUBLICATION } from "src/tracking";
 
-import PublicationActions from './Actions';
-import HiddenPublication from './HiddenPublication';
-import PublicationBody from './PublicationBody';
-import PublicationHeader from './PublicationHeader';
+import PublicationActions from "./Actions";
+import HiddenPublication from "./HiddenPublication";
+import PublicationBody from "./PublicationBody";
+import PublicationHeader from "./PublicationHeader";
 
 interface Props {
   publication: LensterPublication;

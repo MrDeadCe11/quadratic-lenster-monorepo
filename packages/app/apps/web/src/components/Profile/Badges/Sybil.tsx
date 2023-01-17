@@ -1,9 +1,9 @@
-import { Tooltip } from '@components/UI/Tooltip';
-import { CheckCircleIcon } from '@heroicons/react/solid';
-import { Trans } from '@lingui/macro';
-import { STATIC_IMAGES_URL } from 'data/constants';
-import type { Profile } from 'lens';
-import type { FC } from 'react';
+import { Tooltip } from "@components/UI/Tooltip";
+import { CheckCircleIcon } from "@heroicons/react/solid";
+import { Trans } from "@lingui/macro";
+import { STATIC_IMAGES_URL } from "data/constants";
+import type { Profile } from "lens";
+import type { FC } from "react";
 
 interface Props {
   profile: Profile;
@@ -25,7 +25,10 @@ const Sybil: FC<Props> = ({ profile }) => {
             <CheckCircleIcon className="h-4 w-4" />
           </span>
           <span>
-            Twitter: <b>@{profile?.onChainIdentity?.sybilDotOrg?.source?.twitter?.handle}</b>
+            Twitter:{" "}
+            <b>
+              @{profile?.onChainIdentity?.sybilDotOrg?.source?.twitter?.handle}
+            </b>
           </span>
         </span>
       }

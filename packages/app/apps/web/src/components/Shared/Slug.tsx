@@ -1,5 +1,5 @@
-import clsx from 'clsx';
-import type { FC } from 'react';
+import clsx from "clsx";
+import type { FC } from "react";
 
 interface Props {
   slug: string;
@@ -7,11 +7,11 @@ interface Props {
   className?: string;
 }
 
-const Slug: FC<Props> = ({ slug, prefix, className = '' }) => {
+const Slug: FC<Props> = ({ slug, prefix, className = "" }) => {
   return (
     <span
       className={clsx(
-        'text-transparent bg-clip-text bg-gradient-to-r from-brand-600 dark:from-brand-400 to-pink-600 dark:to-pink-400',
+        "text-transparent bg-clip-text bg-gradient-to-r from-brand-600 dark:from-brand-400 to-pink-600 dark:to-pink-400",
         className
       )}
     >

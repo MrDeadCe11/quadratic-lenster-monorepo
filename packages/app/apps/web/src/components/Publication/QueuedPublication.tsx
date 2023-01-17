@@ -1,20 +1,20 @@
-import { useApolloClient } from '@apollo/client';
-import Attachments from '@components/Shared/Attachments';
-import IFramely from '@components/Shared/IFramely';
-import Markup from '@components/Shared/Markup';
-import UserProfile from '@components/Shared/UserProfile';
-import { Tooltip } from '@components/UI/Tooltip';
-import getURLs from '@lib/getURLs';
-import type { Profile } from 'lens';
+import { useApolloClient } from "@apollo/client";
+import Attachments from "@components/Shared/Attachments";
+import IFramely from "@components/Shared/IFramely";
+import Markup from "@components/Shared/Markup";
+import UserProfile from "@components/Shared/UserProfile";
+import { Tooltip } from "@components/UI/Tooltip";
+import getURLs from "@lib/getURLs";
+import type { Profile } from "lens";
 import {
   PublicationDocument,
   PublicationMetadataStatusType,
   useHasTxHashBeenIndexedQuery,
-  usePublicationLazyQuery
-} from 'lens';
-import type { FC } from 'react';
-import { useAppStore } from 'src/store/app';
-import { useTransactionPersistStore } from 'src/store/transaction';
+  usePublicationLazyQuery,
+} from "lens";
+import type { FC } from "react";
+import { useAppStore } from "src/store/app";
+import { useTransactionPersistStore } from "src/store/transaction";
 
 interface Props {
   txn: any;
@@ -44,25 +44,25 @@ const QueuedPublication: FC<Props> = ({ txn }) => {
             publications() {
               cache.writeQuery({
                 data: data?.publication as any,
-                query: PublicationDocument
+                query: PublicationDocument,
               });
-            }
-          }
+            },
+          },
         });
         removeTxn();
       }
-    }
+    },
   });
 
   useHasTxHashBeenIndexedQuery({
     variables: { request: { txHash, txId } },
     pollInterval: 1000,
     onCompleted: (data) => {
-      if (data.hasTxHashBeenIndexed.__typename === 'TransactionError') {
+      if (data.hasTxHashBeenIndexed.__typename === "TransactionError") {
         return removeTxn();
       }
 
-      if (data.hasTxHashBeenIndexed.__typename === 'TransactionIndexedResult') {
+      if (data.hasTxHashBeenIndexed.__typename === "TransactionIndexedResult") {
         const status = data.hasTxHashBeenIndexed.metadataStatus?.status;
 
         if (
@@ -76,13 +76,15 @@ const QueuedPublication: FC<Props> = ({ txn }) => {
           getPublication({
             variables: {
               request: { txHash: data.hasTxHashBeenIndexed.txHash },
-              reactionRequest: currentProfile ? { profileId: currentProfile?.id } : null,
-              profileId: currentProfile?.id ?? null
-            }
+              reactionRequest: currentProfile
+                ? { profileId: currentProfile?.id }
+                : null,
+              profileId: currentProfile?.id ?? null,
+            },
           });
         }
       }
-    }
+    },
   });
 
   return (
@@ -100,9 +102,17 @@ const QueuedPublication: FC<Props> = ({ txn }) => {
           <Markup>{txn?.content}</Markup>
         </div>
         {txn?.attachments?.length > 0 ? (
-          <Attachments attachments={txn?.attachments} txn={txn} isNew hideDelete />
+          <Attachments
+            attachments={txn?.attachments}
+            txn={txn}
+            isNew
+            hideDelete
+          />
         ) : (
-          txn?.attachments && getURLs(txn?.content)?.length > 0 && <IFramely url={getURLs(txn?.content)[0]} />
+          txn?.attachments &&
+          getURLs(txn?.content)?.length > 0 && (
+            <IFramely url={getURLs(txn?.content)[0]} />
+          )
         )}
       </div>
     </article>

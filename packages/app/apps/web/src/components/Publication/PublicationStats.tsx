@@ -1,15 +1,19 @@
-import Collectors from '@components/Shared/Modal/Collectors';
-import Likes from '@components/Shared/Modal/Likes';
-import Mirrors from '@components/Shared/Modal/Mirrors';
-import { Modal } from '@components/UI/Modal';
-import type { LensterPublication } from '@generated/types';
-import { CollectionIcon, HeartIcon, SwitchHorizontalIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import nFormatter from '@lib/nFormatter';
-import { t } from '@lingui/macro';
-import type { FC } from 'react';
-import { useState } from 'react';
-import { PUBLICATION } from 'src/tracking';
+import Collectors from "@components/Shared/Modal/Collectors";
+import Likes from "@components/Shared/Modal/Likes";
+import Mirrors from "@components/Shared/Modal/Mirrors";
+import { Modal } from "@components/UI/Modal";
+import type { LensterPublication } from "@generated/types";
+import {
+  CollectionIcon,
+  HeartIcon,
+  SwitchHorizontalIcon,
+} from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import nFormatter from "@lib/nFormatter";
+import { t } from "@lingui/macro";
+import type { FC } from "react";
+import { useState } from "react";
+import { PUBLICATION } from "src/tracking";
 
 interface Props {
   publication: LensterPublication;
@@ -20,7 +24,7 @@ const PublicationStats: FC<Props> = ({ publication }) => {
   const [showLikesModal, setShowLikesModal] = useState(false);
   const [showCollectorsModal, setShowCollectorsModal] = useState(false);
 
-  const isMirror = publication.__typename === 'Mirror';
+  const isMirror = publication.__typename === "Mirror";
   const mirrorCount = isMirror
     ? publication?.mirrorOf?.stats?.totalAmountOfMirrors
     : publication?.stats?.totalAmountOfMirrors;
@@ -43,7 +47,10 @@ const PublicationStats: FC<Props> = ({ publication }) => {
               Analytics.track(PUBLICATION.STATS.MIRRORED_BY);
             }}
           >
-            <b className="text-black dark:text-white">{nFormatter(mirrorCount)}</b> Mirrors
+            <b className="text-black dark:text-white">
+              {nFormatter(mirrorCount)}
+            </b>{" "}
+            Mirrors
           </button>
           <Modal
             title={t`Mirrored by`}
@@ -64,7 +71,10 @@ const PublicationStats: FC<Props> = ({ publication }) => {
               Analytics.track(PUBLICATION.STATS.LIKED_BY);
             }}
           >
-            <b className="text-black dark:text-white">{nFormatter(reactionCount)}</b> Likes
+            <b className="text-black dark:text-white">
+              {nFormatter(reactionCount)}
+            </b>{" "}
+            Likes
           </button>
           <Modal
             title={t`Liked by`}
@@ -85,7 +95,10 @@ const PublicationStats: FC<Props> = ({ publication }) => {
               Analytics.track(PUBLICATION.STATS.COLLECTED_BY);
             }}
           >
-            <b className="text-black dark:text-white">{nFormatter(collectCount)}</b> Collects
+            <b className="text-black dark:text-white">
+              {nFormatter(collectCount)}
+            </b>{" "}
+            Collects
           </button>
           <Modal
             title={t`Collected by`}

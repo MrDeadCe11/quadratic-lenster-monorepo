@@ -1,16 +1,20 @@
-import UserProfilesShimmer from '@components/Shared/Shimmer/UserProfilesShimmer';
-import UserProfile from '@components/Shared/UserProfile';
-import { Card } from '@components/UI/Card';
-import { EmptyState } from '@components/UI/EmptyState';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import InfiniteLoader from '@components/UI/InfiniteLoader';
-import { UsersIcon } from '@heroicons/react/outline';
-import { t, Trans } from '@lingui/macro';
-import { SCROLL_THRESHOLD } from 'data/constants';
-import type { Profile, ProfileSearchResult } from 'lens';
-import { CustomFiltersTypes, SearchRequestTypes, useSearchProfilesQuery } from 'lens';
-import type { FC } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import UserProfilesShimmer from "@components/Shared/Shimmer/UserProfilesShimmer";
+import UserProfile from "@components/Shared/UserProfile";
+import { Card } from "@components/UI/Card";
+import { EmptyState } from "@components/UI/EmptyState";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import InfiniteLoader from "@components/UI/InfiniteLoader";
+import { UsersIcon } from "@heroicons/react/outline";
+import { t, Trans } from "@lingui/macro";
+import { SCROLL_THRESHOLD } from "data/constants";
+import type { Profile, ProfileSearchResult } from "lens";
+import {
+  CustomFiltersTypes,
+  SearchRequestTypes,
+  useSearchProfilesQuery,
+} from "lens";
+import type { FC } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 interface Props {
   query: string | string[];
@@ -22,12 +26,12 @@ const Profiles: FC<Props> = ({ query }) => {
     query,
     type: SearchRequestTypes.Profile,
     customFilters: [CustomFiltersTypes.Gardeners],
-    limit: 10
+    limit: 10,
   };
 
   const { data, loading, error, fetchMore } = useSearchProfilesQuery({
     variables: { request },
-    skip: !query
+    skip: !query,
   });
 
   const search = data?.search as ProfileSearchResult;
@@ -37,7 +41,7 @@ const Profiles: FC<Props> = ({ query }) => {
 
   const loadMore = async () => {
     await fetchMore({
-      variables: { request: { ...request, cursor: pageInfo?.next } }
+      variables: { request: { ...request, cursor: pageInfo?.next } },
     });
   };
 

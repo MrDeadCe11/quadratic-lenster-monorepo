@@ -1,18 +1,18 @@
-import Loader from '@components/Shared/Loader';
-import { Modal } from '@components/UI/Modal';
-import { Tooltip } from '@components/UI/Tooltip';
-import useStaffMode from '@components/utils/hooks/useStaffMode';
-import type { LensterPublication } from '@generated/types';
-import { ChartBarIcon } from '@heroicons/react/outline';
-import { t } from '@lingui/macro';
-import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
-import type { FC } from 'react';
-import { useState } from 'react';
-import { useAppStore } from 'src/store/app';
+import Loader from "@components/Shared/Loader";
+import { Modal } from "@components/UI/Modal";
+import { Tooltip } from "@components/UI/Tooltip";
+import useStaffMode from "@components/utils/hooks/useStaffMode";
+import type { LensterPublication } from "@generated/types";
+import { ChartBarIcon } from "@heroicons/react/outline";
+import { t } from "@lingui/macro";
+import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+import type { FC } from "react";
+import { useState } from "react";
+import { useAppStore } from "src/store/app";
 
-const Stats = dynamic(() => import('./Stats'), {
-  loading: () => <Loader message={t`Loading analytics`} />
+const Stats = dynamic(() => import("./Stats"), {
+  loading: () => <Loader message={t`Loading analytics`} />,
 });
 
 interface Props {
@@ -25,14 +25,16 @@ const Analytics: FC<Props> = ({ publication, isFullPublication }) => {
   const [showCollectModal, setShowCollectModal] = useState(false);
   const { allowed: staffMode } = useStaffMode();
 
-  const profileIdFromPublication = publication?.id.split('-')[0];
+  const profileIdFromPublication = publication?.id.split("-")[0];
   const showAnalytics = currentProfile?.id === profileIdFromPublication;
 
-  if (!staffMode && (!showAnalytics || publication.__typename === 'Mirror')) {
+  if (!staffMode && (!showAnalytics || publication.__typename === "Mirror")) {
     return null;
   }
 
-  const iconClassName = isFullPublication ? 'w-[17px] sm:w-[20px]' : 'w-[15px] sm:w-[18px]';
+  const iconClassName = isFullPublication
+    ? "w-[17px] sm:w-[20px]"
+    : "w-[15px] sm:w-[18px]";
 
   return (
     <>

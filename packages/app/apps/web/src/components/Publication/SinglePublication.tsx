@@ -1,17 +1,17 @@
-import EventType from '@components/Home/Timeline/EventType';
-import type { LensterPublication } from '@generated/types';
-import { Analytics } from '@lib/analytics';
-import type { ElectedMirror, FeedItem } from 'lens';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import { PUBLICATION } from 'src/tracking';
+import EventType from "@components/Home/Timeline/EventType";
+import type { LensterPublication } from "@generated/types";
+import { Analytics } from "@lib/analytics";
+import type { ElectedMirror, FeedItem } from "lens";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import { PUBLICATION } from "src/tracking";
 
-import PublicationActions from './Actions';
-import ModAction from './Actions/ModAction';
-import HiddenPublication from './HiddenPublication';
-import PublicationBody from './PublicationBody';
-import PublicationHeader from './PublicationHeader';
-import PublicationType from './Type';
+import PublicationActions from "./Actions";
+import ModAction from "./Actions/ModAction";
+import HiddenPublication from "./HiddenPublication";
+import PublicationBody from "./PublicationBody";
+import PublicationHeader from "./PublicationHeader";
+import PublicationType from "./Type";
 
 interface Props {
   publication: LensterPublication;
@@ -28,11 +28,15 @@ const SinglePublication: FC<Props> = ({
   showType = true,
   showActions = true,
   showModActions = false,
-  showThread = true
+  showThread = true,
 }) => {
   const { push } = useRouter();
   const firstComment = feedItem?.comments && feedItem.comments[0];
-  const rootPublication = feedItem ? (firstComment ? firstComment : feedItem?.root) : publication;
+  const rootPublication = feedItem
+    ? firstComment
+      ? firstComment
+      : feedItem?.root
+    : publication;
 
   return (
     <article
@@ -46,9 +50,17 @@ const SinglePublication: FC<Props> = ({
       }}
     >
       {feedItem ? (
-        <EventType feedItem={feedItem} showType={showType} showThread={showThread} />
+        <EventType
+          feedItem={feedItem}
+          showType={showType}
+          showThread={showThread}
+        />
       ) : (
-        <PublicationType publication={publication} showType={showType} showThread={showThread} />
+        <PublicationType
+          publication={publication}
+          showType={showType}
+          showThread={showThread}
+        />
       )}
       <PublicationHeader
         className="pb-4"
@@ -60,14 +72,18 @@ const SinglePublication: FC<Props> = ({
           <HiddenPublication type={publication.__typename} />
         ) : (
           <>
-            <PublicationBody publication={rootPublication as LensterPublication} />
+            <PublicationBody
+              publication={rootPublication as LensterPublication}
+            />
             {showActions && (
               <PublicationActions
                 publication={rootPublication as LensterPublication}
                 electedMirror={feedItem?.electedMirror as ElectedMirror}
               />
             )}
-            {showModActions && <ModAction publication={rootPublication as LensterPublication} />}
+            {showModActions && (
+              <ModAction publication={rootPublication as LensterPublication} />
+            )}
           </>
         )}
       </div>

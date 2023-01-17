@@ -1,10 +1,10 @@
-import useStaffMode from '@components/utils/hooks/useStaffMode';
-import { Analytics } from '@lib/analytics';
-import { Trans } from '@lingui/macro';
-import { APP_NAME } from 'data/constants';
-import Link from 'next/link';
-import type { FC } from 'react';
-import { FOOTER } from 'src/tracking';
+import useStaffMode from "@components/utils/hooks/useStaffMode";
+import { Analytics } from "@lib/analytics";
+import { Trans } from "@lingui/macro";
+import { APP_NAME } from "data/constants";
+import Link from "next/link";
+import type { FC } from "react";
+import { FOOTER } from "src/tracking";
 
 const Footer: FC = () => {
   const { allowed: staffMode } = useStaffMode();
@@ -12,7 +12,7 @@ const Footer: FC = () => {
   return (
     <footer
       className={`mt-4 leading-7 text-sm sticky flex flex-wrap px-3 lg:px-0 gap-x-[12px] ${
-        staffMode ? 'top-28' : 'top-20'
+        staffMode ? "top-28" : "top-20"
       }`}
       data-test="footer"
     >

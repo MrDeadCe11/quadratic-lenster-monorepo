@@ -1,7 +1,7 @@
-import type { LensterPublication } from '@generated/types';
-import type { FC } from 'react';
+import type { LensterPublication } from "@generated/types";
+import type { FC } from "react";
 
-import ThreadBody from '../ThreadBody';
+import ThreadBody from "../ThreadBody";
 
 interface Props {
   publication: LensterPublication;

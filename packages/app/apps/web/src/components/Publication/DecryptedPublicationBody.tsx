@@ -1,35 +1,38 @@
-import IFramely from '@components/Shared/IFramely';
-import Markup from '@components/Shared/Markup';
-import { Card } from '@components/UI/Card';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import { Spinner } from '@components/UI/Spinner';
-import { Tooltip } from '@components/UI/Tooltip';
-import useNFT from '@components/utils/hooks/useNFT';
-import type { LensterPublication } from '@generated/types';
+import IFramely from "@components/Shared/IFramely";
+import Markup from "@components/Shared/Markup";
+import { Card } from "@components/UI/Card";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import { Spinner } from "@components/UI/Spinner";
+import { Tooltip } from "@components/UI/Tooltip";
+import useNFT from "@components/utils/hooks/useNFT";
+import type { LensterPublication } from "@generated/types";
 import {
   CollectionIcon,
   DatabaseIcon,
   EyeIcon,
   FingerPrintIcon,
   PhotographIcon,
-  UserAddIcon
-} from '@heroicons/react/outline';
-import { LockClosedIcon } from '@heroicons/react/solid';
-import { LensGatedSDK } from '@lens-protocol/sdk-gated';
-import type { Erc20OwnershipOutput, NftOwnershipOutput } from '@lens-protocol/sdk-gated/dist/graphql/types';
-import formatHandle from '@lib/formatHandle';
-import getIPFSLink from '@lib/getIPFSLink';
-import getURLs from '@lib/getURLs';
-import axios from 'axios';
-import clsx from 'clsx';
-import { LIT_PROTOCOL_ENVIRONMENT } from 'data/constants';
-import type { PublicationMetadataV2Input } from 'lens';
-import { DecryptFailReason } from 'lens';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import type { FC, ReactNode } from 'react';
-import { useState } from 'react';
-import { useProvider, useSigner, useToken } from 'wagmi';
+  UserAddIcon,
+} from "@heroicons/react/outline";
+import { LockClosedIcon } from "@heroicons/react/solid";
+import { LensGatedSDK } from "@lens-protocol/sdk-gated";
+import type {
+  Erc20OwnershipOutput,
+  NftOwnershipOutput,
+} from "@lens-protocol/sdk-gated/dist/graphql/types";
+import formatHandle from "@lib/formatHandle";
+import getIPFSLink from "@lib/getIPFSLink";
+import getURLs from "@lib/getURLs";
+import axios from "axios";
+import clsx from "clsx";
+import { LIT_PROTOCOL_ENVIRONMENT } from "data/constants";
+import type { PublicationMetadataV2Input } from "lens";
+import { DecryptFailReason } from "lens";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import type { FC, ReactNode } from "react";
+import { useState } from "react";
+import { useProvider, useSigner, useToken } from "wagmi";
 
 interface DecryptMessageProps {
   icon: ReactNode;
@@ -57,23 +60,27 @@ const DecryptedPublicationBody: FC<Props> = ({ encryptedPublication }) => {
 
   const canDecrypt = encryptedPublication?.canDecrypt?.result;
   const { reasons } = encryptedPublication.canDecrypt;
-  const showMore = encryptedPublication?.metadata?.content?.length > 450 && pathname !== '/posts/[id]';
+  const showMore =
+    encryptedPublication?.metadata?.content?.length > 450 &&
+    pathname !== "/posts/[id]";
 
   const getCondition = (key: string) => {
-    const criteria: any = encryptedPublication.metadata.encryptionParams?.accessCondition.or?.criteria;
+    const criteria: any =
+      encryptedPublication.metadata.encryptionParams?.accessCondition.or
+        ?.criteria;
 
     const getCriteria = (key: string) => {
       return criteria.map((item: any) => item[key]).find((item: any) => item);
     };
 
-    if (getCriteria('and')?.criteria) {
-      return getCriteria('and')
+    if (getCriteria("and")?.criteria) {
+      return getCriteria("and")
         .criteria.map((item: any) => item[key])
         .find((item: any) => item);
     }
 
-    if (getCriteria('or')?.criteria) {
-      return getCriteria('or')
+    if (getCriteria("or")?.criteria) {
+      return getCriteria("or")
         .criteria.map((item: any) => item[key])
         .find((item: any) => item);
     }
@@ -82,36 +89,45 @@ const DecryptedPublicationBody: FC<Props> = ({ encryptedPublication }) => {
   };
 
   // Conditions
-  const tokenCondition: Erc20OwnershipOutput = getCondition('token');
-  const nftCondition: NftOwnershipOutput = getCondition('nft');
+  const tokenCondition: Erc20OwnershipOutput = getCondition("token");
+  const nftCondition: NftOwnershipOutput = getCondition("nft");
 
   // Status
   // Collect checks - https://docs.lens.xyz/docs/gated#collected-publication
-  const hasNotCollectedPublication = reasons?.includes(DecryptFailReason.HasNotCollectedPublication);
+  const hasNotCollectedPublication = reasons?.includes(
+    DecryptFailReason.HasNotCollectedPublication
+  );
   const collectNotFinalisedOnChain =
-    !hasNotCollectedPublication && reasons?.includes(DecryptFailReason.CollectNotFinalisedOnChain);
+    !hasNotCollectedPublication &&
+    reasons?.includes(DecryptFailReason.CollectNotFinalisedOnChain);
   // Follow checks - https://docs.lens.xyz/docs/gated#profile-follow
-  const doesNotFollowProfile = reasons?.includes(DecryptFailReason.DoesNotFollowProfile);
+  const doesNotFollowProfile = reasons?.includes(
+    DecryptFailReason.DoesNotFollowProfile
+  );
   const followNotFinalisedOnChain =
-    !doesNotFollowProfile && reasons?.includes(DecryptFailReason.FollowNotFinalisedOnChain);
+    !doesNotFollowProfile &&
+    reasons?.includes(DecryptFailReason.FollowNotFinalisedOnChain);
   // Token check - https://docs.lens.xyz/docs/gated#erc20-token-ownership
-  const unauthorizedBalance = reasons?.includes(DecryptFailReason.UnauthorizedBalance);
+  const unauthorizedBalance = reasons?.includes(
+    DecryptFailReason.UnauthorizedBalance
+  );
   // NFT check - https://docs.lens.xyz/docs/gated#erc20-token-ownership
   const doesNotOwnNft = reasons?.includes(DecryptFailReason.DoesNotOwnNft);
 
   // Style
-  const cardClasses = 'text-sm rounded-xl w-fit p-9 shadow-sm bg-gradient-to-tr from-brand-400 to-brand-600';
+  const cardClasses =
+    "text-sm rounded-xl w-fit p-9 shadow-sm bg-gradient-to-tr from-brand-400 to-brand-600";
 
   const { data: tokenData } = useToken({
     address: tokenCondition?.contractAddress,
     chainId: tokenCondition?.chainID,
-    enabled: Boolean(tokenCondition)
+    enabled: Boolean(tokenCondition),
   });
 
   const { data: nftData } = useNFT({
     address: nftCondition?.contractAddress,
     chainId: nftCondition?.chainID,
-    enabled: Boolean(nftCondition)
+    enabled: Boolean(nftCondition),
   });
 
   const getDecryptedData = async () => {
@@ -122,7 +138,11 @@ const DecryptedPublicationBody: FC<Props> = ({ encryptedPublication }) => {
     setIsDecrypting(true);
     const contentUri = getIPFSLink(encryptedPublication?.onChainContentURI);
     const { data } = await axios.get(contentUri);
-    const sdk = await LensGatedSDK.create({ provider, signer, env: LIT_PROTOCOL_ENVIRONMENT as any });
+    const sdk = await LensGatedSDK.create({
+      provider,
+      signer,
+      env: LIT_PROTOCOL_ENVIRONMENT as any,
+    });
     const { decrypted, error } = await sdk.gated.decryptMetadata(data);
     setDecryptedData(decrypted);
     setDecryptError(error);
@@ -131,20 +151,28 @@ const DecryptedPublicationBody: FC<Props> = ({ encryptedPublication }) => {
 
   if (!canDecrypt) {
     return (
-      <Card className={clsx(cardClasses, 'cursor-text')} onClick={(event) => event.stopPropagation()}>
+      <Card
+        className={clsx(cardClasses, "cursor-text")}
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className="font-bold flex items-center space-x-2">
           <LockClosedIcon className="h-5 w-5 text-green-300" />
-          <span className="text-white font-black text-base">To view this...</span>
+          <span className="text-white font-black text-base">
+            To view this...
+          </span>
         </div>
         <div className="pt-3.5 space-y-2 text-white">
           {/* Collect checks */}
           {hasNotCollectedPublication && (
             <DecryptMessage icon={<CollectionIcon className="h-4 w-4" />}>
-              Collect this <b className="lowercase">{encryptedPublication?.__typename}</b>
+              Collect this{" "}
+              <b className="lowercase">{encryptedPublication?.__typename}</b>
             </DecryptMessage>
           )}
           {collectNotFinalisedOnChain && (
-            <DecryptMessage icon={<CollectionIcon className="animate-pulse h-4 w-4" />}>
+            <DecryptMessage
+              icon={<CollectionIcon className="animate-pulse h-4 w-4" />}
+            >
               Collect finalizing on chain...
             </DecryptMessage>
           )}
@@ -152,14 +180,21 @@ const DecryptedPublicationBody: FC<Props> = ({ encryptedPublication }) => {
           {/* Follow checks */}
           {doesNotFollowProfile && (
             <DecryptMessage icon={<UserAddIcon className="h-4 w-4" />}>
-              Follow{' '}
-              <Link href={`/u/${formatHandle(encryptedPublication?.profile?.handle)}`} className="font-bold">
+              Follow{" "}
+              <Link
+                href={`/u/${formatHandle(
+                  encryptedPublication?.profile?.handle
+                )}`}
+                className="font-bold"
+              >
                 @{formatHandle(encryptedPublication?.profile?.handle)}
               </Link>
             </DecryptMessage>
           )}
           {followNotFinalisedOnChain && (
-            <DecryptMessage icon={<UserAddIcon className="animate-pulse h-4 w-4" />}>
+            <DecryptMessage
+              icon={<UserAddIcon className="animate-pulse h-4 w-4" />}
+            >
               Follow finalizing on chain...
             </DecryptMessage>
           )}
@@ -167,7 +202,7 @@ const DecryptedPublicationBody: FC<Props> = ({ encryptedPublication }) => {
           {/* Token check */}
           {unauthorizedBalance && (
             <DecryptMessage icon={<DatabaseIcon className="h-4 w-4" />}>
-              You need{' '}
+              You need{" "}
               <b>
                 {tokenCondition.amount} {tokenData?.symbol} to unlock
               </b>
@@ -177,10 +212,13 @@ const DecryptedPublicationBody: FC<Props> = ({ encryptedPublication }) => {
           {/* NFT check */}
           {doesNotOwnNft && (
             <DecryptMessage icon={<PhotographIcon className="h-4 w-4" />}>
-              You need{' '}
-              <Tooltip content={nftData?.contractMetadata?.name} placement="top">
+              You need{" "}
+              <Tooltip
+                content={nftData?.contractMetadata?.name}
+                placement="top"
+              >
                 <b>{nftData?.contractMetadata?.symbol}</b>
-              </Tooltip>{' '}
+              </Tooltip>{" "}
               nft to unlock
             </DecryptMessage>
           )}
@@ -190,13 +228,15 @@ const DecryptedPublicationBody: FC<Props> = ({ encryptedPublication }) => {
   }
 
   if (decryptError) {
-    return <ErrorMessage title="Error while decrypting!" error={decryptError} />;
+    return (
+      <ErrorMessage title="Error while decrypting!" error={decryptError} />
+    );
   }
 
   if (!decryptedData) {
     return (
       <Card
-        className={clsx(cardClasses, '!cursor-pointer')}
+        className={clsx(cardClasses, "!cursor-pointer")}
         onClick={(event) => {
           event.stopPropagation();
           getDecryptedData();
@@ -212,7 +252,10 @@ const DecryptedPublicationBody: FC<Props> = ({ encryptedPublication }) => {
             <>
               <FingerPrintIcon className="h-5 w-5" />
               <span>
-                Decrypt <span className="lowercase">{encryptedPublication.__typename}</span>
+                Decrypt{" "}
+                <span className="lowercase">
+                  {encryptedPublication.__typename}
+                </span>
               </span>
             </>
           )}
@@ -227,8 +270,8 @@ const DecryptedPublicationBody: FC<Props> = ({ encryptedPublication }) => {
     <div className="break-words">
       <Markup
         className={clsx(
-          { 'line-clamp-5': showMore },
-          'whitespace-pre-wrap break-words leading-md linkify text-md'
+          { "line-clamp-5": showMore },
+          "whitespace-pre-wrap break-words leading-md linkify text-md"
         )}
       >
         {publication?.content}
@@ -240,7 +283,9 @@ const DecryptedPublicationBody: FC<Props> = ({ encryptedPublication }) => {
         </div>
       )}
       {publication?.content
-        ? getURLs(publication?.content)?.length > 0 && <IFramely url={getURLs(publication?.content)[0]} />
+        ? getURLs(publication?.content)?.length > 0 && (
+            <IFramely url={getURLs(publication?.content)[0]} />
+          )
         : null}
     </div>
   );

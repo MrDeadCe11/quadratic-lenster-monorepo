@@ -1,48 +1,62 @@
-import SinglePublication from '@components/Publication/SinglePublication';
-import PublicationsShimmer from '@components/Shared/Shimmer/PublicationsShimmer';
-import { Card } from '@components/UI/Card';
-import { EmptyState } from '@components/UI/EmptyState';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import InfiniteLoader from '@components/UI/InfiniteLoader';
-import type { LensterPublication } from '@generated/types';
-import { CollectionIcon } from '@heroicons/react/outline';
-import { t } from '@lingui/macro';
-import { SCROLL_THRESHOLD } from 'data/constants';
-import { CustomFiltersTypes, PublicationSortCriteria, useExploreFeedQuery } from 'lens';
-import type { FC } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { useAppStore } from 'src/store/app';
+import SinglePublication from "@components/Publication/SinglePublication";
+import PublicationsShimmer from "@components/Shared/Shimmer/PublicationsShimmer";
+import { Card } from "@components/UI/Card";
+import { EmptyState } from "@components/UI/EmptyState";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import InfiniteLoader from "@components/UI/InfiniteLoader";
+import type { LensterPublication } from "@generated/types";
+import { CollectionIcon } from "@heroicons/react/outline";
+import { t } from "@lingui/macro";
+import { SCROLL_THRESHOLD } from "data/constants";
+import {
+  CustomFiltersTypes,
+  PublicationSortCriteria,
+  useExploreFeedQuery,
+} from "lens";
+import type { FC } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useAppStore } from "src/store/app";
 
 interface Props {
   focus?: any;
   feedType?: PublicationSortCriteria;
 }
 
-const Feed: FC<Props> = ({ focus, feedType = PublicationSortCriteria.CuratedProfiles }) => {
+const Feed: FC<Props> = ({
+  focus,
+  feedType = PublicationSortCriteria.CuratedProfiles,
+}) => {
   const currentProfile = useAppStore((state) => state.currentProfile);
 
   // Variables
   const request = {
     sortCriteria: feedType,
-    noRandomize: feedType === 'LATEST',
+    noRandomize: feedType === "LATEST",
     customFilters: [CustomFiltersTypes.Gardeners],
     metadata: focus ? { mainContentFocus: focus } : null,
-    limit: 10
+    limit: 10,
   };
-  const reactionRequest = currentProfile ? { profileId: currentProfile?.id } : null;
+  const reactionRequest = currentProfile
+    ? { profileId: currentProfile?.id }
+    : null;
   const profileId = currentProfile?.id ?? null;
 
   const { data, loading, error, fetchMore } = useExploreFeedQuery({
-    variables: { request, reactionRequest, profileId }
+    variables: { request, reactionRequest, profileId },
   });
 
   const publications = data?.explorePublications?.items;
   const pageInfo = data?.explorePublications?.pageInfo;
-  const hasMore = pageInfo?.next && publications?.length !== pageInfo.totalCount;
+  const hasMore =
+    pageInfo?.next && publications?.length !== pageInfo.totalCount;
 
   const loadMore = async () => {
     await fetchMore({
-      variables: { request: { ...request, cursor: pageInfo?.next }, reactionRequest, profileId }
+      variables: {
+        request: { ...request, cursor: pageInfo?.next },
+        reactionRequest,
+        profileId,
+      },
     });
   };
 
@@ -51,11 +65,18 @@ const Feed: FC<Props> = ({ focus, feedType = PublicationSortCriteria.CuratedProf
   }
 
   if (publications?.length === 0) {
-    return <EmptyState message={t`No posts yet!`} icon={<CollectionIcon className="w-8 h-8 text-brand" />} />;
+    return (
+      <EmptyState
+        message={t`No posts yet!`}
+        icon={<CollectionIcon className="w-8 h-8 text-brand" />}
+      />
+    );
   }
 
   if (error) {
-    return <ErrorMessage title={t`Failed to load explore feed`} error={error} />;
+    return (
+      <ErrorMessage title={t`Failed to load explore feed`} error={error} />
+    );
   }
 
   return (

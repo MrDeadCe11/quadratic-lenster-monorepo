@@ -10,8 +10,8 @@ import type {
   ProfileFollowModuleSettings,
   RevertCollectModuleSettings,
   RevertFollowModuleSettings,
-  TimedFeeCollectModuleSettings
-} from 'lens';
+  TimedFeeCollectModuleSettings,
+} from "lens";
 
 export type LensterPublication = Post & Mirror & Comment;
 export type Community = Post;
@@ -29,7 +29,7 @@ export interface LensterAttachment {
   type: string;
   altTag: string;
 }
-export interface NewLensterAttachment extends Omit<LensterAttachment, 'item'> {
+export interface NewLensterAttachment extends Omit<LensterAttachment, "item"> {
   id: string;
   item?: string;
   previewItem?: string;

@@ -1,19 +1,19 @@
-import { Card } from '@components/UI/Card';
-import { Modal } from '@components/UI/Modal';
-import { Tooltip } from '@components/UI/Tooltip';
-import { PencilAltIcon } from '@heroicons/react/outline';
-import formatHandle from '@lib/formatHandle';
-import getAvatar from '@lib/getAvatar';
-import { t, Trans } from '@lingui/macro';
-import { useRouter } from 'next/router';
-import type { FC, ReactNode } from 'react';
-import { useEffect, useState } from 'react';
-import { useAppStore } from 'src/store/app';
-import { usePublicationStore } from 'src/store/publication';
+import { Card } from "@components/UI/Card";
+import { Modal } from "@components/UI/Modal";
+import { Tooltip } from "@components/UI/Tooltip";
+import { PencilAltIcon } from "@heroicons/react/outline";
+import formatHandle from "@lib/formatHandle";
+import getAvatar from "@lib/getAvatar";
+import { t, Trans } from "@lingui/macro";
+import { useRouter } from "next/router";
+import type { FC, ReactNode } from "react";
+import { useEffect, useState } from "react";
+import { useAppStore } from "src/store/app";
+import { usePublicationStore } from "src/store/publication";
 
-import NewPublication from '../NewPublication';
+import NewPublication from "../NewPublication";
 
-type Action = 'update' | 'image' | 'video' | 'audio' | 'article';
+type Action = "update" | "image" | "video" | "audio" | "article";
 
 interface ActionProps {
   icon: ReactNode;
@@ -36,10 +36,16 @@ const Action: FC<ActionProps> = ({ icon, text, onClick }) => (
 const NewPost: FC = () => {
   const { query, isReady } = useRouter();
   const currentProfile = useAppStore((state) => state.currentProfile);
-  const showNewPostModal = usePublicationStore((state) => state.showNewPostModal);
-  const setShowNewPostModal = usePublicationStore((state) => state.setShowNewPostModal);
-  const setPublicationContent = usePublicationStore((state) => state.setPublicationContent);
-  const [selectedAction, setSelectedAction] = useState<Action>('update');
+  const showNewPostModal = usePublicationStore(
+    (state) => state.showNewPostModal
+  );
+  const setShowNewPostModal = usePublicationStore(
+    (state) => state.setShowNewPostModal
+  );
+  const setPublicationContent = usePublicationStore(
+    (state) => state.setPublicationContent
+  );
+  const [selectedAction, setSelectedAction] = useState<Action>("update");
 
   const openModal = (action: Action) => {
     setSelectedAction(action);
@@ -53,14 +59,14 @@ const NewPost: FC = () => {
 
       if (hashtags) {
         processedHashtags = (hashtags as string)
-          .split(',')
+          .split(",")
           .map((tag) => `#${tag} `)
-          .join('');
+          .join("");
       }
 
-      const content = `${text}${processedHashtags ? ` ${processedHashtags} ` : ''}${url ? `\n\n${url}` : ''}${
-        via ? `\n\nvia @${via}` : ''
-      }`;
+      const content = `${text}${
+        processedHashtags ? ` ${processedHashtags} ` : ""
+      }${url ? `\n\n${url}` : ""}${via ? `\n\nvia @${via}` : ""}`;
 
       setShowNewPostModal(true);
       setPublicationContent(content);
@@ -79,7 +85,7 @@ const NewPost: FC = () => {
         <button
           className="w-full flex items-center space-x-2 bg-gray-100 dark:bg-gray-900 px-4 py-2 rounded-xl border dark:border-gray-700"
           type="button"
-          onClick={() => openModal('update')}
+          onClick={() => openModal("update")}
         >
           <PencilAltIcon className="h-5 w-5" />
           <span>
@@ -92,7 +98,7 @@ const NewPost: FC = () => {
           show={showNewPostModal}
           onClose={() => setShowNewPostModal(false)}
         >
-          {selectedAction === 'update' && <NewPublication />}
+          {selectedAction === "update" && <NewPublication />}
         </Modal>
       </div>
     </Card>

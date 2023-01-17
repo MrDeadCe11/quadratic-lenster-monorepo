@@ -1,10 +1,10 @@
-import type { LensterPublication } from '@generated/types';
-import { Menu } from '@headlessui/react';
-import { CodeIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import clsx from 'clsx';
-import type { FC } from 'react';
-import { PUBLICATION } from 'src/tracking';
+import type { LensterPublication } from "@generated/types";
+import { Menu } from "@headlessui/react";
+import { CodeIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import clsx from "clsx";
+import type { FC } from "react";
+import { PUBLICATION } from "src/tracking";
 
 interface Props {
   publication: LensterPublication;
@@ -15,7 +15,10 @@ const Embed: FC<Props> = ({ publication }) => {
     <Menu.Item
       as="a"
       className={({ active }) =>
-        clsx({ 'dropdown-active': active }, 'block px-4 py-1.5 text-sm m-2 rounded-lg cursor-pointer')
+        clsx(
+          { "dropdown-active": active },
+          "block px-4 py-1.5 text-sm m-2 rounded-lg cursor-pointer"
+        )
       }
       onClick={(event: any) => {
         event.stopPropagation();

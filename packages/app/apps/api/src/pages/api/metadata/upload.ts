@@ -1,28 +1,32 @@
-import Bundlr from '@bundlr-network/client';
-import { APP_NAME, ERROR_MESSAGE } from 'data/constants';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { BUNDLR_CURRENCY, BUNDLR_NODE_URL } from 'src/constants';
+import Bundlr from "@bundlr-network/client";
+import { APP_NAME, ERROR_MESSAGE } from "data/constants";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { BUNDLR_CURRENCY, BUNDLR_NODE_URL } from "src/constants";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ success: false, message: 'Invalid method!' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ success: false, message: "Invalid method!" });
   }
 
   if (!req.body) {
-    return res.status(400).json({ success: false, message: 'Bad request!' });
+    return res.status(400).json({ success: false, message: "Bad request!" });
   }
 
   const payload = JSON.stringify(req.body);
 
   try {
-    const bundlr = new Bundlr(BUNDLR_NODE_URL, BUNDLR_CURRENCY, process.env.BUNDLR_PRIVATE_KEY);
+    const bundlr = new Bundlr(
+      BUNDLR_NODE_URL,
+      BUNDLR_CURRENCY,
+      process.env.BUNDLR_PRIVATE_KEY
+    );
     const tags = [
-      { name: 'Content-Type', value: 'application/json' },
-      { name: 'App-Name', value: APP_NAME }
+      { name: "Content-Type", value: "application/json" },
+      { name: "App-Name", value: APP_NAME },
     ];
 
     const uploader = bundlr.uploader.chunkedUploader;

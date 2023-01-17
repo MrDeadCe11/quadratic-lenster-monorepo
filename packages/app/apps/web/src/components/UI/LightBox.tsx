@@ -1,6 +1,6 @@
-import { Dialog, Transition } from '@headlessui/react';
-import type { FC } from 'react';
-import { Fragment } from 'react';
+import { Dialog, Transition } from "@headlessui/react";
+import type { FC } from "react";
+import { Fragment } from "react";
 
 interface Props {
   show: boolean;
@@ -11,7 +11,11 @@ interface Props {
 export const LightBox: FC<Props> = ({ show, url, onClose }) => {
   return (
     <Transition.Root show={show} as={Fragment}>
-      <Dialog as="div" className="overflow-y-auto fixed inset-0 z-10" onClose={onClose}>
+      <Dialog
+        as="div"
+        className="overflow-y-auto fixed inset-0 z-10"
+        onClose={onClose}
+      >
         <div className="text-center">
           <Transition.Child
             as={Fragment}
@@ -24,7 +28,10 @@ export const LightBox: FC<Props> = ({ show, url, onClose }) => {
           >
             <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
-          <span className="hidden sm:inline-block sm:h-screen sm:align-middle" aria-hidden="true" />
+          <span
+            className="hidden sm:inline-block sm:h-screen sm:align-middle"
+            aria-hidden="true"
+          />
           <Transition.Child
             as="div"
             className="sm:max-w-3xl inline-block transform transition-all align-middle p-8 text-left"
@@ -39,8 +46,8 @@ export const LightBox: FC<Props> = ({ show, url, onClose }) => {
               className="max-h-screen"
               height={1000}
               width={1000}
-              src={url ?? ''}
-              alt={url ?? ''}
+              src={url ?? ""}
+              alt={url ?? ""}
               onClick={onClose}
             />
             {url ? (

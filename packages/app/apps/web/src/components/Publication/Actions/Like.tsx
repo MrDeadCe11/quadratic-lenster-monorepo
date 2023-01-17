@@ -1,21 +1,25 @@
-import type { ApolloCache } from '@apollo/client';
-import { Tooltip } from '@components/UI/Tooltip';
-import type { LensterPublication } from '@generated/types';
-import { HeartIcon } from '@heroicons/react/outline';
-import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid';
-import { Analytics } from '@lib/analytics';
-import { publicationKeyFields } from '@lib/keyFields';
-import nFormatter from '@lib/nFormatter';
-import onError from '@lib/onError';
-import { SIGN_WALLET } from 'data/constants';
-import { motion } from 'framer-motion';
-import { ReactionTypes, useAddReactionMutation, useRemoveReactionMutation } from 'lens';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { useAppStore } from 'src/store/app';
-import { PUBLICATION } from 'src/tracking';
+import type { ApolloCache } from "@apollo/client";
+import { Tooltip } from "@components/UI/Tooltip";
+import type { LensterPublication } from "@generated/types";
+import { HeartIcon } from "@heroicons/react/outline";
+import { HeartIcon as HeartIconSolid } from "@heroicons/react/solid";
+import { Analytics } from "@lib/analytics";
+import { publicationKeyFields } from "@lib/keyFields";
+import nFormatter from "@lib/nFormatter";
+import onError from "@lib/onError";
+import { SIGN_WALLET } from "data/constants";
+import { motion } from "framer-motion";
+import {
+  ReactionTypes,
+  useAddReactionMutation,
+  useRemoveReactionMutation,
+} from "lens";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useAppStore } from "src/store/app";
+import { PUBLICATION } from "src/tracking";
 
 interface Props {
   publication: LensterPublication;
@@ -24,25 +28,36 @@ interface Props {
 
 const Like: FC<Props> = ({ publication, isFullPublication }) => {
   const { pathname } = useRouter();
-  const isMirror = publication.__typename === 'Mirror';
+  const isMirror = publication.__typename === "Mirror";
   const currentProfile = useAppStore((state) => state.currentProfile);
   const [liked, setLiked] = useState(
-    (isMirror ? publication?.mirrorOf?.reaction : publication?.reaction) === 'UPVOTE'
+    (isMirror ? publication?.mirrorOf?.reaction : publication?.reaction) ===
+      "UPVOTE"
   );
   const [count, setCount] = useState(
-    isMirror ? publication?.mirrorOf?.stats?.totalUpvotes : publication?.stats?.totalUpvotes
+    isMirror
+      ? publication?.mirrorOf?.stats?.totalUpvotes
+      : publication?.stats?.totalUpvotes
   );
 
-  const updateCache = (cache: ApolloCache<any>, type: ReactionTypes.Upvote | ReactionTypes.Downvote) => {
-    if (pathname === '/posts/[id]') {
+  const updateCache = (
+    cache: ApolloCache<any>,
+    type: ReactionTypes.Upvote | ReactionTypes.Downvote
+  ) => {
+    if (pathname === "/posts/[id]") {
       cache.modify({
-        id: publicationKeyFields(isMirror ? publication?.mirrorOf : publication),
+        id: publicationKeyFields(
+          isMirror ? publication?.mirrorOf : publication
+        ),
         fields: {
           stats: (stats) => ({
             ...stats,
-            totalUpvotes: type === ReactionTypes.Upvote ? stats.totalUpvotes + 1 : stats.totalUpvotes - 1
-          })
-        }
+            totalUpvotes:
+              type === ReactionTypes.Upvote
+                ? stats.totalUpvotes + 1
+                : stats.totalUpvotes - 1,
+          }),
+        },
       });
     }
   };
@@ -56,7 +71,7 @@ const Like: FC<Props> = ({ publication, isFullPublication }) => {
       setCount(count - 1);
       onError(error);
     },
-    update: (cache) => updateCache(cache, ReactionTypes.Upvote)
+    update: (cache) => updateCache(cache, ReactionTypes.Upvote),
   });
 
   const [removeReaction] = useRemoveReactionMutation({
@@ -68,7 +83,7 @@ const Like: FC<Props> = ({ publication, isFullPublication }) => {
       setCount(count + 1);
       onError(error);
     },
-    update: (cache) => updateCache(cache, ReactionTypes.Downvote)
+    update: (cache) => updateCache(cache, ReactionTypes.Downvote),
   });
 
   const createLike = () => {
@@ -81,9 +96,12 @@ const Like: FC<Props> = ({ publication, isFullPublication }) => {
         request: {
           profileId: currentProfile?.id,
           reaction: ReactionTypes.Upvote,
-          publicationId: publication.__typename === 'Mirror' ? publication?.mirrorOf?.id : publication?.id
-        }
-      }
+          publicationId:
+            publication.__typename === "Mirror"
+              ? publication?.mirrorOf?.id
+              : publication?.id,
+        },
+      },
     };
 
     if (liked) {
@@ -97,14 +115,28 @@ const Like: FC<Props> = ({ publication, isFullPublication }) => {
     }
   };
 
-  const iconClassName = isFullPublication ? 'w-[17px] sm:w-[20px]' : 'w-[15px] sm:w-[18px]';
+  const iconClassName = isFullPublication
+    ? "w-[17px] sm:w-[20px]"
+    : "w-[15px] sm:w-[18px]";
 
   return (
-    <motion.button whileTap={{ scale: 0.9 }} onClick={createLike} aria-label="Like">
+    <motion.button
+      whileTap={{ scale: 0.9 }}
+      onClick={createLike}
+      aria-label="Like"
+    >
       <span className="flex items-center space-x-1 text-pink-500">
         <span className="p-1.5 rounded-full hover:bg-pink-300 hover:bg-opacity-20">
-          <Tooltip placement="top" content={liked ? 'Unlike' : 'Like'} withDelay>
-            {liked ? <HeartIconSolid className={iconClassName} /> : <HeartIcon className={iconClassName} />}
+          <Tooltip
+            placement="top"
+            content={liked ? "Unlike" : "Like"}
+            withDelay
+          >
+            {liked ? (
+              <HeartIconSolid className={iconClassName} />
+            ) : (
+              <HeartIcon className={iconClassName} />
+            )}
           </Tooltip>
         </span>
         {count > 0 && !isFullPublication && (

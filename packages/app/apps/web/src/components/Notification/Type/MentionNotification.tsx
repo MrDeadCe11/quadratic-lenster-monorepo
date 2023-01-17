@@ -1,17 +1,17 @@
-import Markup from '@components/Shared/Markup';
-import UserPreview from '@components/Shared/UserPreview';
-import { AtSymbolIcon } from '@heroicons/react/solid';
-import formatTime from '@lib/formatTime';
-import type { MessageDescriptor } from '@lingui/core/cjs/i18n';
-import { defineMessage } from '@lingui/macro';
-import { Trans } from '@lingui/react';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import type { NewMentionNotification } from 'lens';
-import Link from 'next/link';
-import type { FC } from 'react';
+import Markup from "@components/Shared/Markup";
+import UserPreview from "@components/Shared/UserPreview";
+import { AtSymbolIcon } from "@heroicons/react/solid";
+import formatTime from "@lib/formatTime";
+import type { MessageDescriptor } from "@lingui/core/cjs/i18n";
+import { defineMessage } from "@lingui/macro";
+import { Trans } from "@lingui/react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import type { NewMentionNotification } from "lens";
+import Link from "next/link";
+import type { FC } from "react";
 
-import { NotificationProfileAvatar, NotificationProfileName } from '../Profile';
+import { NotificationProfileAvatar, NotificationProfileName } from "../Profile";
 
 dayjs.extend(relativeTime);
 
@@ -21,23 +21,24 @@ interface Props {
 
 const messages: Record<string, MessageDescriptor> = {
   comment: defineMessage({
-    id: '<0><1/> mentioned you in a <2>comment</2></0>'
+    id: "<0><1/> mentioned you in a <2>comment</2></0>",
   }),
   mirror: defineMessage({
-    id: '<0><1/> mentioned you in a <2>mirror</2></0>'
+    id: "<0><1/> mentioned you in a <2>mirror</2></0>",
   }),
   post: defineMessage({
-    id: '<0><1/> mentioned you in a <2>post</2></0>'
-  })
+    id: "<0><1/> mentioned you in a <2>post</2></0>",
+  }),
 };
 
 const defaultMessage = (typeName: string): string => {
-  return '<0><1/> mentioned you in a <2>' + typeName + '</2></0>';
+  return "<0><1/> mentioned you in a <2>" + typeName + "</2></0>";
 };
 
 const MentionNotification: FC<Props> = ({ notification }) => {
   const profile = notification?.mentionPublication?.profile;
-  const typeName = notification?.mentionPublication.__typename?.toLowerCase() || '';
+  const typeName =
+    notification?.mentionPublication.__typename?.toLowerCase() || "";
   return (
     <div className="flex justify-between items-start">
       <div className="space-y-2 w-4/5">
@@ -53,18 +54,27 @@ const MentionNotification: FC<Props> = ({ notification }) => {
             components={[
               <span className="text-gray-600 dark:text-gray-400" key="" />,
               <NotificationProfileName profile={profile} key="" />,
-              <Link href={`/posts/${notification?.mentionPublication?.id}`} className="font-bold" key="" />
+              <Link
+                href={`/posts/${notification?.mentionPublication?.id}`}
+                className="font-bold"
+                key=""
+              />,
             ]}
           />
           <Link
             href={`/posts/${notification?.mentionPublication.id}`}
             className="lt-text-gray-500 line-clamp-2 linkify mt-2"
           >
-            <Markup>{notification?.mentionPublication?.metadata?.content}</Markup>
+            <Markup>
+              {notification?.mentionPublication?.metadata?.content}
+            </Markup>
           </Link>
         </div>
       </div>
-      <div className="text-gray-400 text-[12px]" title={formatTime(notification?.createdAt)}>
+      <div
+        className="text-gray-400 text-[12px]"
+        title={formatTime(notification?.createdAt)}
+      >
         {dayjs(new Date(notification?.createdAt)).fromNow()}
       </div>
     </div>

@@ -1,5 +1,5 @@
-import type { OG } from '@generated/types';
-import type { FC } from 'react';
+import type { OG } from "@generated/types";
+import type { FC } from "react";
 
 interface Props {
   og: OG;
@@ -8,7 +8,10 @@ interface Props {
 const Player: FC<Props> = ({ og }) => {
   return (
     <div className="mt-4 w-5/6 text-sm">
-      <div className="iframely-player" dangerouslySetInnerHTML={{ __html: og.html }} />
+      <div
+        className="iframely-player"
+        dangerouslySetInnerHTML={{ __html: og.html }}
+      />
     </div>
   );
 };

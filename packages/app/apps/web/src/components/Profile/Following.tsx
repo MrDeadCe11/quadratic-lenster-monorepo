@@ -1,16 +1,16 @@
-import Loader from '@components/Shared/Loader';
-import UserProfile from '@components/Shared/UserProfile';
-import { EmptyState } from '@components/UI/EmptyState';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import InfiniteLoader from '@components/UI/InfiniteLoader';
-import { UsersIcon } from '@heroicons/react/outline';
-import formatHandle from '@lib/formatHandle';
-import { t, Trans } from '@lingui/macro';
-import { SCROLL_THRESHOLD } from 'data/constants';
-import type { Profile } from 'lens';
-import { useFollowingQuery } from 'lens';
-import type { FC } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import Loader from "@components/Shared/Loader";
+import UserProfile from "@components/Shared/UserProfile";
+import { EmptyState } from "@components/UI/EmptyState";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import InfiniteLoader from "@components/UI/InfiniteLoader";
+import { UsersIcon } from "@heroicons/react/outline";
+import formatHandle from "@lib/formatHandle";
+import { t, Trans } from "@lingui/macro";
+import { SCROLL_THRESHOLD } from "data/constants";
+import type { Profile } from "lens";
+import { useFollowingQuery } from "lens";
+import type { FC } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 interface Props {
   profile: Profile;
@@ -23,7 +23,7 @@ const Following: FC<Props> = ({ profile, onProfileSelected }) => {
 
   const { data, loading, error, fetchMore } = useFollowingQuery({
     variables: { request },
-    skip: !profile?.id
+    skip: !profile?.id,
   });
 
   const followings = data?.following?.items;
@@ -33,8 +33,8 @@ const Following: FC<Props> = ({ profile, onProfileSelected }) => {
   const loadMore = async () => {
     await fetchMore({
       variables: {
-        request: { ...request, cursor: pageInfo?.next }
-      }
+        request: { ...request, cursor: pageInfo?.next },
+      },
     });
   };
 
@@ -47,7 +47,9 @@ const Following: FC<Props> = ({ profile, onProfileSelected }) => {
       <EmptyState
         message={
           <div>
-            <span className="mr-1 font-bold">@{formatHandle(profile?.handle)}</span>
+            <span className="mr-1 font-bold">
+              @{formatHandle(profile?.handle)}
+            </span>
             <span>
               <Trans>doesn’t follow anyone.</Trans>
             </span>
@@ -61,7 +63,11 @@ const Following: FC<Props> = ({ profile, onProfileSelected }) => {
 
   return (
     <div className="overflow-y-auto max-h-[80vh]" id="scrollableDiv">
-      <ErrorMessage className="m-5" title={t`Failed to load following`} error={error} />
+      <ErrorMessage
+        className="m-5"
+        title={t`Failed to load following`}
+        error={error}
+      />
       <InfiniteScroll
         dataLength={followings?.length ?? 0}
         scrollThreshold={SCROLL_THRESHOLD}
@@ -74,7 +80,8 @@ const Following: FC<Props> = ({ profile, onProfileSelected }) => {
           {followings?.map((following) => (
             <div
               className={`p-5 ${
-                onProfileSelected && 'hover:bg-gray-100 dark:hover:bg-gray-900 cursor-pointer'
+                onProfileSelected &&
+                "hover:bg-gray-100 dark:hover:bg-gray-900 cursor-pointer"
               }`}
               key={following?.profile?.id}
               onClick={

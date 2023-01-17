@@ -1,31 +1,36 @@
-import ChooseFile from '@components/Shared/ChooseFile';
-import IndexStatus from '@components/Shared/IndexStatus';
-import { Button } from '@components/UI/Button';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import { Spinner } from '@components/UI/Spinner';
-import { PencilIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import getIPFSLink from '@lib/getIPFSLink';
-import getSignature from '@lib/getSignature';
-import imageProxy from '@lib/imageProxy';
-import onError from '@lib/onError';
-import splitSignature from '@lib/splitSignature';
-import uploadToIPFS from '@lib/uploadToIPFS';
-import { t } from '@lingui/macro';
-import { LensHubProxy } from 'abis';
-import { AVATAR, LENSHUB_PROXY, SIGN_WALLET } from 'data/constants';
-import type { MediaSet, NftImage, Profile, UpdateProfileImageRequest } from 'lens';
+import ChooseFile from "@components/Shared/ChooseFile";
+import IndexStatus from "@components/Shared/IndexStatus";
+import { Button } from "@components/UI/Button";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import { Spinner } from "@components/UI/Spinner";
+import { PencilIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import getIPFSLink from "@lib/getIPFSLink";
+import getSignature from "@lib/getSignature";
+import imageProxy from "@lib/imageProxy";
+import onError from "@lib/onError";
+import splitSignature from "@lib/splitSignature";
+import uploadToIPFS from "@lib/uploadToIPFS";
+import { t } from "@lingui/macro";
+import { LensHubProxy } from "abis";
+import { AVATAR, LENSHUB_PROXY, SIGN_WALLET } from "data/constants";
+import type {
+  MediaSet,
+  NftImage,
+  Profile,
+  UpdateProfileImageRequest,
+} from "lens";
 import {
   useBroadcastMutation,
   useCreateSetProfileImageUriTypedDataMutation,
-  useCreateSetProfileImageUriViaDispatcherMutation
-} from 'lens';
-import type { ChangeEvent, FC } from 'react';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useAppStore } from 'src/store/app';
-import { SETTINGS } from 'src/tracking';
-import { useContractWrite, useSignTypedData } from 'wagmi';
+  useCreateSetProfileImageUriViaDispatcherMutation,
+} from "lens";
+import type { ChangeEvent, FC } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useAppStore } from "src/store/app";
+import { SETTINGS } from "src/tracking";
+import { useContractWrite, useSignTypedData } from "wagmi";
 
 interface Props {
   profile: Profile & { picture: MediaSet & NftImage };
@@ -35,12 +40,14 @@ const Picture: FC<Props> = ({ profile }) => {
   const userSigNonce = useAppStore((state) => state.userSigNonce);
   const setUserSigNonce = useAppStore((state) => state.setUserSigNonce);
   const currentProfile = useAppStore((state) => state.currentProfile);
-  const [avatar, setAvatar] = useState('');
+  const [avatar, setAvatar] = useState("");
   const [uploading, setUploading] = useState(false);
-  const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData({ onError });
+  const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData({
+    onError,
+  });
 
   const onCompleted = () => {
-    toast.success('Avatar updated successfully!');
+    toast.success("Avatar updated successfully!");
     Analytics.track(SETTINGS.PROFILE.SET_PICTURE);
   };
 
@@ -48,14 +55,14 @@ const Picture: FC<Props> = ({ profile }) => {
     data: writeData,
     isLoading: writeLoading,
     error,
-    write
+    write,
   } = useContractWrite({
     address: LENSHUB_PROXY,
     abi: LensHubProxy,
-    functionName: 'setProfileImageURIWithSig',
-    mode: 'recklesslyUnprepared',
+    functionName: "setProfileImageURIWithSig",
+    mode: "recklesslyUnprepared",
     onSuccess: onCompleted,
-    onError
+    onError,
   });
 
   useEffect(() => {
@@ -65,9 +72,10 @@ const Picture: FC<Props> = ({ profile }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [broadcast, { data: broadcastData, loading: broadcastLoading }] = useBroadcastMutation({
-    onCompleted
-  });
+  const [broadcast, { data: broadcastData, loading: broadcastLoading }] =
+    useBroadcastMutation({
+      onCompleted,
+    });
   const [createSetProfileImageURITypedData, { loading: typedDataLoading }] =
     useCreateSetProfileImageUriTypedDataMutation({
       onCompleted: async ({ createSetProfileImageURITypedData }) => {
@@ -79,30 +87,39 @@ const Picture: FC<Props> = ({ profile }) => {
         const inputStruct = {
           profileId,
           imageURI,
-          sig
+          sig,
         };
         setUserSigNonce(userSigNonce + 1);
-        const { data } = await broadcast({ variables: { request: { id, signature } } });
-        if (data?.broadcast.__typename === 'RelayError') {
+        const { data } = await broadcast({
+          variables: { request: { id, signature } },
+        });
+        if (data?.broadcast.__typename === "RelayError") {
           return write?.({ recklesslySetUnpreparedArgs: [inputStruct] });
         }
       },
-      onError
+      onError,
     });
 
-  const [createSetProfileImageURIViaDispatcher, { data: dispatcherData, loading: dispatcherLoading }] =
-    useCreateSetProfileImageUriViaDispatcherMutation({ onCompleted, onError });
+  const [
+    createSetProfileImageURIViaDispatcher,
+    { data: dispatcherData, loading: dispatcherLoading },
+  ] = useCreateSetProfileImageUriViaDispatcherMutation({
+    onCompleted,
+    onError,
+  });
 
   const createViaDispatcher = async (request: UpdateProfileImageRequest) => {
     const { data } = await createSetProfileImageURIViaDispatcher({
-      variables: { request }
+      variables: { request },
     });
-    if (data?.createSetProfileImageURIViaDispatcher?.__typename === 'RelayError') {
+    if (
+      data?.createSetProfileImageURIViaDispatcher?.__typename === "RelayError"
+    ) {
       await createSetProfileImageURITypedData({
         variables: {
           options: { overrideSigNonce: userSigNonce },
-          request
-        }
+          request,
+        },
       });
     }
   };
@@ -132,7 +149,7 @@ const Picture: FC<Props> = ({ profile }) => {
     try {
       const request = {
         profileId: currentProfile?.id,
-        url: avatar
+        url: avatar,
       };
 
       if (currentProfile?.dispatcher?.canUseRelay) {
@@ -142,18 +159,25 @@ const Picture: FC<Props> = ({ profile }) => {
       return await createSetProfileImageURITypedData({
         variables: {
           options: { overrideSigNonce: userSigNonce },
-          request
-        }
+          request,
+        },
       });
     } catch {}
   };
 
-  const isLoading = typedDataLoading || dispatcherLoading || signLoading || writeLoading || broadcastLoading;
+  const isLoading =
+    typedDataLoading ||
+    dispatcherLoading ||
+    signLoading ||
+    writeLoading ||
+    broadcastLoading;
 
   const broadcastTxHash =
-    broadcastData?.broadcast.__typename === 'RelayerResult' && broadcastData.broadcast.txHash;
+    broadcastData?.broadcast.__typename === "RelayerResult" &&
+    broadcastData.broadcast.txHash;
   const dispatcherTxHash =
-    dispatcherData?.createSetProfileImageURIViaDispatcher.__typename === 'RelayerResult' &&
+    dispatcherData?.createSetProfileImageURIViaDispatcher.__typename ===
+      "RelayerResult" &&
     dispatcherData?.createSetProfileImageURIViaDispatcher.txHash;
 
   const txHash = writeData?.hash ?? broadcastTxHash ?? dispatcherTxHash;
@@ -161,7 +185,13 @@ const Picture: FC<Props> = ({ profile }) => {
   return (
     <>
       <div className="space-y-1.5">
-        {error && <ErrorMessage className="mb-3" title={t`Transaction failed!`} error={error} />}
+        {error && (
+          <ErrorMessage
+            className="mb-3"
+            title={t`Transaction failed!`}
+            error={error}
+          />
+        )}
         <div className="space-y-3">
           {avatar && (
             <div>
@@ -175,7 +205,11 @@ const Picture: FC<Props> = ({ profile }) => {
             </div>
           )}
           <div className="flex items-center space-x-3">
-            <ChooseFile onChange={(evt: ChangeEvent<HTMLInputElement>) => handleUpload(evt)} />
+            <ChooseFile
+              onChange={(evt: ChangeEvent<HTMLInputElement>) =>
+                handleUpload(evt)
+              }
+            />
             {uploading && <Spinner size="sm" />}
           </div>
         </div>
@@ -186,7 +220,13 @@ const Picture: FC<Props> = ({ profile }) => {
           type="submit"
           disabled={isLoading}
           onClick={() => editPicture(avatar)}
-          icon={isLoading ? <Spinner size="xs" /> : <PencilIcon className="w-4 h-4" />}
+          icon={
+            isLoading ? (
+              <Spinner size="xs" />
+            ) : (
+              <PencilIcon className="w-4 h-4" />
+            )
+          }
         >
           Save
         </Button>

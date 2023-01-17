@@ -1,9 +1,9 @@
-import 'plyr-react/plyr.css';
+import "plyr-react/plyr.css";
 
-import getIPFSLink from '@lib/getIPFSLink';
-import imageProxy from '@lib/imageProxy';
-import Plyr from 'plyr-react';
-import type { FC } from 'react';
+import getIPFSLink from "@lib/getIPFSLink";
+import imageProxy from "@lib/imageProxy";
+import Plyr from "plyr-react";
+import type { FC } from "react";
 
 interface Props {
   src: string;
@@ -15,13 +15,21 @@ const Video: FC<Props> = ({ src, poster }) => {
     <div className="rounded-lg">
       <Plyr
         source={{
-          type: 'video',
-          sources: [{ src, provider: 'html5' }],
-          poster: poster ? imageProxy(getIPFSLink(poster)) : src
+          type: "video",
+          sources: [{ src, provider: "html5" }],
+          poster: poster ? imageProxy(getIPFSLink(poster)) : src,
         }}
         options={{
-          controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'fullscreen'],
-          ratio: '16:12'
+          controls: [
+            "play-large",
+            "play",
+            "progress",
+            "current-time",
+            "mute",
+            "volume",
+            "fullscreen",
+          ],
+          ratio: "16:12",
         }}
       />
     </div>

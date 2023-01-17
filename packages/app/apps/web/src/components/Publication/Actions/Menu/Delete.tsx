@@ -1,12 +1,12 @@
-import type { LensterPublication } from '@generated/types';
-import { Menu } from '@headlessui/react';
-import { TrashIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import clsx from 'clsx';
-import { useHidePublicationMutation } from 'lens';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import { PUBLICATION } from 'src/tracking';
+import type { LensterPublication } from "@generated/types";
+import { Menu } from "@headlessui/react";
+import { TrashIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import clsx from "clsx";
+import { useHidePublicationMutation } from "lens";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import { PUBLICATION } from "src/tracking";
 
 interface Props {
   publication: LensterPublication;
@@ -17,8 +17,8 @@ const Delete: FC<Props> = ({ publication }) => {
   const [hidePost] = useHidePublicationMutation({
     onCompleted: () => {
       Analytics.track(PUBLICATION.DELETE);
-      pathname === '/posts/[id]' ? push('/') : location.reload();
-    }
+      pathname === "/posts/[id]" ? push("/") : location.reload();
+    },
   });
 
   return (
@@ -26,15 +26,15 @@ const Delete: FC<Props> = ({ publication }) => {
       as="div"
       className={({ active }) =>
         clsx(
-          { 'dropdown-active': active },
-          'block px-4 py-1.5 text-sm text-red-500 m-2 rounded-lg cursor-pointer'
+          { "dropdown-active": active },
+          "block px-4 py-1.5 text-sm text-red-500 m-2 rounded-lg cursor-pointer"
         )
       }
       onClick={(event: any) => {
         event.stopPropagation();
-        if (confirm('Are you sure you want to delete?')) {
+        if (confirm("Are you sure you want to delete?")) {
           hidePost({
-            variables: { request: { publicationId: publication?.id } }
+            variables: { request: { publicationId: publication?.id } },
           });
         }
       }}

@@ -1,14 +1,17 @@
-import { Card } from '@components/UI/Card';
-import type { FC } from 'react';
+import { Card } from "@components/UI/Card";
+import type { FC } from "react";
 
-import UserProfileShimmer from './UserProfileShimmer';
+import UserProfileShimmer from "./UserProfileShimmer";
 
 interface Props {
   showFollow?: boolean;
   isBig?: boolean;
 }
 
-const UserProfilesShimmer: FC<Props> = ({ showFollow = false, isBig = false }) => {
+const UserProfilesShimmer: FC<Props> = ({
+  showFollow = false,
+  isBig = false,
+}) => {
   return (
     <div className="space-y-3">
       <Card className="p-5">

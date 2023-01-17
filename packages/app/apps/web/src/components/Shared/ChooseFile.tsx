@@ -1,4 +1,4 @@
-import type { ChangeEventHandler, FC } from 'react';
+import type { ChangeEventHandler, FC } from "react";
 
 interface Props {
   onChange: ChangeEventHandler<HTMLInputElement>;

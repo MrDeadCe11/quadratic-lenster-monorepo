@@ -1,10 +1,10 @@
-import type { Profile } from 'lens';
-import type { FC } from 'react';
+import type { Profile } from "lens";
+import type { FC } from "react";
 
-import Ens from './Ens';
-import ProofOfHumanity from './ProofOfHumanity';
-import Sybil from './Sybil';
-import Worldcoin from './Worldcoin';
+import Ens from "./Ens";
+import ProofOfHumanity from "./ProofOfHumanity";
+import Sybil from "./Sybil";
+import Worldcoin from "./Worldcoin";
 
 interface Props {
   profile: Profile;

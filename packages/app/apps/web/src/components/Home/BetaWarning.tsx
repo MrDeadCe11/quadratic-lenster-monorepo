@@ -1,8 +1,8 @@
-import { Card } from '@components/UI/Card';
-import { BeakerIcon, CurrencyDollarIcon } from '@heroicons/react/outline';
-import { Trans } from '@lingui/macro';
-import { APP_NAME, IS_MAINNET } from 'data/constants';
-import type { FC } from 'react';
+import { Card } from "@components/UI/Card";
+import { BeakerIcon, CurrencyDollarIcon } from "@heroicons/react/outline";
+import { Trans } from "@lingui/macro";
+import { APP_NAME, IS_MAINNET } from "data/constants";
+import type { FC } from "react";
 
 const BetaWarning: FC = () => {
   return (
@@ -17,12 +17,19 @@ const BetaWarning: FC = () => {
         </p>
       </div>
       <p className="text-sm leading-[22px]">
-        <Trans>{APP_NAME} is still in the beta phase, things may break, please handle us with care.</Trans>
+        <Trans>
+          {APP_NAME} is still in the beta phase, things may break, please handle
+          us with care.
+        </Trans>
       </p>
       {!IS_MAINNET && (
         <div className="flex items-center space-x-1.5 text-sm font-bold">
           <CurrencyDollarIcon className="w-4 h-4" />
-          <a href="https://faucet.polygon.technology/" target="_blank" rel="noreferrer noopener">
+          <a
+            href="https://faucet.polygon.technology/"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
             <Trans>Get testnet tokens</Trans>
           </a>
         </div>

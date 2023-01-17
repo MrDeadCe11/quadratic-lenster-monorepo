@@ -1,8 +1,8 @@
-import { S3 } from '@aws-sdk/client-s3';
-import type { LensterAttachment } from '@generated/types';
-import axios from 'axios';
-import { EVER_API, S3_BUCKET, SERVERLESS_URL } from 'data/constants';
-import { v4 as uuid } from 'uuid';
+import { S3 } from "@aws-sdk/client-s3";
+import type { LensterAttachment } from "@generated/types";
+import axios from "axios";
+import { EVER_API, S3_BUCKET, SERVERLESS_URL } from "data/constants";
+import { v4 as uuid } from "uuid";
 
 const getS3Client = async () => {
   const token = await axios.get(`${SERVERLESS_URL}/sts/token`);
@@ -11,10 +11,10 @@ const getS3Client = async () => {
     credentials: {
       accessKeyId: token.data?.accessKeyId,
       secretAccessKey: token.data?.secretAccessKey,
-      sessionToken: token.data?.sessionToken
+      sessionToken: token.data?.sessionToken,
     },
-    region: 'us-west-2',
-    maxAttempts: 3
+    region: "us-west-2",
+    maxAttempts: 3,
   });
 
   return client;
@@ -34,16 +34,20 @@ const uploadToIPFS = async (data: any): Promise<LensterAttachment[]> => {
         const file = data.item(i);
         const params = {
           Bucket: S3_BUCKET.LENSTER_MEDIA,
-          Key: uuid()
+          Key: uuid(),
         };
-        await client.putObject({ ...params, Body: file, ContentType: file.type });
+        await client.putObject({
+          ...params,
+          Body: file,
+          ContentType: file.type,
+        });
         const result = await client.headObject(params);
         const metadata = result.Metadata;
 
         return {
-          item: `ipfs://${metadata?.['ipfs-hash']}`,
-          type: file.type || 'image/jpeg',
-          altTag: ''
+          item: `ipfs://${metadata?.["ipfs-hash"]}`,
+          type: file.type || "image/jpeg",
+          altTag: "",
         };
       })
     );
@@ -59,21 +63,23 @@ const uploadToIPFS = async (data: any): Promise<LensterAttachment[]> => {
  * @param file - File object
  * @returns attachment or null
  */
-export const uploadFileToIPFS = async (file: File): Promise<LensterAttachment | null> => {
+export const uploadFileToIPFS = async (
+  file: File
+): Promise<LensterAttachment | null> => {
   try {
     const client = await getS3Client();
     const params = {
       Bucket: S3_BUCKET.LENSTER_MEDIA,
-      Key: uuid()
+      Key: uuid(),
     };
     await client.putObject({ ...params, Body: file, ContentType: file.type });
     const result = await client.headObject(params);
     const metadata = result.Metadata;
 
     return {
-      item: `ipfs://${metadata?.['ipfs-hash']}`,
-      type: file.type || 'image/jpeg',
-      altTag: ''
+      item: `ipfs://${metadata?.["ipfs-hash"]}`,
+      type: file.type || "image/jpeg",
+      altTag: "",
     };
   } catch {
     return null;

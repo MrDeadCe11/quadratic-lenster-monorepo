@@ -1,24 +1,28 @@
-import MetaTags from '@components/Common/MetaTags';
-import { Card } from '@components/UI/Card';
-import { GridItemEight, GridItemFour, GridLayout } from '@components/UI/GridLayout';
-import useStaffMode from '@components/utils/hooks/useStaffMode';
+import MetaTags from "@components/Common/MetaTags";
+import { Card } from "@components/UI/Card";
+import {
+  GridItemEight,
+  GridItemFour,
+  GridLayout,
+} from "@components/UI/GridLayout";
+import useStaffMode from "@components/utils/hooks/useStaffMode";
 import {
   ChatAlt2Icon,
   CollectionIcon,
   FireIcon,
   SwitchHorizontalIcon,
   UserAddIcon,
-  UsersIcon
-} from '@heroicons/react/outline';
-import { PencilAltIcon } from '@heroicons/react/solid';
-import humanize from '@lib/humanize';
-import { APP_NAME, ERROR_MESSAGE } from 'data/constants';
-import { useLensterStatsQuery } from 'lens';
-import type { NextPage } from 'next';
-import type { FC, ReactNode } from 'react';
-import Custom404 from 'src/pages/404';
+  UsersIcon,
+} from "@heroicons/react/outline";
+import { PencilAltIcon } from "@heroicons/react/solid";
+import humanize from "@lib/humanize";
+import { APP_NAME, ERROR_MESSAGE } from "data/constants";
+import { useLensterStatsQuery } from "lens";
+import type { NextPage } from "next";
+import type { FC, ReactNode } from "react";
+import Custom404 from "src/pages/404";
 
-import StaffToolsSidebar from '../Sidebar';
+import StaffToolsSidebar from "../Sidebar";
 
 interface StatBoxProps {
   icon: ReactNode;

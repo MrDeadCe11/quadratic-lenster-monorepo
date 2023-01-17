@@ -1,18 +1,24 @@
-import { APP_NAME, DEFAULT_OG, DESCRIPTION } from 'data/constants';
-import Head from 'next/head';
-import type { FC } from 'react';
+import { APP_NAME, DEFAULT_OG, DESCRIPTION } from "data/constants";
+import Head from "next/head";
+import type { FC } from "react";
 
 interface Props {
   title?: string;
   description?: string;
 }
 
-const MetaTags: FC<Props> = ({ title = APP_NAME, description = DESCRIPTION }) => {
+const MetaTags: FC<Props> = ({
+  title = APP_NAME,
+  description = DESCRIPTION,
+}) => {
   return (
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=5"
+      />
 
       <meta property="og:url" content="https://lenster.xyz" />
       <meta property="og:site_name" content={APP_NAME} />

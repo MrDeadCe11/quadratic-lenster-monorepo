@@ -1,6 +1,6 @@
-import useStaffMode from '@components/utils/hooks/useStaffMode';
-import { useDisconnectXmtp } from '@components/utils/hooks/useXmtpClient';
-import { Menu } from '@headlessui/react';
+import useStaffMode from "@components/utils/hooks/useStaffMode";
+import { useDisconnectXmtp } from "@components/utils/hooks/useXmtpClient";
+import { Menu } from "@headlessui/react";
 import {
   CheckCircleIcon,
   CogIcon,
@@ -11,31 +11,31 @@ import {
   ShieldExclamationIcon,
   SunIcon,
   SwitchHorizontalIcon,
-  UserIcon
-} from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import formatHandle from '@lib/formatHandle';
-import getAttribute from '@lib/getAttribute';
-import getAvatar from '@lib/getAvatar';
-import isGardener from '@lib/isGardener';
-import isStaff from '@lib/isStaff';
-import resetAuthData from '@lib/resetAuthData';
-import { Trans } from '@lingui/macro';
-import clsx from 'clsx';
-import { APP_VERSION } from 'data/constants';
-import type { Profile } from 'lens';
-import { useRouter } from 'next/router';
-import { useTheme } from 'next-themes';
-import type { FC } from 'react';
-import { Fragment } from 'react';
-import { useAppPersistStore, useAppStore } from 'src/store/app';
-import { useGlobalModalStateStore } from 'src/store/modals';
-import { PROFILE, STAFFTOOLS, SYSTEM } from 'src/tracking';
-import { useDisconnect } from 'wagmi';
+  UserIcon,
+} from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import formatHandle from "@lib/formatHandle";
+import getAttribute from "@lib/getAttribute";
+import getAvatar from "@lib/getAvatar";
+import isGardener from "@lib/isGardener";
+import isStaff from "@lib/isStaff";
+import resetAuthData from "@lib/resetAuthData";
+import { Trans } from "@lingui/macro";
+import clsx from "clsx";
+import { APP_VERSION } from "data/constants";
+import type { Profile } from "lens";
+import { useRouter } from "next/router";
+import { useTheme } from "next-themes";
+import type { FC } from "react";
+import { Fragment } from "react";
+import { useAppPersistStore, useAppStore } from "src/store/app";
+import { useGlobalModalStateStore } from "src/store/modals";
+import { PROFILE, STAFFTOOLS, SYSTEM } from "src/tracking";
+import { useDisconnect } from "wagmi";
 
-import MenuTransition from '../MenuTransition';
-import Slug from '../Slug';
-import { NextLink } from './MenuItems';
+import MenuTransition from "../MenuTransition";
+import Slug from "../Slug";
+import { NextLink } from "./MenuItems";
 
 const SignedUser: FC = () => {
   const router = useRouter();
@@ -44,14 +44,19 @@ const SignedUser: FC = () => {
   const setCurrentProfile = useAppStore((state) => state.setCurrentProfile);
   const setProfileId = useAppPersistStore((state) => state.setProfileId);
   const setStaffMode = useAppPersistStore((state) => state.setStaffMode);
-  const setShowStatusModal = useGlobalModalStateStore((state) => state.setShowStatusModal);
+  const setShowStatusModal = useGlobalModalStateStore(
+    (state) => state.setShowStatusModal
+  );
   const { allowed: staffMode } = useStaffMode();
   const { theme, setTheme } = useTheme();
   const { disconnect } = useDisconnect();
   const disconnectXmtp = useDisconnectXmtp();
 
-  const statusEmoji = getAttribute(currentProfile?.attributes, 'statusEmoji');
-  const statusMessage = getAttribute(currentProfile?.attributes, 'statusMessage');
+  const statusEmoji = getAttribute(currentProfile?.attributes, "statusEmoji");
+  const statusMessage = getAttribute(
+    currentProfile?.attributes,
+    "statusMessage"
+  );
   const hasStatus = statusEmoji && statusMessage;
 
   const toggleStaffMode = () => {
@@ -66,7 +71,7 @@ const SignedUser: FC = () => {
     setProfileId(null);
     resetAuthData();
     disconnect?.();
-    router.push('/');
+    router.push("/");
   };
 
   return (
@@ -85,13 +90,19 @@ const SignedUser: FC = () => {
           <Menu.Item
             as={NextLink}
             href={`/u/${formatHandle(currentProfile?.handle)}`}
-            className={({ active }: { active: boolean }) => clsx({ 'dropdown-active': active }, 'menu-item')}
+            className={({ active }: { active: boolean }) =>
+              clsx({ "dropdown-active": active }, "menu-item")
+            }
           >
             <div>
               <Trans>Logged in as</Trans>
             </div>
             <div className="truncate">
-              <Slug className="font-bold" slug={formatHandle(currentProfile?.handle)} prefix="@" />
+              <Slug
+                className="font-bold"
+                slug={formatHandle(currentProfile?.handle)}
+                prefix="@"
+              />
             </div>
           </Menu.Item>
           <div className="divider" />
@@ -99,7 +110,10 @@ const SignedUser: FC = () => {
             as="a"
             onClick={() => setShowStatusModal(true)}
             className={({ active }: { active: boolean }) =>
-              clsx({ 'dropdown-active': active }, 'menu-item border dark:border-gray-700')
+              clsx(
+                { "dropdown-active": active },
+                "menu-item border dark:border-gray-700"
+              )
             }
           >
             <div className="flex items-center space-x-2">
@@ -122,7 +136,9 @@ const SignedUser: FC = () => {
           <Menu.Item
             as={NextLink}
             href={`/u/${formatHandle(currentProfile?.handle)}`}
-            className={({ active }: { active: boolean }) => clsx({ 'dropdown-active': active }, 'menu-item')}
+            className={({ active }: { active: boolean }) =>
+              clsx({ "dropdown-active": active }, "menu-item")
+            }
           >
             <div className="flex items-center space-x-1.5">
               <UserIcon className="w-4 h-4" />
@@ -134,7 +150,9 @@ const SignedUser: FC = () => {
           <Menu.Item
             as={NextLink}
             href="/settings"
-            className={({ active }: { active: boolean }) => clsx({ 'dropdown-active': active }, 'menu-item')}
+            className={({ active }: { active: boolean }) =>
+              clsx({ "dropdown-active": active }, "menu-item")
+            }
           >
             <div className="flex items-center space-x-1.5">
               <CogIcon className="w-4 h-4" />
@@ -148,7 +166,7 @@ const SignedUser: FC = () => {
               as={NextLink}
               href="/mod"
               className={({ active }: { active: boolean }) =>
-                clsx({ 'dropdown-active': active }, 'menu-item')
+                clsx({ "dropdown-active": active }, "menu-item")
               }
             >
               <div className="flex items-center space-x-1.5">
@@ -162,7 +180,9 @@ const SignedUser: FC = () => {
           <Menu.Item
             as="a"
             onClick={logout}
-            className={({ active }) => clsx({ 'dropdown-active': active }, 'menu-item')}
+            className={({ active }) =>
+              clsx({ "dropdown-active": active }, "menu-item")
+            }
           >
             <div className="flex items-center space-x-1.5">
               <LogoutIcon className="w-4 h-4" />
@@ -206,7 +226,9 @@ const SignedUser: FC = () => {
                         src={getAvatar(profile)}
                         alt={formatHandle(profile?.handle)}
                       />
-                      <div className="truncate">{formatHandle(profile?.handle)}</div>
+                      <div className="truncate">
+                        {formatHandle(profile?.handle)}
+                      </div>
                     </button>
                   </div>
                 ))}
@@ -217,13 +239,19 @@ const SignedUser: FC = () => {
           <Menu.Item
             as="a"
             onClick={() => {
-              setTheme(theme === 'light' ? 'dark' : 'light');
-              Analytics.track(theme === 'light' ? SYSTEM.SWITCH_DARK_THEME : SYSTEM.SWITCH_LIGHT_THEME);
+              setTheme(theme === "light" ? "dark" : "light");
+              Analytics.track(
+                theme === "light"
+                  ? SYSTEM.SWITCH_DARK_THEME
+                  : SYSTEM.SWITCH_LIGHT_THEME
+              );
             }}
-            className={({ active }) => clsx({ 'dropdown-active': active }, 'menu-item')}
+            className={({ active }) =>
+              clsx({ "dropdown-active": active }, "menu-item")
+            }
           >
             <div className="flex items-center space-x-1.5">
-              {theme === 'light' ? (
+              {theme === "light" ? (
                 <>
                   <MoonIcon className="w-4 h-4" />
                   <div>
@@ -261,7 +289,12 @@ const SignedUser: FC = () => {
               <Menu.Item
                 as="div"
                 onClick={toggleStaffMode}
-                className={({ active }) => clsx({ 'bg-yellow-100 dark:bg-yellow-800': active }, 'menu-item')}
+                className={({ active }) =>
+                  clsx(
+                    { "bg-yellow-100 dark:bg-yellow-800": active },
+                    "menu-item"
+                  )
+                }
               >
                 {staffMode ? (
                   <div className="flex items-center space-x-1.5">

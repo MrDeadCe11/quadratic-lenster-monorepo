@@ -1,14 +1,14 @@
-import { Input } from '@components/UI/Input';
-import { useDebounce } from '@components/utils/hooks/useDebounce';
-import type { ICategory } from '@giphy/js-fetch-api';
-import { GiphyFetch } from '@giphy/js-fetch-api';
-import type { IGif } from '@giphy/js-types';
-import { Grid } from '@giphy/react-components';
-import { t, Trans } from '@lingui/macro';
-import type { ChangeEvent, Dispatch, FC } from 'react';
-import { useEffect, useState } from 'react';
+import { Input } from "@components/UI/Input";
+import { useDebounce } from "@components/utils/hooks/useDebounce";
+import type { ICategory } from "@giphy/js-fetch-api";
+import { GiphyFetch } from "@giphy/js-fetch-api";
+import type { IGif } from "@giphy/js-types";
+import { Grid } from "@giphy/react-components";
+import { t, Trans } from "@lingui/macro";
+import type { ChangeEvent, Dispatch, FC } from "react";
+import { useEffect, useState } from "react";
 
-const giphyFetch = new GiphyFetch('sXpGFDGZs0Dv1mmNFvYaGUvYwKX0PWIh');
+const giphyFetch = new GiphyFetch("sXpGFDGZs0Dv1mmNFvYaGUvYwKX0PWIh");
 
 interface Props {
   setGifAttachment: (gif: IGif) => void;
@@ -17,8 +17,8 @@ interface Props {
 
 const GifSelector: FC<Props> = ({ setShowModal, setGifAttachment }) => {
   const [categories, setCategories] = useState<ICategory[]>([]);
-  const [debouncedGifInput, setDebouncedGifInput] = useState('');
-  const [searchText, setSearchText] = useState('');
+  const [debouncedGifInput, setDebouncedGifInput] = useState("");
+  const [searchText, setSearchText] = useState("");
 
   const fetchGiphyCategories = async () => {
     const { data } = await giphyFetch.categories();
@@ -28,8 +28,8 @@ const GifSelector: FC<Props> = ({ setShowModal, setGifAttachment }) => {
 
   const onSelectGif = (item: IGif) => {
     setGifAttachment(item);
-    setDebouncedGifInput('');
-    setSearchText('');
+    setDebouncedGifInput("");
+    setSearchText("");
     setShowModal(false);
   };
 

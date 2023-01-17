@@ -1,4 +1,4 @@
-import { ADDRESS_REGEX } from 'data/constants';
+import { ADDRESS_REGEX } from "data/constants";
 
 /**
  *
@@ -7,12 +7,15 @@ import { ADDRESS_REGEX } from 'data/constants';
  */
 const formatAddress = (address: string | null): string => {
   if (!address) {
-    return '';
+    return "";
   }
 
   const regex = ADDRESS_REGEX;
   if (address.match(regex)) {
-    return `${address.slice(0, 4)}…${address.slice(address.length - 4, address.length)}`;
+    return `${address.slice(0, 4)}…${address.slice(
+      address.length - 4,
+      address.length
+    )}`;
   }
 
   return address;

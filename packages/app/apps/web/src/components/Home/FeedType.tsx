@@ -1,16 +1,16 @@
-import TabButton from '@components/UI/TabButton';
-import { SparklesIcon, ViewListIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import { t } from '@lingui/macro';
-import type { Dispatch, FC } from 'react';
-import { MISCELLANEOUS } from 'src/tracking';
+import TabButton from "@components/UI/TabButton";
+import { SparklesIcon, ViewListIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import { t } from "@lingui/macro";
+import type { Dispatch, FC } from "react";
+import { MISCELLANEOUS } from "src/tracking";
 
-import FeedEventFilters from './FeedEventFilters';
-import SeeThroughLens from './SeeThroughLens';
+import FeedEventFilters from "./FeedEventFilters";
+import SeeThroughLens from "./SeeThroughLens";
 
 interface Props {
-  setFeedType: Dispatch<'TIMELINE' | 'HIGHLIGHTS'>;
-  feedType: 'TIMELINE' | 'HIGHLIGHTS';
+  setFeedType: Dispatch<"TIMELINE" | "HIGHLIGHTS">;
+  feedType: "TIMELINE" | "HIGHLIGHTS";
 }
 
 const FeedType: FC<Props> = ({ setFeedType, feedType }) => {
@@ -20,27 +20,27 @@ const FeedType: FC<Props> = ({ setFeedType, feedType }) => {
         <TabButton
           name={t`Timeline`}
           icon={<ViewListIcon className="w-4 h-4" />}
-          active={feedType === 'TIMELINE'}
+          active={feedType === "TIMELINE"}
           showOnSm={false}
           onClick={() => {
-            setFeedType('TIMELINE');
+            setFeedType("TIMELINE");
             Analytics.track(MISCELLANEOUS.SWITCH_TIMELINE);
           }}
         />
         <TabButton
           name={t`Highlights`}
           icon={<SparklesIcon className="w-4 h-4" />}
-          active={feedType === 'HIGHLIGHTS'}
+          active={feedType === "HIGHLIGHTS"}
           showOnSm={false}
           onClick={() => {
-            setFeedType('HIGHLIGHTS');
+            setFeedType("HIGHLIGHTS");
             Analytics.track(MISCELLANEOUS.SWITCH_HIGHLIGHTS);
           }}
         />
       </div>
       <div className="flex items-center space-x-4">
         <SeeThroughLens />
-        {feedType === 'TIMELINE' && <FeedEventFilters />}
+        {feedType === "TIMELINE" && <FeedEventFilters />}
       </div>
     </div>
   );

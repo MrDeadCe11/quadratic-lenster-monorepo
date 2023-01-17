@@ -1,21 +1,21 @@
-import { ApolloProvider } from '@apollo/client';
-import { initLocale } from '@lib/i18n';
-import { i18n } from '@lingui/core';
-import { I18nProvider } from '@lingui/react';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ALCHEMY_KEY, IS_MAINNET } from 'data/constants';
-import { ThemeProvider } from 'next-themes';
-import type { ReactNode } from 'react';
-import { useEffect } from 'react';
-import { configureChains, createClient, WagmiConfig } from 'wagmi';
-import { mainnet, polygon, polygonMumbai } from 'wagmi/chains';
-import { InjectedConnector } from 'wagmi/connectors/injected';
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
+import { ApolloProvider } from "@apollo/client";
+import { initLocale } from "@lib/i18n";
+import { i18n } from "@lingui/core";
+import { I18nProvider } from "@lingui/react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ALCHEMY_KEY, IS_MAINNET } from "data/constants";
+import { ThemeProvider } from "next-themes";
+import type { ReactNode } from "react";
+import { useEffect } from "react";
+import { configureChains, createClient, WagmiConfig } from "wagmi";
+import { mainnet, polygon, polygonMumbai } from "wagmi/chains";
+import { InjectedConnector } from "wagmi/connectors/injected";
+import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
+import { alchemyProvider } from "wagmi/providers/alchemy";
 
-import client from '../../apollo';
-import ErrorBoundary from './ErrorBoundary';
-import Layout from './Layout';
+import client from "../../apollo";
+import ErrorBoundary from "./ErrorBoundary";
+import Layout from "./Layout";
 
 const { chains, provider } = configureChains(
   [IS_MAINNET ? polygon : polygonMumbai, mainnet],
@@ -25,14 +25,14 @@ const { chains, provider } = configureChains(
 const connectors = () => {
   return [
     new InjectedConnector({ chains, options: { shimDisconnect: true } }),
-    new WalletConnectConnector({ chains, options: {} })
+    new WalletConnectConnector({ chains, options: {} }),
   ];
 };
 
 const wagmiClient = createClient({
   autoConnect: true,
   connectors,
-  provider
+  provider,
 });
 
 const queryClient = new QueryClient();

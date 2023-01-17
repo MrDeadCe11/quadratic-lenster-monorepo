@@ -1,34 +1,42 @@
-import MetaTags from '@components/Common/MetaTags';
-import SettingsHelper from '@components/Shared/SettingsHelper';
-import { Button } from '@components/UI/Button';
-import { Card } from '@components/UI/Card';
-import { EmptyState } from '@components/UI/EmptyState';
-import { Form, useZodForm } from '@components/UI/Form';
-import { GridItemEight, GridItemFour, GridLayout } from '@components/UI/GridLayout';
-import { Input } from '@components/UI/Input';
-import { TextArea } from '@components/UI/TextArea';
-import { PencilAltIcon } from '@heroicons/react/outline';
-import { CheckCircleIcon } from '@heroicons/react/solid';
-import { t, Trans } from '@lingui/macro';
-import { APP_NAME, CONTACT_EMAIL } from 'data/constants';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import { object, string } from 'zod';
+import MetaTags from "@components/Common/MetaTags";
+import SettingsHelper from "@components/Shared/SettingsHelper";
+import { Button } from "@components/UI/Button";
+import { Card } from "@components/UI/Card";
+import { EmptyState } from "@components/UI/EmptyState";
+import { Form, useZodForm } from "@components/UI/Form";
+import {
+  GridItemEight,
+  GridItemFour,
+  GridLayout,
+} from "@components/UI/GridLayout";
+import { Input } from "@components/UI/Input";
+import { TextArea } from "@components/UI/TextArea";
+import { PencilAltIcon } from "@heroicons/react/outline";
+import { CheckCircleIcon } from "@heroicons/react/solid";
+import { t, Trans } from "@lingui/macro";
+import { APP_NAME, CONTACT_EMAIL } from "data/constants";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import { object, string } from "zod";
 
 const newContactSchema = object({
-  subject: string().min(1, { message: 'Subject  should not be empty' }).max(260, {
-    message: 'Subject should not exceed 260 characters'
-  }),
-  message: string().min(1, { message: 'Message should not be empty' }).max(1000, {
-    message: 'Message should not exceed 1000 characters'
-  })
+  subject: string()
+    .min(1, { message: "Subject  should not be empty" })
+    .max(260, {
+      message: "Subject should not exceed 260 characters",
+    }),
+  message: string()
+    .min(1, { message: "Message should not be empty" })
+    .max(1000, {
+      message: "Message should not exceed 1000 characters",
+    }),
 });
 
 const Contact: FC = () => {
   const { push } = useRouter();
 
   const form = useZodForm({
-    schema: newContactSchema
+    schema: newContactSchema,
   });
 
   return (
@@ -56,13 +64,24 @@ const Contact: FC = () => {
                 location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
                   subject
                 )}&body=${encodeURIComponent(message)}`;
-                push('/');
+                push("/");
               }}
             >
-              <Input label={t`Subject`} placeholder={t`What happened?`} {...form.register('subject')} />
-              <TextArea label={t`Message`} placeholder={t`How can we help?`} {...form.register('message')} />
+              <Input
+                label={t`Subject`}
+                placeholder={t`What happened?`}
+                {...form.register("subject")}
+              />
+              <TextArea
+                label={t`Message`}
+                placeholder={t`How can we help?`}
+                {...form.register("message")}
+              />
               <div className="ml-auto">
-                <Button type="submit" icon={<PencilAltIcon className="w-4 h-4" />}>
+                <Button
+                  type="submit"
+                  icon={<PencilAltIcon className="w-4 h-4" />}
+                >
                   <Trans>Submit</Trans>
                 </Button>
               </div>

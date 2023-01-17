@@ -1,8 +1,8 @@
-import type { ChildrenNode, MatchResponse, Node } from 'interweave';
-import { Matcher } from 'interweave';
-import { createElement } from 'react';
+import type { ChildrenNode, MatchResponse, Node } from "interweave";
+import { Matcher } from "interweave";
+import { createElement } from "react";
 
-import { BLOCKED_TLDS, URL_PATTERN } from './constants';
+import { BLOCKED_TLDS, URL_PATTERN } from "./constants";
 
 interface UrlProps {
   children: ChildrenNode;
@@ -19,13 +19,18 @@ const Url = ({ children, url }: UrlProps) => {
 
   return (
     // eslint-disable-next-line react/jsx-no-target-blank
-    <a href={href} target="_blank" onClick={(event) => event.stopPropagation()} rel="noopener">
+    <a
+      href={href}
+      target="_blank"
+      onClick={(event) => event.stopPropagation()}
+      rel="noopener"
+    >
       {children}
     </a>
   );
 };
 
-type UrlMatch = Pick<UrlProps, 'url' | 'host'>;
+type UrlMatch = Pick<UrlProps, "url" | "host">;
 
 export class UrlMatcher extends Matcher<UrlProps> {
   replaceWith(children: ChildrenNode, props: UrlProps): Node {
@@ -33,15 +38,20 @@ export class UrlMatcher extends Matcher<UrlProps> {
   }
 
   asTag(): string {
-    return 'a';
+    return "a";
   }
 
   match(string: string): MatchResponse<UrlMatch> | null {
-    const response = this.doMatch(string, URL_PATTERN, this.handleMatches, true);
+    const response = this.doMatch(
+      string,
+      URL_PATTERN,
+      this.handleMatches,
+      true
+    );
 
     if (response?.valid) {
       const { host } = response;
-      const tld = host.slice(host.lastIndexOf('.') + 1).toLowerCase();
+      const tld = host.slice(host.lastIndexOf(".") + 1).toLowerCase();
 
       if (BLOCKED_TLDS.includes(tld)) {
         response.valid = false;
@@ -54,7 +64,7 @@ export class UrlMatcher extends Matcher<UrlProps> {
   handleMatches(matches: string[]): UrlMatch {
     return {
       url: matches[0],
-      host: matches[3]
+      host: matches[3],
     };
   }
 }

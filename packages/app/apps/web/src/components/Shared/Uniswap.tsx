@@ -1,9 +1,12 @@
-import type { LensterCollectModule, LensterFollowModule } from '@generated/types';
-import { Analytics } from '@lib/analytics';
-import getUniswapURL from '@lib/getUniswapURL';
-import { STATIC_IMAGES_URL } from 'data/constants';
-import type { FC } from 'react';
-import { PUBLICATION } from 'src/tracking';
+import type {
+  LensterCollectModule,
+  LensterFollowModule,
+} from "@generated/types";
+import { Analytics } from "@lib/analytics";
+import getUniswapURL from "@lib/getUniswapURL";
+import { STATIC_IMAGES_URL } from "data/constants";
+import type { FC } from "react";
+import { PUBLICATION } from "src/tracking";
 
 interface Props {
   module: LensterCollectModule | LensterFollowModule;
@@ -16,7 +19,10 @@ const Uniswap: FC<Props> = ({ module }) => {
         You don't have enough <b>{module?.amount?.asset?.symbol}</b>
       </div>
       <a
-        href={getUniswapURL(parseFloat(module?.amount?.value), module?.amount?.asset?.address)}
+        href={getUniswapURL(
+          parseFloat(module?.amount?.value),
+          module?.amount?.asset?.address
+        )}
         onClick={() => {
           Analytics.track(PUBLICATION.COLLECT_MODULE.OPEN_UNISWAP);
         }}

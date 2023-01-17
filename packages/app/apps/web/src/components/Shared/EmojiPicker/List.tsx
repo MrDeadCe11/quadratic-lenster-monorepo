@@ -1,10 +1,10 @@
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import { t } from '@lingui/macro';
-import { ERROR_MESSAGE, STATIC_ASSETS_URL } from 'data/constants';
-import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import { t } from "@lingui/macro";
+import { ERROR_MESSAGE, STATIC_ASSETS_URL } from "data/constants";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
 
-import Loader from '../Loader';
+import Loader from "../Loader";
 
 interface Props {
   setEmoji: (emoji: string) => void;
@@ -38,7 +38,7 @@ const List: FC<Props> = ({ setEmoji }) => {
       <ErrorMessage
         className="m-5"
         title={ERROR_MESSAGE}
-        error={{ message: 'Error while loading emojis', name: ERROR_MESSAGE }}
+        error={{ message: "Error while loading emojis", name: ERROR_MESSAGE }}
       />
     );
   }

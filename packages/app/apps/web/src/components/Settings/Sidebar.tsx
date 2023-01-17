@@ -1,5 +1,5 @@
-import Sidebar from '@components/Shared/Sidebar';
-import UserProfile from '@components/Shared/UserProfile';
+import Sidebar from "@components/Shared/Sidebar";
+import UserProfile from "@components/Shared/UserProfile";
 import {
   BookmarkIcon,
   ChipIcon,
@@ -7,12 +7,12 @@ import {
   FingerPrintIcon,
   ShareIcon,
   SparklesIcon,
-  UserIcon
-} from '@heroicons/react/outline';
-import { t, Trans } from '@lingui/macro';
-import type { Profile } from 'lens';
-import type { FC } from 'react';
-import { useAppStore } from 'src/store/app';
+  UserIcon,
+} from "@heroicons/react/outline";
+import { t, Trans } from "@lingui/macro";
+import type { Profile } from "lens";
+import type { FC } from "react";
+import { useAppStore } from "src/store/app";
 
 const SettingsSidebar: FC = () => {
   const currentProfile = useAppStore((state) => state.currentProfile);
@@ -27,32 +27,32 @@ const SettingsSidebar: FC = () => {
           {
             title: t`Profile`,
             icon: <UserIcon className="w-4 h-4" />,
-            url: '/settings'
+            url: "/settings",
           },
           {
             title: t`Account`,
             icon: <ChipIcon className="w-4 h-4" />,
-            url: '/settings/account'
+            url: "/settings/account",
           },
           {
             title: t`Interests`,
             icon: <BookmarkIcon className="w-4 h-4" />,
-            url: '/settings/interests'
+            url: "/settings/interests",
           },
           {
             title: t`Dispatcher`,
             icon: <FingerPrintIcon className="w-4 h-4" />,
-            url: '/settings/dispatcher'
+            url: "/settings/dispatcher",
           },
           {
             title: t`Allowance`,
             icon: <ShareIcon className="w-4 h-4" />,
-            url: '/settings/allowance'
+            url: "/settings/allowance",
           },
           {
             title: t`Cleanup`,
             icon: <SparklesIcon className="w-4 h-4" />,
-            url: '/settings/cleanup'
+            url: "/settings/cleanup",
           },
           {
             title: (
@@ -61,8 +61,8 @@ const SettingsSidebar: FC = () => {
               </div>
             ),
             icon: <ExclamationIcon className="w-4 h-4 text-red-500" />,
-            url: '/settings/delete'
-          }
+            url: "/settings/delete",
+          },
         ]}
       />
     </div>

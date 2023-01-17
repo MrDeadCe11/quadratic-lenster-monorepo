@@ -1,25 +1,29 @@
-import SwitchNetwork from '@components/Shared/SwitchNetwork';
-import { Button } from '@components/UI/Button';
-import { Spinner } from '@components/UI/Spinner';
-import useIsMounted from '@components/utils/hooks/useIsMounted';
-import { XCircleIcon } from '@heroicons/react/solid';
-import { Analytics } from '@lib/analytics';
-import getWalletLogo from '@lib/getWalletLogo';
-import onError from '@lib/onError';
-import toSnakeCase from '@lib/toSnakeCase';
-import { t, Trans } from '@lingui/macro';
-import clsx from 'clsx';
-import { ERROR_MESSAGE } from 'data/constants';
-import { useAuthenticateMutation, useChallengeLazyQuery, useUserProfilesLazyQuery } from 'lens';
-import type { Dispatch, FC } from 'react';
-import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { CHAIN_ID } from 'src/constants';
-import { useAppPersistStore, useAppStore } from 'src/store/app';
-import { useAuthStore } from 'src/store/auth';
-import { USER } from 'src/tracking';
-import type { Connector } from 'wagmi';
-import { useAccount, useConnect, useNetwork, useSignMessage } from 'wagmi';
+import SwitchNetwork from "@components/Shared/SwitchNetwork";
+import { Button } from "@components/UI/Button";
+import { Spinner } from "@components/UI/Spinner";
+import useIsMounted from "@components/utils/hooks/useIsMounted";
+import { XCircleIcon } from "@heroicons/react/solid";
+import { Analytics } from "@lib/analytics";
+import getWalletLogo from "@lib/getWalletLogo";
+import onError from "@lib/onError";
+import toSnakeCase from "@lib/toSnakeCase";
+import { t, Trans } from "@lingui/macro";
+import clsx from "clsx";
+import { ERROR_MESSAGE } from "data/constants";
+import {
+  useAuthenticateMutation,
+  useChallengeLazyQuery,
+  useUserProfilesLazyQuery,
+} from "lens";
+import type { Dispatch, FC } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { CHAIN_ID } from "src/constants";
+import { useAppPersistStore, useAppStore } from "src/store/app";
+import { useAuthStore } from "src/store/auth";
+import { USER } from "src/tracking";
+import type { Connector } from "wagmi";
+import { useAccount, useConnect, useNetwork, useSignMessage } from "wagmi";
 
 interface Props {
   setHasConnected: Dispatch<boolean>;
@@ -39,9 +43,10 @@ const WalletSelector: FC<Props> = ({ setHasConnected, setHasProfile }) => {
   const { address, connector: activeConnector } = useAccount();
   const { signMessageAsync } = useSignMessage({ onError });
   const [loadChallenge, { error: errorChallenge }] = useChallengeLazyQuery({
-    fetchPolicy: 'no-cache'
+    fetchPolicy: "no-cache",
   });
-  const [authenticate, { error: errorAuthenticate }] = useAuthenticateMutation();
+  const [authenticate, { error: errorAuthenticate }] =
+    useAuthenticateMutation();
   const [getProfiles, { error: errorProfiles }] = useUserProfilesLazyQuery();
 
   const onConnect = async (connector: Connector) => {
@@ -50,7 +55,9 @@ const WalletSelector: FC<Props> = ({ setHasConnected, setHasProfile }) => {
       if (account) {
         setHasConnected(true);
       }
-      Analytics.track(`connect_with_${toSnakeCase(connector.name.toLowerCase())}`);
+      Analytics.track(
+        `connect_with_${toSnakeCase(connector.name.toLowerCase())}`
+      );
     } catch (error) {
       console.error(error);
     }
@@ -62,7 +69,7 @@ const WalletSelector: FC<Props> = ({ setHasConnected, setHasProfile }) => {
       setLoading(true);
       // Get challenge
       const challenge = await loadChallenge({
-        variables: { request: { address } }
+        variables: { request: { address } },
       });
 
       if (!challenge?.data?.challenge?.text) {
@@ -71,19 +78,22 @@ const WalletSelector: FC<Props> = ({ setHasConnected, setHasProfile }) => {
 
       // Get signature
       const signature = await signMessageAsync({
-        message: challenge?.data?.challenge?.text
+        message: challenge?.data?.challenge?.text,
       });
 
       // Auth user and set cookies
       const auth = await authenticate({
-        variables: { request: { address, signature } }
+        variables: { request: { address, signature } },
       });
-      localStorage.setItem('accessToken', auth.data?.authenticate.accessToken);
-      localStorage.setItem('refreshToken', auth.data?.authenticate.refreshToken);
+      localStorage.setItem("accessToken", auth.data?.authenticate.accessToken);
+      localStorage.setItem(
+        "refreshToken",
+        auth.data?.authenticate.refreshToken
+      );
 
       // Get authed profiles
       const { data: profilesData } = await getProfiles({
-        variables: { ownedBy: address }
+        variables: { ownedBy: address },
       });
 
       if (profilesData?.profiles?.items?.length === 0) {
@@ -93,7 +103,9 @@ const WalletSelector: FC<Props> = ({ setHasConnected, setHasProfile }) => {
         const profiles: any = profilesData?.profiles?.items
           ?.slice()
           ?.sort((a, b) => Number(a.id) - Number(b.id))
-          ?.sort((a, b) => (a.isDefault === b.isDefault ? 0 : a.isDefault ? -1 : 1));
+          ?.sort((a, b) =>
+            a.isDefault === b.isDefault ? 0 : a.isDefault ? -1 : 1
+          );
         const currentProfile = profiles[0];
         setProfiles(profiles);
         setCurrentProfile(currentProfile);
@@ -119,7 +131,13 @@ const WalletSelector: FC<Props> = ({ setHasConnected, setHasProfile }) => {
             loading ? (
               <Spinner className="mr-0.5" size="xs" />
             ) : (
-              <img className="mr-0.5 w-4 h-4" height={16} width={16} src="/lens.png" alt="Lens Logo" />
+              <img
+                className="mr-0.5 w-4 h-4"
+                height={16}
+                width={16}
+                src="/lens.png"
+                alt="Lens Logo"
+              />
             )
           }
           onClick={handleSign}
@@ -144,15 +162,26 @@ const WalletSelector: FC<Props> = ({ setHasConnected, setHasProfile }) => {
             type="button"
             key={connector.id}
             className={clsx(
-              { 'hover:bg-gray-100 dark:hover:bg-gray-700': connector.id !== activeConnector?.id },
-              'w-full flex items-center justify-between space-x-2.5 px-4 py-3 overflow-hidden rounded-xl border dark:border-gray-700 outline-none'
+              {
+                "hover:bg-gray-100 dark:hover:bg-gray-700":
+                  connector.id !== activeConnector?.id,
+              },
+              "w-full flex items-center justify-between space-x-2.5 px-4 py-3 overflow-hidden rounded-xl border dark:border-gray-700 outline-none"
             )}
             onClick={() => onConnect(connector)}
-            disabled={mounted ? !connector.ready || connector.id === activeConnector?.id : false}
+            disabled={
+              mounted
+                ? !connector.ready || connector.id === activeConnector?.id
+                : false
+            }
           >
             <span>
-              {mounted ? (connector.id === 'injected' ? t`Browser Wallet` : connector.name) : connector.name}
-              {mounted ? !connector.ready && ' (unsupported)' : ''}
+              {mounted
+                ? connector.id === "injected"
+                  ? t`Browser Wallet`
+                  : connector.name
+                : connector.name}
+              {mounted ? !connector.ready && " (unsupported)" : ""}
             </span>
             <img
               src={getWalletLogo(connector.name)}
@@ -168,7 +197,7 @@ const WalletSelector: FC<Props> = ({ setHasConnected, setHasProfile }) => {
       {error?.message ? (
         <div className="flex items-center space-x-1 text-red-500">
           <XCircleIcon className="w-5 h-5" />
-          <div>{error?.message ?? 'Failed to connect'}</div>
+          <div>{error?.message ?? "Failed to connect"}</div>
         </div>
       ) : null}
     </div>

@@ -5,10 +5,10 @@ import {
   PlusCircleIcon,
   ReceiptRefundIcon,
   ShareIcon,
-  StarIcon
-} from '@heroicons/react/outline';
-import { CollectModules, FollowModules, ReferenceModules } from 'lens';
-import type { FC } from 'react';
+  StarIcon,
+} from "@heroicons/react/outline";
+import { CollectModules, FollowModules, ReferenceModules } from "lens";
+import type { FC } from "react";
 
 interface Props {
   module: string;

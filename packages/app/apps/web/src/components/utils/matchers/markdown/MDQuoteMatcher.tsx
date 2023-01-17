@@ -1,5 +1,5 @@
-import type { ChildrenNode } from 'interweave';
-import { Matcher } from 'interweave';
+import type { ChildrenNode } from "interweave";
+import { Matcher } from "interweave";
 
 export class MDQuoteMatcher extends Matcher {
   replaceWith(children: ChildrenNode) {
@@ -11,12 +11,12 @@ export class MDQuoteMatcher extends Matcher {
   }
 
   asTag(): string {
-    return 'span';
+    return "span";
   }
 
   match(value: string) {
     return this.doMatch(value, /^> (.*$)/, (matches) => ({
-      match: matches[1]
+      match: matches[1],
     }));
   }
 }

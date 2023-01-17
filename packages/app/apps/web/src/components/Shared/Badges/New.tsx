@@ -1,6 +1,6 @@
-import { SparklesIcon } from '@heroicons/react/solid';
-import { Trans } from '@lingui/macro';
-import type { FC } from 'react';
+import { SparklesIcon } from "@heroicons/react/solid";
+import { Trans } from "@lingui/macro";
+import type { FC } from "react";
 
 const New: FC = () => {
   return (

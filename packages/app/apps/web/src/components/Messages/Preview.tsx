@@ -1,16 +1,16 @@
-import { BadgeCheckIcon } from '@heroicons/react/solid';
-import formatHandle from '@lib/formatHandle';
-import formatTime from '@lib/formatTime';
-import getAvatar from '@lib/getAvatar';
-import isVerified from '@lib/isVerified';
-import type { DecodedMessage } from '@xmtp/xmtp-js';
-import clsx from 'clsx';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import type { Profile } from 'lens';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import { useAppStore } from 'src/store/app';
+import { BadgeCheckIcon } from "@heroicons/react/solid";
+import formatHandle from "@lib/formatHandle";
+import formatTime from "@lib/formatTime";
+import getAvatar from "@lib/getAvatar";
+import isVerified from "@lib/isVerified";
+import type { DecodedMessage } from "@xmtp/xmtp-js";
+import clsx from "clsx";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import type { Profile } from "lens";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import { useAppStore } from "src/store/app";
 
 dayjs.extend(relativeTime);
 
@@ -21,20 +21,25 @@ interface Props {
   isSelected: boolean;
 }
 
-const Preview: FC<Props> = ({ profile, message, conversationKey, isSelected }) => {
+const Preview: FC<Props> = ({
+  profile,
+  message,
+  conversationKey,
+  isSelected,
+}) => {
   const router = useRouter();
   const currentProfile = useAppStore((state) => state.currentProfile);
   const address = currentProfile?.ownedBy;
 
   const onConversationSelected = (profileId: string) => {
-    router.push(profileId ? `/messages/${conversationKey}` : '/messages');
+    router.push(profileId ? `/messages/${conversationKey}` : "/messages");
   };
 
   return (
     <div
       className={clsx(
-        'py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800',
-        isSelected && 'bg-gray-50 dark:bg-gray-800'
+        "py-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800",
+        isSelected && "bg-gray-50 dark:bg-gray-800"
       )}
       onClick={() => onConversationSelected(profile.id)}
     >
@@ -50,17 +55,24 @@ const Preview: FC<Props> = ({ profile, message, conversationKey, isSelected }) =
         <div className="w-full">
           <div className="flex w-full justify-between space-x-1">
             <div className="flex gap-1 items-center max-w-sm">
-              <div className="line-clamp-1 text-md">{profile?.name ?? formatHandle(profile.handle)}</div>
-              {isVerified(profile?.id) && <BadgeCheckIcon className="min-w-fit w-4 h-4 text-brand" />}
+              <div className="line-clamp-1 text-md">
+                {profile?.name ?? formatHandle(profile.handle)}
+              </div>
+              {isVerified(profile?.id) && (
+                <BadgeCheckIcon className="min-w-fit w-4 h-4 text-brand" />
+              )}
             </div>
             {message.sent && (
-              <span className="min-w-fit pt-0.5 text-xs lt-text-gray-500" title={formatTime(message.sent)}>
+              <span
+                className="min-w-fit pt-0.5 text-xs lt-text-gray-500"
+                title={formatTime(message.sent)}
+              >
                 {dayjs(new Date(message.sent)).fromNow()}
               </span>
             )}
           </div>
           <span className="text-sm lt-text-gray-500 line-clamp-1 break-all">
-            {address === message.senderAddress && 'You: '} {message.content}
+            {address === message.senderAddress && "You: "} {message.content}
           </span>
         </div>
       </div>

@@ -1,18 +1,22 @@
-import SinglePublication from '@components/Publication/SinglePublication';
-import PublicationsShimmer from '@components/Shared/Shimmer/PublicationsShimmer';
-import { Card } from '@components/UI/Card';
-import { EmptyState } from '@components/UI/EmptyState';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import InfiniteLoader from '@components/UI/InfiniteLoader';
-import type { LensterPublication } from '@generated/types';
-import { CollectionIcon } from '@heroicons/react/outline';
-import { t, Trans } from '@lingui/macro';
-import { SCROLL_THRESHOLD } from 'data/constants';
-import type { PublicationSearchResult } from 'lens';
-import { CustomFiltersTypes, SearchRequestTypes, useSearchPublicationsQuery } from 'lens';
-import type { FC } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { useAppStore } from 'src/store/app';
+import SinglePublication from "@components/Publication/SinglePublication";
+import PublicationsShimmer from "@components/Shared/Shimmer/PublicationsShimmer";
+import { Card } from "@components/UI/Card";
+import { EmptyState } from "@components/UI/EmptyState";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import InfiniteLoader from "@components/UI/InfiniteLoader";
+import type { LensterPublication } from "@generated/types";
+import { CollectionIcon } from "@heroicons/react/outline";
+import { t, Trans } from "@lingui/macro";
+import { SCROLL_THRESHOLD } from "data/constants";
+import type { PublicationSearchResult } from "lens";
+import {
+  CustomFiltersTypes,
+  SearchRequestTypes,
+  useSearchPublicationsQuery,
+} from "lens";
+import type { FC } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useAppStore } from "src/store/app";
 
 interface Props {
   query: string | string[];
@@ -26,23 +30,30 @@ const Publications: FC<Props> = ({ query }) => {
     query,
     type: SearchRequestTypes.Publication,
     customFilters: [CustomFiltersTypes.Gardeners],
-    limit: 10
+    limit: 10,
   };
-  const reactionRequest = currentProfile ? { profileId: currentProfile?.id } : null;
+  const reactionRequest = currentProfile
+    ? { profileId: currentProfile?.id }
+    : null;
   const profileId = currentProfile?.id ?? null;
 
   const { data, loading, error, fetchMore } = useSearchPublicationsQuery({
-    variables: { request, reactionRequest, profileId }
+    variables: { request, reactionRequest, profileId },
   });
 
   const search = data?.search as PublicationSearchResult;
   const publications = search?.items as LensterPublication[];
   const pageInfo = search?.pageInfo;
-  const hasMore = pageInfo?.next && publications?.length !== pageInfo.totalCount;
+  const hasMore =
+    pageInfo?.next && publications?.length !== pageInfo.totalCount;
 
   const loadMore = async () => {
     await fetchMore({
-      variables: { request: { ...request, cursor: pageInfo?.next }, reactionRequest, profileId }
+      variables: {
+        request: { ...request, cursor: pageInfo?.next },
+        reactionRequest,
+        profileId,
+      },
     });
   };
 
@@ -64,7 +75,9 @@ const Publications: FC<Props> = ({ query }) => {
   }
 
   if (error) {
-    return <ErrorMessage title={t`Failed to load publications`} error={error} />;
+    return (
+      <ErrorMessage title={t`Failed to load publications`} error={error} />
+    );
   }
 
   return (
@@ -77,7 +90,10 @@ const Publications: FC<Props> = ({ query }) => {
     >
       <Card className="divide-y-[1px] dark:divide-gray-700">
         {publications?.map((publication, index) => (
-          <SinglePublication key={`${publication?.id}_${index}`} publication={publication} />
+          <SinglePublication
+            key={`${publication?.id}_${index}`}
+            publication={publication}
+          />
         ))}
       </Card>
     </InfiniteScroll>

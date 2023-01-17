@@ -1,8 +1,8 @@
-import { Trans } from '@lingui/macro';
-import type { FeedItem } from 'lens';
-import type { FC } from 'react';
+import { Trans } from "@lingui/macro";
+import type { FeedItem } from "lens";
+import type { FC } from "react";
 
-import ProfileCircles from './ProfileCircles';
+import ProfileCircles from "./ProfileCircles";
 
 interface Props {
   feedItem: FeedItem;
@@ -18,15 +18,23 @@ const Combined: FC<Props> = ({ feedItem }) => {
   const commentsLength = comments?.length ?? 0;
 
   const getReactionsLength = () => {
-    return [mirrorsLength, collectsLength, reactionsLength, commentsLength ?? 0].filter((n) => n > 0).length;
+    return [
+      mirrorsLength,
+      collectsLength,
+      reactionsLength,
+      commentsLength ?? 0,
+    ].filter((n) => n > 0).length;
   };
 
   const totalActions = getReactionsLength();
 
   const getAllProfiles = () => {
-    let profiles = [...mirrors, ...collects, ...reactions, ...comments].map((event) => event.profile);
+    let profiles = [...mirrors, ...collects, ...reactions, ...comments].map(
+      (event) => event.profile
+    );
     profiles = profiles.filter(
-      (profile, index, self) => index === self.findIndex((t) => t.id === profile.id)
+      (profile, index, self) =>
+        index === self.findIndex((t) => t.id === profile.id)
     );
     return profiles;
   };
@@ -37,7 +45,10 @@ const Combined: FC<Props> = ({ feedItem }) => {
       <div className="flex items-center space-x-1">
         {mirrorsLength ? (
           <span className="whitespace-nowrap">
-            <Trans>mirrored{totalActions < 3 ? (totalActions !== 1 ? ' and ' : '') : ', '}</Trans>
+            <Trans>
+              mirrored
+              {totalActions < 3 ? (totalActions !== 1 ? " and " : "") : ", "}
+            </Trans>
           </span>
         ) : null}
         {commentsLength ? (
@@ -46,12 +57,14 @@ const Combined: FC<Props> = ({ feedItem }) => {
               commented
               {totalActions < 3
                 ? collectsLength && reactionsLength
-                  ? ' and '
+                  ? " and "
                   : !mirrorsLength && totalActions !== 1
-                  ? ' and '
-                  : ''
-                : ', '}
-              {totalActions >= 3 && (!collectsLength || !reactionsLength) ? ' and ' : ''}
+                  ? " and "
+                  : ""
+                : ", "}
+              {totalActions >= 3 && (!collectsLength || !reactionsLength)
+                ? " and "
+                : ""}
             </Trans>
           </span>
         ) : null}
@@ -59,7 +72,11 @@ const Combined: FC<Props> = ({ feedItem }) => {
           <span className="whitespace-nowrap">
             <Trans>
               collected
-              {totalActions >= 3 && reactionsLength ? ' and ' : reactionsLength ? ' and ' : ''}
+              {totalActions >= 3 && reactionsLength
+                ? " and "
+                : reactionsLength
+                ? " and "
+                : ""}
             </Trans>
           </span>
         ) : null}

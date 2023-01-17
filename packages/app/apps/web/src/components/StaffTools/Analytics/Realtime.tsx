@@ -1,13 +1,13 @@
-import { Card } from '@components/UI/Card';
-import clsx from 'clsx';
-import Link from 'next/link';
-import type { FC } from 'react';
-import { useState } from 'react';
-import { w3cwebsocket as W3CWebSocket } from 'websocket';
+import { Card } from "@components/UI/Card";
+import clsx from "clsx";
+import Link from "next/link";
+import type { FC } from "react";
+import { useState } from "react";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-const client = new W3CWebSocket('wss://online.simpleanalytics.com/ws');
+const client = new W3CWebSocket("wss://online.simpleanalytics.com/ws");
 client.onopen = () => {
-  client.send(JSON.stringify({ hostname: 'lenster.xyz' }));
+  client.send(JSON.stringify({ hostname: "lenster.xyz" }));
 };
 
 const Realtime: FC = () => {
@@ -37,11 +37,11 @@ const Realtime: FC = () => {
           <Card
             key={index}
             className={clsx(
-              { 'bg-green-100 bg-opacity-50': item?.unique },
-              'px-5 py-2 text-sm flex items-center justify-between'
+              { "bg-green-100 bg-opacity-50": item?.unique },
+              "px-5 py-2 text-sm flex items-center justify-between"
             )}
           >
-            <Link href={item?.path ?? '/'} className="font-bold">
+            <Link href={item?.path ?? "/"} className="font-bold">
               {item?.path}
             </Link>
             <div className="flex items-center divide-x-2">

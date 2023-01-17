@@ -1,4 +1,4 @@
-import type { Attribute } from 'lens';
+import type { Attribute } from "lens";
 
 /**
  *
@@ -6,7 +6,10 @@ import type { Attribute } from 'lens';
  * @param traitType - The trait type to search for
  * @returns the attribute from a trait
  */
-const getAttributeFromTrait = (attributes: Attribute[] | null | undefined, traitType: string) => {
+const getAttributeFromTrait = (
+  attributes: Attribute[] | null | undefined,
+  traitType: string
+) => {
   return attributes?.find((el) => el.traitType === traitType)?.value;
 };
 

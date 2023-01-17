@@ -1,11 +1,11 @@
-import { Tooltip } from '@components/UI/Tooltip';
-import type { LensterPublication } from '@generated/types';
-import { ChatAlt2Icon } from '@heroicons/react/outline';
-import humanize from '@lib/humanize';
-import nFormatter from '@lib/nFormatter';
-import { motion } from 'framer-motion';
-import Link from 'next/link';
-import type { FC } from 'react';
+import { Tooltip } from "@components/UI/Tooltip";
+import type { LensterPublication } from "@generated/types";
+import { ChatAlt2Icon } from "@heroicons/react/outline";
+import humanize from "@lib/humanize";
+import nFormatter from "@lib/nFormatter";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import type { FC } from "react";
 
 interface Props {
   publication: LensterPublication;
@@ -14,10 +14,12 @@ interface Props {
 
 const Comment: FC<Props> = ({ publication, isFullPublication }) => {
   const count =
-    publication.__typename === 'Mirror'
+    publication.__typename === "Mirror"
       ? publication?.mirrorOf?.stats?.totalAmountOfComments
       : publication?.stats?.totalAmountOfComments;
-  const iconClassName = isFullPublication ? 'w-[17px] sm:w-[20px]' : 'w-[15px] sm:w-[18px]';
+  const iconClassName = isFullPublication
+    ? "w-[17px] sm:w-[20px]"
+    : "w-[15px] sm:w-[18px]";
 
   return (
     <motion.button whileTap={{ scale: 0.9 }} aria-label="Comment">
@@ -26,7 +28,7 @@ const Comment: FC<Props> = ({ publication, isFullPublication }) => {
           <span className="p-1.5 rounded-full hover:bg-blue-300 hover:bg-opacity-20">
             <Tooltip
               placement="top"
-              content={count > 0 ? `${humanize(count)} Comments` : 'Comment'}
+              content={count > 0 ? `${humanize(count)} Comments` : "Comment"}
               withDelay
             >
               <ChatAlt2Icon className={iconClassName} />

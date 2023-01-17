@@ -1,13 +1,13 @@
-import { Spinner } from '@components/UI/Spinner';
-import { PhotographIcon } from '@heroicons/react/outline';
-import getIPFSLink from '@lib/getIPFSLink';
-import imageProxy from '@lib/imageProxy';
-import uploadToIPFS from '@lib/uploadToIPFS';
-import clsx from 'clsx';
-import { COVER, ERROR_MESSAGE } from 'data/constants';
-import type { ChangeEvent, FC, Ref } from 'react';
-import { useState } from 'react';
-import toast from 'react-hot-toast';
+import { Spinner } from "@components/UI/Spinner";
+import { PhotographIcon } from "@heroicons/react/outline";
+import getIPFSLink from "@lib/getIPFSLink";
+import imageProxy from "@lib/imageProxy";
+import uploadToIPFS from "@lib/uploadToIPFS";
+import clsx from "clsx";
+import { COVER, ERROR_MESSAGE } from "data/constants";
+import type { ChangeEvent, FC, Ref } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 interface Props {
   isNew: boolean;
@@ -16,7 +16,12 @@ interface Props {
   imageRef: Ref<HTMLImageElement>;
 }
 
-const CoverImage: FC<Props> = ({ isNew = false, cover, setCover, imageRef }) => {
+const CoverImage: FC<Props> = ({
+  isNew = false,
+  cover,
+  setCover,
+  imageRef,
+}) => {
   const [loading, setLoading] = useState(false);
 
   const onError = (error: any) => {
@@ -49,7 +54,7 @@ const CoverImage: FC<Props> = ({ isNew = false, cover, setCover, imageRef }) => 
         <label
           className={clsx(
             { visible: loading && !cover, invisible: cover },
-            'absolute top-0 grid md:w-40 md:h-40 h-24 w-24 bg-gray-100 dark:bg-gray-900 cursor-pointer place-items-center group-hover:visible backdrop-blur-lg'
+            "absolute top-0 grid md:w-40 md:h-40 h-24 w-24 bg-gray-100 dark:bg-gray-900 cursor-pointer place-items-center group-hover:visible backdrop-blur-lg"
           )}
         >
           {loading && !cover ? (
@@ -60,7 +65,12 @@ const CoverImage: FC<Props> = ({ isNew = false, cover, setCover, imageRef }) => 
               <span>Add cover</span>
             </div>
           )}
-          <input type="file" accept=".png, .jpg, .jpeg, .svg" className="hidden w-full" onChange={onChange} />
+          <input
+            type="file"
+            accept=".png, .jpg, .jpeg, .svg"
+            className="hidden w-full"
+            onChange={onChange}
+          />
         </label>
       )}
     </div>

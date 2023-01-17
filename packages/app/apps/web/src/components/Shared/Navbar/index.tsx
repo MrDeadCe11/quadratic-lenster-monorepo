@@ -1,22 +1,22 @@
-import MessageIcon from '@components/Messages/MessageIcon';
-import NotificationIcon from '@components/Notification/NotificationIcon';
-import useStaffMode from '@components/utils/hooks/useStaffMode';
-import { Disclosure } from '@headlessui/react';
-import { MenuIcon, XIcon } from '@heroicons/react/outline';
-import formatHandle from '@lib/formatHandle';
-import hasPrideLogo from '@lib/hasPrideLogo';
-import { t } from '@lingui/macro';
-import clsx from 'clsx';
-import type { Profile } from 'lens';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import { useAppStore } from 'src/store/app';
+import MessageIcon from "@components/Messages/MessageIcon";
+import NotificationIcon from "@components/Notification/NotificationIcon";
+import useStaffMode from "@components/utils/hooks/useStaffMode";
+import { Disclosure } from "@headlessui/react";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import formatHandle from "@lib/formatHandle";
+import hasPrideLogo from "@lib/hasPrideLogo";
+import { t } from "@lingui/macro";
+import clsx from "clsx";
+import type { Profile } from "lens";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import { useAppStore } from "src/store/app";
 
-import MenuItems from './MenuItems';
-import MoreNavItems from './MoreNavItems';
-import Search from './Search';
-import StaffBar from './StaffBar';
+import MenuItems from "./MenuItems";
+import MoreNavItems from "./MoreNavItems";
+import Search from "./Search";
+import StaffBar from "./StaffBar";
 
 const Navbar: FC = () => {
   const currentProfile = useAppStore((state) => state.currentProfile);
@@ -35,14 +35,15 @@ const Navbar: FC = () => {
 
   const NavItem = ({ url, name, current }: NavItemProps) => {
     return (
-      <Link href={url} aria-current={current ? 'page' : undefined}>
+      <Link href={url} aria-current={current ? "page" : undefined}>
         <Disclosure.Button
           className={clsx(
-            'w-full text-left px-2 md:px-3 py-1 rounded-md font-bold cursor-pointer text-sm tracking-wide',
+            "w-full text-left px-2 md:px-3 py-1 rounded-md font-bold cursor-pointer text-sm tracking-wide",
             {
-              'text-black dark:text-white bg-gray-200 dark:bg-gray-800': current,
-              'text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800':
-                !current
+              "text-black dark:text-white bg-gray-200 dark:bg-gray-800":
+                current,
+              "text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-800":
+                !current,
             }
           )}
         >
@@ -57,8 +58,12 @@ const Navbar: FC = () => {
 
     return (
       <>
-        <NavItem url="/" name={t`Home`} current={pathname == '/'} />
-        <NavItem url="/explore" name={t`Explore`} current={pathname == '/explore'} />
+        <NavItem url="/" name={t`Home`} current={pathname == "/"} />
+        <NavItem
+          url="/explore"
+          name={t`Explore`}
+          current={pathname == "/explore"}
+        />
         <MoreNavItems />
       </>
     );
@@ -88,7 +93,11 @@ const Navbar: FC = () => {
                     className="w-8 h-8"
                     height={32}
                     width={32}
-                    src={currentProfile && hasPrideLogo(currentProfile) ? '/pride.svg' : '/logo.svg'}
+                    src={
+                      currentProfile && hasPrideLogo(currentProfile)
+                        ? "/pride.svg"
+                        : "/logo.svg"
+                    }
                     alt="Logo"
                   />
                 </Link>

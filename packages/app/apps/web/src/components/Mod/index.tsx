@@ -1,14 +1,18 @@
-import MetaTags from '@components/Common/MetaTags';
-import Footer from '@components/Shared/Footer';
-import { Card } from '@components/UI/Card';
-import { GridItemEight, GridItemFour, GridLayout } from '@components/UI/GridLayout';
-import isGardener from '@lib/isGardener';
-import { APP_NAME } from 'data/constants';
-import type { NextPage } from 'next';
-import Custom404 from 'src/pages/404';
-import { useAppStore } from 'src/store/app';
+import MetaTags from "@components/Common/MetaTags";
+import Footer from "@components/Shared/Footer";
+import { Card } from "@components/UI/Card";
+import {
+  GridItemEight,
+  GridItemFour,
+  GridLayout,
+} from "@components/UI/GridLayout";
+import isGardener from "@lib/isGardener";
+import { APP_NAME } from "data/constants";
+import type { NextPage } from "next";
+import Custom404 from "src/pages/404";
+import { useAppStore } from "src/store/app";
 
-import Feed from './Feed';
+import Feed from "./Feed";
 
 const Mod: NextPage = () => {
   const currentProfile = useAppStore((state) => state.currentProfile);

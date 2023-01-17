@@ -1,24 +1,26 @@
-import type { LensterPublication } from '@generated/types';
-import { Menu } from '@headlessui/react';
-import { ShieldExclamationIcon } from '@heroicons/react/outline';
-import clsx from 'clsx';
-import type { FC } from 'react';
-import { useGlobalModalStateStore } from 'src/store/modals';
+import type { LensterPublication } from "@generated/types";
+import { Menu } from "@headlessui/react";
+import { ShieldExclamationIcon } from "@heroicons/react/outline";
+import clsx from "clsx";
+import type { FC } from "react";
+import { useGlobalModalStateStore } from "src/store/modals";
 
 interface Props {
   publication: LensterPublication;
 }
 
 const Report: FC<Props> = ({ publication }) => {
-  const setShowReportModal = useGlobalModalStateStore((state) => state.setShowReportModal);
+  const setShowReportModal = useGlobalModalStateStore(
+    (state) => state.setShowReportModal
+  );
 
   return (
     <Menu.Item
       as="div"
       className={({ active }) =>
         clsx(
-          { 'dropdown-active': active },
-          'block px-4 py-1.5 text-sm text-red-500 m-2 rounded-lg cursor-pointer'
+          { "dropdown-active": active },
+          "block px-4 py-1.5 text-sm text-red-500 m-2 rounded-lg cursor-pointer"
         )
       }
       onClick={(event: any) => {

@@ -1,12 +1,12 @@
-import { ExternalLinkIcon } from '@heroicons/react/outline';
-import formatAddress from '@lib/formatAddress';
-import getStampFyiURL from '@lib/getStampFyiURL';
-import imageProxy from '@lib/imageProxy';
-import { AVATAR, POLYGONSCAN_URL } from 'data/constants';
-import type { Wallet } from 'lens';
-import type { FC } from 'react';
+import { ExternalLinkIcon } from "@heroicons/react/outline";
+import formatAddress from "@lib/formatAddress";
+import getStampFyiURL from "@lib/getStampFyiURL";
+import imageProxy from "@lib/imageProxy";
+import { AVATAR, POLYGONSCAN_URL } from "data/constants";
+import type { Wallet } from "lens";
+import type { FC } from "react";
 
-import Slug from './Slug';
+import Slug from "./Slug";
 
 interface Props {
   wallet: Wallet;

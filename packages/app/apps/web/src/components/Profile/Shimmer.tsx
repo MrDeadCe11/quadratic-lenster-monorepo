@@ -1,6 +1,10 @@
-import PublicationsShimmer from '@components/Shared/Shimmer/PublicationsShimmer';
-import { GridItemEight, GridItemFour, GridLayout } from '@components/UI/GridLayout';
-import type { FC } from 'react';
+import PublicationsShimmer from "@components/Shared/Shimmer/PublicationsShimmer";
+import {
+  GridItemEight,
+  GridItemFour,
+  GridLayout,
+} from "@components/UI/GridLayout";
+import type { FC } from "react";
 
 const ProfilePageShimmer: FC = () => {
   return (

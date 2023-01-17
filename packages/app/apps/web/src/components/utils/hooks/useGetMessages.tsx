@@ -1,11 +1,17 @@
-import type { Conversation } from '@xmtp/xmtp-js';
-import { SortDirection } from '@xmtp/xmtp-js';
-import { MESSAGE_PAGE_LIMIT } from 'data/constants';
-import { useEffect, useState } from 'react';
-import { useMessageStore } from 'src/store/message';
+import type { Conversation } from "@xmtp/xmtp-js";
+import { SortDirection } from "@xmtp/xmtp-js";
+import { MESSAGE_PAGE_LIMIT } from "data/constants";
+import { useEffect, useState } from "react";
+import { useMessageStore } from "src/store/message";
 
-const useGetMessages = (conversationKey: string, conversation?: Conversation, endTime?: Date) => {
-  const messages = useMessageStore((state) => state.messages.get(conversationKey));
+const useGetMessages = (
+  conversationKey: string,
+  conversation?: Conversation,
+  endTime?: Date
+) => {
+  const messages = useMessageStore((state) =>
+    state.messages.get(conversationKey)
+  );
   const addMessages = useMessageStore((state) => state.addMessages);
   const [hasMore, setHasMore] = useState<Map<string, boolean>>(new Map());
 
@@ -18,7 +24,7 @@ const useGetMessages = (conversationKey: string, conversation?: Conversation, en
       const newMessages = await conversation.messages({
         direction: SortDirection.SORT_DIRECTION_DESCENDING,
         limit: MESSAGE_PAGE_LIMIT,
-        endTime: endTime
+        endTime: endTime,
       });
       if (newMessages.length > 0) {
         addMessages(conversationKey, newMessages);
@@ -40,7 +46,7 @@ const useGetMessages = (conversationKey: string, conversation?: Conversation, en
 
   return {
     messages,
-    hasMore: hasMore.get(conversationKey) ?? false
+    hasMore: hasMore.get(conversationKey) ?? false,
   };
 };
 

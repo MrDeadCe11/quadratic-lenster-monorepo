@@ -1,8 +1,8 @@
-import { Analytics } from '@lib/analytics';
-import { t } from '@lingui/macro';
-import clsx from 'clsx';
-import { PublicationMainFocus } from 'lens';
-import type { Dispatch, FC } from 'react';
+import { Analytics } from "@lib/analytics";
+import { t } from "@lingui/macro";
+import clsx from "clsx";
+import { PublicationMainFocus } from "lens";
+import type { Dispatch, FC } from "react";
 
 interface Props {
   setFocus: Dispatch<any>;
@@ -20,11 +20,13 @@ const FeedType: FC<Props> = ({ setFocus, focus }) => {
       type="button"
       onClick={() => {
         setFocus(type);
-        Analytics.track(`select_${(type ?? 'all_posts')?.toLowerCase()}_filter_in_explore`);
+        Analytics.track(
+          `select_${(type ?? "all_posts")?.toLowerCase()}_filter_in_explore`
+        );
       }}
       className={clsx(
-        { '!bg-brand-500 !text-white': focus === type },
-        'text-xs bg-brand-100 dark:bg-opacity-10 rounded-full px-3 sm:px-4 py-1.5 text-brand border border-brand-300 dark:border-brand-500'
+        { "!bg-brand-500 !text-white": focus === type },
+        "text-xs bg-brand-100 dark:bg-opacity-10 rounded-full px-3 sm:px-4 py-1.5 text-brand border border-brand-300 dark:border-brand-500"
       )}
       aria-label={name}
     >

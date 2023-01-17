@@ -1,16 +1,18 @@
-import type { LensterPublication } from '@generated/types';
-import { MEDIA_PROXY_URL } from 'data/constants';
+import type { LensterPublication } from "@generated/types";
+import { MEDIA_PROXY_URL } from "data/constants";
 
-import getIPFSLink from './getIPFSLink';
+import getIPFSLink from "./getIPFSLink";
 
 /**
  *
  * @param publication - The publication to get the thumbnail url from
  * @returns the thumbnail url from a publication
  */
-const getThumbnailUrl = (publication: LensterPublication | undefined): string => {
+const getThumbnailUrl = (
+  publication: LensterPublication | undefined
+): string => {
   if (!publication) {
-    return '';
+    return "";
   }
   const url =
     publication.metadata?.cover?.original.url ||

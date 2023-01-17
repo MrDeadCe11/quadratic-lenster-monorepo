@@ -1,17 +1,17 @@
-import Loader from '@components/Shared/Loader';
-import UserProfile from '@components/Shared/UserProfile';
-import WalletProfile from '@components/Shared/WalletProfile';
-import { EmptyState } from '@components/UI/EmptyState';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import InfiniteLoader from '@components/UI/InfiniteLoader';
-import { UsersIcon } from '@heroicons/react/outline';
-import formatHandle from '@lib/formatHandle';
-import { t, Trans } from '@lingui/macro';
-import { SCROLL_THRESHOLD } from 'data/constants';
-import type { Profile, Wallet } from 'lens';
-import { useFollowersQuery } from 'lens';
-import type { FC } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import Loader from "@components/Shared/Loader";
+import UserProfile from "@components/Shared/UserProfile";
+import WalletProfile from "@components/Shared/WalletProfile";
+import { EmptyState } from "@components/UI/EmptyState";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import InfiniteLoader from "@components/UI/InfiniteLoader";
+import { UsersIcon } from "@heroicons/react/outline";
+import formatHandle from "@lib/formatHandle";
+import { t, Trans } from "@lingui/macro";
+import { SCROLL_THRESHOLD } from "data/constants";
+import type { Profile, Wallet } from "lens";
+import { useFollowersQuery } from "lens";
+import type { FC } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 interface Props {
   profile: Profile;
@@ -23,7 +23,7 @@ const Followers: FC<Props> = ({ profile }) => {
 
   const { data, loading, error, fetchMore } = useFollowersQuery({
     variables: { request },
-    skip: !profile?.id
+    skip: !profile?.id,
   });
 
   const followers = data?.followers?.items;
@@ -32,7 +32,7 @@ const Followers: FC<Props> = ({ profile }) => {
 
   const loadMore = async () => {
     await fetchMore({
-      variables: { request: { ...request, cursor: pageInfo?.next } }
+      variables: { request: { ...request, cursor: pageInfo?.next } },
     });
   };
 
@@ -45,7 +45,9 @@ const Followers: FC<Props> = ({ profile }) => {
       <EmptyState
         message={
           <div>
-            <span className="mr-1 font-bold">@{formatHandle(profile?.handle)}</span>
+            <span className="mr-1 font-bold">
+              @{formatHandle(profile?.handle)}
+            </span>
             <span>
               <Trans>doesn’t have any followers yet.</Trans>
             </span>
@@ -59,7 +61,11 @@ const Followers: FC<Props> = ({ profile }) => {
 
   return (
     <div className="overflow-y-auto max-h-[80vh]" id="scrollableDiv">
-      <ErrorMessage className="m-5" title={t`Failed to load followers`} error={error} />
+      <ErrorMessage
+        className="m-5"
+        title={t`Failed to load followers`}
+        error={error}
+      />
       <InfiniteScroll
         dataLength={followers?.length ?? 0}
         scrollThreshold={SCROLL_THRESHOLD}

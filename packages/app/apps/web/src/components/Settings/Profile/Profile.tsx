@@ -1,52 +1,65 @@
-import ChooseFile from '@components/Shared/ChooseFile';
-import IndexStatus from '@components/Shared/IndexStatus';
-import { Button } from '@components/UI/Button';
-import { Card } from '@components/UI/Card';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import { Form, useZodForm } from '@components/UI/Form';
-import { Input } from '@components/UI/Input';
-import { Spinner } from '@components/UI/Spinner';
-import { TextArea } from '@components/UI/TextArea';
-import { Toggle } from '@components/UI/Toggle';
-import { PencilIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import getAttribute from '@lib/getAttribute';
-import getIPFSLink from '@lib/getIPFSLink';
-import getSignature from '@lib/getSignature';
-import hasPrideLogo from '@lib/hasPrideLogo';
-import imageProxy from '@lib/imageProxy';
-import onError from '@lib/onError';
-import splitSignature from '@lib/splitSignature';
-import uploadToArweave from '@lib/uploadToArweave';
-import uploadToIPFS from '@lib/uploadToIPFS';
-import { t, Trans } from '@lingui/macro';
-import { LensPeriphery } from 'abis';
-import { APP_NAME, COVER, LENS_PERIPHERY, SIGN_WALLET, URL_REGEX } from 'data/constants';
-import type { CreatePublicSetProfileMetadataUriRequest, MediaSet, Profile } from 'lens';
+import ChooseFile from "@components/Shared/ChooseFile";
+import IndexStatus from "@components/Shared/IndexStatus";
+import { Button } from "@components/UI/Button";
+import { Card } from "@components/UI/Card";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import { Form, useZodForm } from "@components/UI/Form";
+import { Input } from "@components/UI/Input";
+import { Spinner } from "@components/UI/Spinner";
+import { TextArea } from "@components/UI/TextArea";
+import { Toggle } from "@components/UI/Toggle";
+import { PencilIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import getAttribute from "@lib/getAttribute";
+import getIPFSLink from "@lib/getIPFSLink";
+import getSignature from "@lib/getSignature";
+import hasPrideLogo from "@lib/hasPrideLogo";
+import imageProxy from "@lib/imageProxy";
+import onError from "@lib/onError";
+import splitSignature from "@lib/splitSignature";
+import uploadToArweave from "@lib/uploadToArweave";
+import uploadToIPFS from "@lib/uploadToIPFS";
+import { t, Trans } from "@lingui/macro";
+import { LensPeriphery } from "abis";
+import {
+  APP_NAME,
+  COVER,
+  LENS_PERIPHERY,
+  SIGN_WALLET,
+  URL_REGEX,
+} from "data/constants";
+import type {
+  CreatePublicSetProfileMetadataUriRequest,
+  MediaSet,
+  Profile,
+} from "lens";
 import {
   useBroadcastMutation,
   useCreateSetProfileMetadataTypedDataMutation,
-  useCreateSetProfileMetadataViaDispatcherMutation
-} from 'lens';
-import type { ChangeEvent, FC } from 'react';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useAppStore } from 'src/store/app';
-import { SETTINGS } from 'src/tracking';
-import { v4 as uuid } from 'uuid';
-import { useContractWrite, useSignTypedData } from 'wagmi';
-import { object, string, union } from 'zod';
+  useCreateSetProfileMetadataViaDispatcherMutation,
+} from "lens";
+import type { ChangeEvent, FC } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useAppStore } from "src/store/app";
+import { SETTINGS } from "src/tracking";
+import { v4 as uuid } from "uuid";
+import { useContractWrite, useSignTypedData } from "wagmi";
+import { object, string, union } from "zod";
 
 const editProfileSchema = object({
-  name: string().max(100, { message: 'Name should not exceed 100 characters' }),
+  name: string().max(100, { message: "Name should not exceed 100 characters" }),
   location: string().max(100, {
-    message: 'Location should not exceed 100 characters'
+    message: "Location should not exceed 100 characters",
   }),
-  website: union([string().regex(URL_REGEX, { message: 'Invalid website' }), string().max(0)]),
+  website: union([
+    string().regex(URL_REGEX, { message: "Invalid website" }),
+    string().max(0),
+  ]),
   twitter: string().max(100, {
-    message: 'Twitter should not exceed 100 characters'
+    message: "Twitter should not exceed 100 characters",
   }),
-  bio: string().max(260, { message: 'Bio should not exceed 260 characters' })
+  bio: string().max(260, { message: "Bio should not exceed 260 characters" }),
 });
 
 interface Props {
@@ -56,34 +69,37 @@ interface Props {
 const ProfileSettingsForm: FC<Props> = ({ profile }) => {
   const currentProfile = useAppStore((state) => state.currentProfile);
   const [pride, setPride] = useState(hasPrideLogo(profile));
-  const [cover, setCover] = useState('');
+  const [cover, setCover] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [uploading, setUploading] = useState(false);
 
   const onCompleted = () => {
-    toast.success('Profile updated successfully!');
+    toast.success("Profile updated successfully!");
     Analytics.track(SETTINGS.PROFILE.UPDATE);
   };
 
-  const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData({ onError });
+  const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData({
+    onError,
+  });
 
   const {
     data: writeData,
     isLoading: writeLoading,
     error,
-    write
+    write,
   } = useContractWrite({
     address: LENS_PERIPHERY,
     abi: LensPeriphery,
-    functionName: 'setProfileMetadataURIWithSig',
-    mode: 'recklesslyUnprepared',
+    functionName: "setProfileMetadataURIWithSig",
+    mode: "recklesslyUnprepared",
     onSuccess: onCompleted,
-    onError
+    onError,
   });
 
-  const [broadcast, { data: broadcastData, loading: broadcastLoading }] = useBroadcastMutation({
-    onCompleted
-  });
+  const [broadcast, { data: broadcastData, loading: broadcastLoading }] =
+    useBroadcastMutation({
+      onCompleted,
+    });
   const [createSetProfileMetadataTypedData, { loading: typedDataLoading }] =
     useCreateSetProfileMetadataTypedDataMutation({
       onCompleted: async ({ createSetProfileMetadataTypedData }) => {
@@ -96,26 +112,37 @@ const ProfileSettingsForm: FC<Props> = ({ profile }) => {
           user: currentProfile?.ownedBy,
           profileId,
           metadata,
-          sig
+          sig,
         };
-        const { data } = await broadcast({ variables: { request: { id, signature } } });
-        if (data?.broadcast.__typename === 'RelayError') {
+        const { data } = await broadcast({
+          variables: { request: { id, signature } },
+        });
+        if (data?.broadcast.__typename === "RelayError") {
           return write?.({ recklesslySetUnpreparedArgs: [inputStruct] });
         }
       },
-      onError
+      onError,
     });
 
-  const [createSetProfileMetadataViaDispatcher, { data: dispatcherData, loading: dispatcherLoading }] =
-    useCreateSetProfileMetadataViaDispatcherMutation({ onCompleted, onError });
+  const [
+    createSetProfileMetadataViaDispatcher,
+    { data: dispatcherData, loading: dispatcherLoading },
+  ] = useCreateSetProfileMetadataViaDispatcherMutation({
+    onCompleted,
+    onError,
+  });
 
-  const createViaDispatcher = async (request: CreatePublicSetProfileMetadataUriRequest) => {
+  const createViaDispatcher = async (
+    request: CreatePublicSetProfileMetadataUriRequest
+  ) => {
     const { data } = await createSetProfileMetadataViaDispatcher({
-      variables: { request }
+      variables: { request },
     });
-    if (data?.createSetProfileMetadataViaDispatcher?.__typename === 'RelayError') {
+    if (
+      data?.createSetProfileMetadataViaDispatcher?.__typename === "RelayError"
+    ) {
       await createSetProfileMetadataTypedData({
-        variables: { request }
+        variables: { request },
       });
     }
   };
@@ -143,12 +170,15 @@ const ProfileSettingsForm: FC<Props> = ({ profile }) => {
   const form = useZodForm({
     schema: editProfileSchema,
     defaultValues: {
-      name: profile?.name ?? '',
-      location: getAttribute(profile?.attributes, 'location'),
-      website: getAttribute(profile?.attributes, 'website'),
-      twitter: getAttribute(profile?.attributes, 'twitter')?.replace('https://twitter.com/', ''),
-      bio: profile?.bio ?? ''
-    }
+      name: profile?.name ?? "",
+      location: getAttribute(profile?.attributes, "location"),
+      website: getAttribute(profile?.attributes, "website"),
+      twitter: getAttribute(profile?.attributes, "twitter")?.replace(
+        "https://twitter.com/",
+        ""
+      ),
+      bio: profile?.bio ?? "",
+    },
   });
 
   const editProfile = async (
@@ -173,41 +203,42 @@ const ProfileSettingsForm: FC<Props> = ({ profile }) => {
             ?.filter(
               (attr) =>
                 ![
-                  'location',
-                  'website',
-                  'twitter',
-                  'hasPrideLogo',
-                  'statusEmoji',
-                  'statusMessage',
-                  'app'
+                  "location",
+                  "website",
+                  "twitter",
+                  "hasPrideLogo",
+                  "statusEmoji",
+                  "statusMessage",
+                  "app",
                 ].includes(attr.key)
             )
-            .map(({ traitType, key, value }) => ({ traitType, key, value })) ?? []),
-          { traitType: 'string', key: 'location', value: location },
-          { traitType: 'string', key: 'website', value: website },
-          { traitType: 'string', key: 'twitter', value: twitter },
-          { traitType: 'boolean', key: 'hasPrideLogo', value: pride },
+            .map(({ traitType, key, value }) => ({ traitType, key, value })) ??
+            []),
+          { traitType: "string", key: "location", value: location },
+          { traitType: "string", key: "website", value: website },
+          { traitType: "string", key: "twitter", value: twitter },
+          { traitType: "boolean", key: "hasPrideLogo", value: pride },
           {
-            traitType: 'string',
-            key: 'statusEmoji',
-            value: getAttribute(profile?.attributes, 'statusEmoji')
+            traitType: "string",
+            key: "statusEmoji",
+            value: getAttribute(profile?.attributes, "statusEmoji"),
           },
           {
-            traitType: 'string',
-            key: 'statusMessage',
-            value: getAttribute(profile?.attributes, 'statusMessage')
+            traitType: "string",
+            key: "statusMessage",
+            value: getAttribute(profile?.attributes, "statusMessage"),
           },
-          { traitType: 'string', key: 'app', value: APP_NAME }
+          { traitType: "string", key: "app", value: APP_NAME },
         ],
-        version: '1.0.0',
+        version: "1.0.0",
         metadata_id: uuid(),
         createdOn: new Date(),
-        appId: APP_NAME
+        appId: APP_NAME,
       }).finally(() => setIsUploading(false));
 
       const request = {
         profileId: currentProfile?.id,
-        metadata: `https://arweave.net/${id}`
+        metadata: `https://arweave.net/${id}`,
       };
 
       if (currentProfile?.dispatcher?.canUseRelay) {
@@ -215,18 +246,25 @@ const ProfileSettingsForm: FC<Props> = ({ profile }) => {
       }
 
       return await createSetProfileMetadataTypedData({
-        variables: { request }
+        variables: { request },
       });
     } catch {}
   };
 
   const isLoading =
-    isUploading || typedDataLoading || dispatcherLoading || signLoading || writeLoading || broadcastLoading;
+    isUploading ||
+    typedDataLoading ||
+    dispatcherLoading ||
+    signLoading ||
+    writeLoading ||
+    broadcastLoading;
 
   const broadcastTxHash =
-    broadcastData?.broadcast.__typename === 'RelayerResult' && broadcastData.broadcast.txHash;
+    broadcastData?.broadcast.__typename === "RelayerResult" &&
+    broadcastData.broadcast.txHash;
   const dispatcherTxHash =
-    dispatcherData?.createSetProfileMetadataViaDispatcher.__typename === 'RelayerResult' &&
+    dispatcherData?.createSetProfileMetadataViaDispatcher.__typename ===
+      "RelayerResult" &&
     dispatcherData?.createSetProfileMetadataViaDispatcher.txHash;
 
   const txHash = writeData?.hash ?? broadcastTxHash ?? dispatcherTxHash;
@@ -240,19 +278,49 @@ const ProfileSettingsForm: FC<Props> = ({ profile }) => {
           editProfile(name, location, website, twitter, bio);
         }}
       >
-        {error && <ErrorMessage className="mb-3" title={t`Transaction failed!`} error={error} />}
-        <Input label={t`Profile Id`} type="text" value={currentProfile?.id} disabled />
-        <Input label={t`Name`} type="text" placeholder="Gavin" {...form.register('name')} />
-        <Input label={t`Location`} type="text" placeholder="Miami" {...form.register('location')} />
-        <Input label={t`Website`} type="text" placeholder="https://hooli.com" {...form.register('website')} />
+        {error && (
+          <ErrorMessage
+            className="mb-3"
+            title={t`Transaction failed!`}
+            error={error}
+          />
+        )}
+        <Input
+          label={t`Profile Id`}
+          type="text"
+          value={currentProfile?.id}
+          disabled
+        />
+        <Input
+          label={t`Name`}
+          type="text"
+          placeholder="Gavin"
+          {...form.register("name")}
+        />
+        <Input
+          label={t`Location`}
+          type="text"
+          placeholder="Miami"
+          {...form.register("location")}
+        />
+        <Input
+          label={t`Website`}
+          type="text"
+          placeholder="https://hooli.com"
+          {...form.register("website")}
+        />
         <Input
           label={t`Twitter`}
           type="text"
           prefix="https://twitter.com"
           placeholder="gavin"
-          {...form.register('twitter')}
+          {...form.register("twitter")}
         />
-        <TextArea label={t`Bio`} placeholder={t`Tell us something about you!`} {...form.register('bio')} />
+        <TextArea
+          label={t`Bio`}
+          placeholder={t`Tell us something about you!`}
+          {...form.register("bio")}
+        />
         <div className="space-y-1.5">
           <div className="label">Cover</div>
           <div className="space-y-3">
@@ -266,7 +334,11 @@ const ProfileSettingsForm: FC<Props> = ({ profile }) => {
               </div>
             )}
             <div className="flex items-center space-x-3">
-              <ChooseFile onChange={(evt: ChangeEvent<HTMLInputElement>) => handleUpload(evt)} />
+              <ChooseFile
+                onChange={(evt: ChangeEvent<HTMLInputElement>) =>
+                  handleUpload(evt)
+                }
+              />
               {uploading && <Spinner size="sm" />}
             </div>
           </div>
@@ -281,7 +353,10 @@ const ProfileSettingsForm: FC<Props> = ({ profile }) => {
           <div className="flex items-center space-x-2">
             <Toggle on={pride} setOn={setPride} />
             <div>
-              <Trans>Turn this on to show your pride and turn the {APP_NAME} logo rainbow every day.</Trans>
+              <Trans>
+                Turn this on to show your pride and turn the {APP_NAME} logo
+                rainbow every day.
+              </Trans>
             </div>
           </div>
         </div>
@@ -290,7 +365,13 @@ const ProfileSettingsForm: FC<Props> = ({ profile }) => {
             className="ml-auto"
             type="submit"
             disabled={isLoading}
-            icon={isLoading ? <Spinner size="xs" /> : <PencilIcon className="w-4 h-4" />}
+            icon={
+              isLoading ? (
+                <Spinner size="xs" />
+              ) : (
+                <PencilIcon className="w-4 h-4" />
+              )
+            }
           >
             <Trans>Save</Trans>
           </Button>

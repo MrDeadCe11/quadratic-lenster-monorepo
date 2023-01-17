@@ -1,6 +1,6 @@
-import { StarIcon } from '@heroicons/react/solid';
-import { Trans } from '@lingui/macro';
-import type { FC } from 'react';
+import { StarIcon } from "@heroicons/react/solid";
+import { Trans } from "@lingui/macro";
+import type { FC } from "react";
 
 const Beta: FC = () => {
   return (

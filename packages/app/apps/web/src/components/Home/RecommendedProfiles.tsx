@@ -1,20 +1,20 @@
-import UserProfileShimmer from '@components/Shared/Shimmer/UserProfileShimmer';
-import UserProfile from '@components/Shared/UserProfile';
-import { Card } from '@components/UI/Card';
-import { EmptyState } from '@components/UI/EmptyState';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import { Modal } from '@components/UI/Modal';
-import { DotsCircleHorizontalIcon, UsersIcon } from '@heroicons/react/outline';
-import { SparklesIcon } from '@heroicons/react/solid';
-import { Analytics } from '@lib/analytics';
-import { t, Trans } from '@lingui/macro';
-import type { Profile } from 'lens';
-import { useRecommendedProfilesQuery } from 'lens';
-import type { FC } from 'react';
-import { useState } from 'react';
-import { MISCELLANEOUS } from 'src/tracking';
+import UserProfileShimmer from "@components/Shared/Shimmer/UserProfileShimmer";
+import UserProfile from "@components/Shared/UserProfile";
+import { Card } from "@components/UI/Card";
+import { EmptyState } from "@components/UI/EmptyState";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import { Modal } from "@components/UI/Modal";
+import { DotsCircleHorizontalIcon, UsersIcon } from "@heroicons/react/outline";
+import { SparklesIcon } from "@heroicons/react/solid";
+import { Analytics } from "@lib/analytics";
+import { t, Trans } from "@lingui/macro";
+import type { Profile } from "lens";
+import { useRecommendedProfilesQuery } from "lens";
+import type { FC } from "react";
+import { useState } from "react";
+import { MISCELLANEOUS } from "src/tracking";
 
-import Suggested from './Suggested';
+import Suggested from "./Suggested";
 
 const Title = () => {
   return (
@@ -30,7 +30,7 @@ const Title = () => {
 const RecommendedProfiles: FC = () => {
   const [showSuggestedModal, setShowSuggestedModal] = useState(false);
   const { data, loading, error } = useRecommendedProfilesQuery({
-    variables: { options: { shuffle: false } }
+    variables: { options: { shuffle: false } },
   });
 
   if (loading) {
@@ -52,7 +52,10 @@ const RecommendedProfiles: FC = () => {
     return (
       <>
         <Title />
-        <EmptyState message={t`No recommendations!`} icon={<UsersIcon className="w-8 h-8 text-brand" />} />
+        <EmptyState
+          message={t`No recommendations!`}
+          icon={<UsersIcon className="w-8 h-8 text-brand" />}
+        />
       </>
     );
   }
@@ -62,10 +65,17 @@ const RecommendedProfiles: FC = () => {
       <Title />
       <Card as="aside">
         <div className="space-y-4 p-5">
-          <ErrorMessage title={t`Failed to load recommendations`} error={error} />
+          <ErrorMessage
+            title={t`Failed to load recommendations`}
+            error={error}
+          />
           {data?.recommendedProfiles?.slice(0, 5)?.map((profile) => (
             <div key={profile?.id} className="truncate">
-              <UserProfile profile={profile as Profile} isFollowing={profile.isFollowedByMe} showFollow />
+              <UserProfile
+                profile={profile as Profile}
+                isFollowing={profile.isFollowedByMe}
+                showFollow
+              />
             </div>
           ))}
         </div>

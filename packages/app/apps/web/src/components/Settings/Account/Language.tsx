@@ -1,10 +1,10 @@
-import { Card } from '@components/UI/Card';
-import { setLocale, supportedLocales } from '@lib/i18n';
-import { Trans } from '@lingui/macro';
-import { useLingui } from '@lingui/react';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import type { FC } from 'react';
+import { Card } from "@components/UI/Card";
+import { setLocale, supportedLocales } from "@lib/i18n";
+import { Trans } from "@lingui/macro";
+import { useLingui } from "@lingui/react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import type { FC } from "react";
 
 dayjs.extend(relativeTime);
 

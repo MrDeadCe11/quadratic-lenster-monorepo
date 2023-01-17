@@ -1,15 +1,15 @@
-import { Button } from '@components/UI/Button';
-import { Input } from '@components/UI/Input';
-import { Spinner } from '@components/UI/Spinner';
-import useWindowSize from '@components/utils/hooks/useWindowSize';
-import { ArrowRightIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import { t, Trans } from '@lingui/macro';
-import { MIN_WIDTH_DESKTOP } from 'data/constants';
-import type { FC } from 'react';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import { MESSAGES } from 'src/tracking';
+import { Button } from "@components/UI/Button";
+import { Input } from "@components/UI/Input";
+import { Spinner } from "@components/UI/Spinner";
+import useWindowSize from "@components/utils/hooks/useWindowSize";
+import { ArrowRightIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import { t, Trans } from "@lingui/macro";
+import { MIN_WIDTH_DESKTOP } from "data/constants";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { MESSAGES } from "src/tracking";
 
 interface Props {
   sendMessage: (message: string) => Promise<boolean>;
@@ -17,8 +17,12 @@ interface Props {
   disabledInput: boolean;
 }
 
-const Composer: FC<Props> = ({ sendMessage, conversationKey, disabledInput }) => {
-  const [message, setMessage] = useState<string>('');
+const Composer: FC<Props> = ({
+  sendMessage,
+  conversationKey,
+  disabledInput,
+}) => {
+  const [message, setMessage] = useState<string>("");
   const [sending, setSending] = useState<boolean>(false);
   const { width } = useWindowSize();
 
@@ -31,20 +35,20 @@ const Composer: FC<Props> = ({ sendMessage, conversationKey, disabledInput }) =>
     setSending(true);
     const sent = await sendMessage(message);
     if (sent) {
-      setMessage('');
+      setMessage("");
       Analytics.track(MESSAGES.SEND);
     } else {
-      toast.error('Error sending message');
+      toast.error("Error sending message");
     }
     setSending(false);
   };
 
   useEffect(() => {
-    setMessage('');
+    setMessage("");
   }, [conversationKey]);
 
   const handleKeyDown = (event: { key: string }) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSend();
     }
   };
@@ -59,7 +63,12 @@ const Composer: FC<Props> = ({ sendMessage, conversationKey, disabledInput }) =>
         onKeyDown={handleKeyDown}
         onChange={(event) => setMessage(event.target.value)}
       />
-      <Button disabled={!canSendMessage} onClick={handleSend} variant="primary" aria-label="Send message">
+      <Button
+        disabled={!canSendMessage}
+        onClick={handleSend}
+        variant="primary"
+        aria-label="Send message"
+      >
         <div className="flex items-center space-x-2">
           {Number(width) > MIN_WIDTH_DESKTOP ? (
             <span>

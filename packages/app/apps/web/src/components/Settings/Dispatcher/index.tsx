@@ -1,14 +1,18 @@
-import MetaTags from '@components/Common/MetaTags';
-import { Card } from '@components/UI/Card';
-import { GridItemEight, GridItemFour, GridLayout } from '@components/UI/GridLayout';
-import { Trans } from '@lingui/macro';
-import { APP_NAME } from 'data/constants';
-import type { FC } from 'react';
-import Custom404 from 'src/pages/404';
-import { useAppStore } from 'src/store/app';
+import MetaTags from "@components/Common/MetaTags";
+import { Card } from "@components/UI/Card";
+import {
+  GridItemEight,
+  GridItemFour,
+  GridLayout,
+} from "@components/UI/GridLayout";
+import { Trans } from "@lingui/macro";
+import { APP_NAME } from "data/constants";
+import type { FC } from "react";
+import Custom404 from "src/pages/404";
+import { useAppStore } from "src/store/app";
 
-import SettingsSidebar from '../Sidebar';
-import ToggleDispatcher from './ToggleDispatcher';
+import SettingsSidebar from "../Sidebar";
+import ToggleDispatcher from "./ToggleDispatcher";
 
 const DispatcherSettings: FC = () => {
   const currentProfile = useAppStore((state) => state.currentProfile);
@@ -27,13 +31,14 @@ const DispatcherSettings: FC = () => {
         <Card className="space-y-2 linkify p-5">
           <div className="flex items-center space-x-2">
             <div className="text-lg font-bold">
-              {currentProfile?.dispatcher?.canUseRelay ? 'Disable' : 'Enable'} dispatcher
+              {currentProfile?.dispatcher?.canUseRelay ? "Disable" : "Enable"}{" "}
+              dispatcher
             </div>
           </div>
           <div className="pb-2">
             <Trans>
-              We suggest you to enable dispatcher so you don't need to sign all your transactions in{' '}
-              {APP_NAME}.
+              We suggest you to enable dispatcher so you don't need to sign all
+              your transactions in {APP_NAME}.
             </Trans>
           </div>
           <ToggleDispatcher />

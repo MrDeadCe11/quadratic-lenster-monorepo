@@ -1,6 +1,6 @@
-import type { Conversation, DecodedMessage, Stream } from '@xmtp/xmtp-js';
-import { useEffect, useState } from 'react';
-import { useMessageStore } from 'src/store/message';
+import type { Conversation, DecodedMessage, Stream } from "@xmtp/xmtp-js";
+import { useEffect, useState } from "react";
+import { useMessageStore } from "src/store/message";
 
 const useStreamMessages = (
   conversationKey: string,

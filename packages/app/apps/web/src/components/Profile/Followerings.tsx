@@ -1,15 +1,15 @@
-import { Modal } from '@components/UI/Modal';
-import { UsersIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import humanize from '@lib/humanize';
-import { t, Trans } from '@lingui/macro';
-import type { Profile } from 'lens';
-import type { FC } from 'react';
-import { useState } from 'react';
-import { PROFILE } from 'src/tracking';
+import { Modal } from "@components/UI/Modal";
+import { UsersIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import humanize from "@lib/humanize";
+import { t, Trans } from "@lingui/macro";
+import type { Profile } from "lens";
+import type { FC } from "react";
+import { useState } from "react";
+import { PROFILE } from "src/tracking";
 
-import Followers from './Followers';
-import Following from './Following';
+import Followers from "./Followers";
+import Following from "./Following";
 
 interface Props {
   profile: Profile;
@@ -29,7 +29,9 @@ const Followerings: FC<Props> = ({ profile }) => {
           Analytics.track(PROFILE.OPEN_FOLLOWING);
         }}
       >
-        <div className="text-xl">{humanize(profile?.stats?.totalFollowing)}</div>
+        <div className="text-xl">
+          {humanize(profile?.stats?.totalFollowing)}
+        </div>
         <div className="lt-text-gray-500">
           <Trans>Following</Trans>
         </div>
@@ -42,7 +44,9 @@ const Followerings: FC<Props> = ({ profile }) => {
           Analytics.track(PROFILE.OPEN_FOLLOWERS);
         }}
       >
-        <div className="text-xl">{humanize(profile?.stats?.totalFollowers)}</div>
+        <div className="text-xl">
+          {humanize(profile?.stats?.totalFollowers)}
+        </div>
         <div className="lt-text-gray-500">
           <Trans>Followers</Trans>
         </div>

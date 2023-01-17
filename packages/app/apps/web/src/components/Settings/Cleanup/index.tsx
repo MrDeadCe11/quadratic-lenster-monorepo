@@ -1,16 +1,20 @@
-import MetaTags from '@components/Common/MetaTags';
-import { Button } from '@components/UI/Button';
-import { Card } from '@components/UI/Card';
-import { GridItemEight, GridItemFour, GridLayout } from '@components/UI/GridLayout';
-import { useDisconnectXmtp } from '@components/utils/hooks/useXmtpClient';
-import { t, Trans } from '@lingui/macro';
-import { APP_NAME, LS_KEYS } from 'data/constants';
-import type { NextPage } from 'next';
-import toast from 'react-hot-toast';
-import Custom404 from 'src/pages/404';
-import { useAppStore } from 'src/store/app';
+import MetaTags from "@components/Common/MetaTags";
+import { Button } from "@components/UI/Button";
+import { Card } from "@components/UI/Card";
+import {
+  GridItemEight,
+  GridItemFour,
+  GridLayout,
+} from "@components/UI/GridLayout";
+import { useDisconnectXmtp } from "@components/utils/hooks/useXmtpClient";
+import { t, Trans } from "@lingui/macro";
+import { APP_NAME, LS_KEYS } from "data/constants";
+import type { NextPage } from "next";
+import toast from "react-hot-toast";
+import Custom404 from "src/pages/404";
+import { useAppStore } from "src/store/app";
 
-import SettingsSidebar from '../Sidebar';
+import SettingsSidebar from "../Sidebar";
 
 const CleanupSettings: NextPage = () => {
   const currentProfile = useAppStore((state) => state.currentProfile);
@@ -39,8 +43,9 @@ const CleanupSettings: NextPage = () => {
             </div>
             <p>
               <Trans>
-                If you stuck with some issues, you can try to clean up the localstorage. This will remove all
-                the data stored in your browser.
+                If you stuck with some issues, you can try to clean up the
+                localstorage. This will remove all the data stored in your
+                browser.
               </Trans>
             </p>
           </div>
@@ -52,7 +57,9 @@ const CleanupSettings: NextPage = () => {
                   <Trans>Optimistic publications</Trans>
                 </b>
                 <div className="font-bold text-xs lt-text-gray-500">
-                  <Trans>Clean your posts or comments that are not indexed</Trans>
+                  <Trans>
+                    Clean your posts or comments that are not indexed
+                  </Trans>
                 </div>
               </div>
               <Button onClick={() => cleanup(LS_KEYS.TRANSACTION_STORE)}>

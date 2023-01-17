@@ -1,27 +1,27 @@
-import { Button } from '@components/UI/Button';
-import { EmptyState } from '@components/UI/EmptyState';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import { Form, useZodForm } from '@components/UI/Form';
-import { Spinner } from '@components/UI/Spinner';
-import { TextArea } from '@components/UI/TextArea';
-import type { LensterPublication } from '@generated/types';
-import { PencilAltIcon } from '@heroicons/react/outline';
-import { CheckCircleIcon } from '@heroicons/react/solid';
-import { Analytics } from '@lib/analytics';
-import { t, Trans } from '@lingui/macro';
-import { useReportPublicationMutation } from 'lens';
-import type { FC } from 'react';
-import { useState } from 'react';
-import { useGlobalModalStateStore } from 'src/store/modals';
-import { PUBLICATION } from 'src/tracking';
-import { object, string } from 'zod';
+import { Button } from "@components/UI/Button";
+import { EmptyState } from "@components/UI/EmptyState";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import { Form, useZodForm } from "@components/UI/Form";
+import { Spinner } from "@components/UI/Spinner";
+import { TextArea } from "@components/UI/TextArea";
+import type { LensterPublication } from "@generated/types";
+import { PencilAltIcon } from "@heroicons/react/outline";
+import { CheckCircleIcon } from "@heroicons/react/solid";
+import { Analytics } from "@lib/analytics";
+import { t, Trans } from "@lingui/macro";
+import { useReportPublicationMutation } from "lens";
+import type { FC } from "react";
+import { useState } from "react";
+import { useGlobalModalStateStore } from "src/store/modals";
+import { PUBLICATION } from "src/tracking";
+import { object, string } from "zod";
 
-import Reason from './Reason';
+import Reason from "./Reason";
 
 const newReportSchema = object({
   additionalComments: string().max(260, {
-    message: 'Additional comments should not exceed 260 characters'
-  })
+    message: "Additional comments should not exceed 260 characters",
+  }),
 });
 
 interface Props {
@@ -30,18 +30,20 @@ interface Props {
 
 const Report: FC<Props> = ({ publication }) => {
   const reportConfig = useGlobalModalStateStore((state) => state.reportConfig);
-  const [type, setType] = useState(reportConfig?.type ?? '');
-  const [subReason, setSubReason] = useState(reportConfig?.subReason ?? '');
+  const [type, setType] = useState(reportConfig?.type ?? "");
+  const [subReason, setSubReason] = useState(reportConfig?.subReason ?? "");
 
-  const [createReport, { data: submitData, loading: submitLoading, error: submitError }] =
-    useReportPublicationMutation({
-      onCompleted: () => {
-        Analytics.track(PUBLICATION.REPORT);
-      }
-    });
+  const [
+    createReport,
+    { data: submitData, loading: submitLoading, error: submitError },
+  ] = useReportPublicationMutation({
+    onCompleted: () => {
+      Analytics.track(PUBLICATION.REPORT);
+    },
+  });
 
   const form = useZodForm({
-    schema: newReportSchema
+    schema: newReportSchema,
   });
 
   const reportPublication = (additionalComments: string | null) => {
@@ -51,13 +53,13 @@ const Report: FC<Props> = ({ publication }) => {
           publicationId: publication?.id,
           reason: {
             [type]: {
-              reason: type.replace('Reason', '').toUpperCase(),
-              subreason: subReason
-            }
+              reason: type.replace("Reason", "").toUpperCase(),
+              subreason: subReason,
+            },
           },
-          additionalComments
-        }
-      }
+          additionalComments,
+        },
+      },
     });
   };
 
@@ -78,20 +80,33 @@ const Report: FC<Props> = ({ publication }) => {
               reportPublication(additionalComments);
             }}
           >
-            {submitError && <ErrorMessage title={t`Failed to report`} error={submitError} />}
-            <Reason setType={setType} setSubReason={setSubReason} type={type} subReason={subReason} />
+            {submitError && (
+              <ErrorMessage title={t`Failed to report`} error={submitError} />
+            )}
+            <Reason
+              setType={setType}
+              setSubReason={setSubReason}
+              type={type}
+              subReason={subReason}
+            />
             {subReason && (
               <>
                 <TextArea
                   label={t`Description`}
                   placeholder={t`Please provide additional details`}
-                  {...form.register('additionalComments')}
+                  {...form.register("additionalComments")}
                 />
                 <div className="ml-auto">
                   <Button
                     type="submit"
                     disabled={submitLoading}
-                    icon={submitLoading ? <Spinner size="xs" /> : <PencilAltIcon className="w-4 h-4" />}
+                    icon={
+                      submitLoading ? (
+                        <Spinner size="xs" />
+                      ) : (
+                        <PencilAltIcon className="w-4 h-4" />
+                      )
+                    }
                   >
                     <Trans>Report</Trans>
                   </Button>

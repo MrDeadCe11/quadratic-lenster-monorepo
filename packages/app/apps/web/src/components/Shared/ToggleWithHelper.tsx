@@ -1,5 +1,5 @@
-import { Toggle } from '@components/UI/Toggle';
-import type { FC } from 'react';
+import { Toggle } from "@components/UI/Toggle";
+import type { FC } from "react";
 
 interface Props {
   on: boolean;

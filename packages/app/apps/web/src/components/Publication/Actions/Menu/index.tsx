@@ -1,17 +1,17 @@
-import MenuTransition from '@components/Shared/MenuTransition';
-import type { LensterPublication } from '@generated/types';
-import { Menu } from '@headlessui/react';
-import { DotsVerticalIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import clsx from 'clsx';
-import type { FC } from 'react';
-import { useAppStore } from 'src/store/app';
-import { PUBLICATION } from 'src/tracking';
+import MenuTransition from "@components/Shared/MenuTransition";
+import type { LensterPublication } from "@generated/types";
+import { Menu } from "@headlessui/react";
+import { DotsVerticalIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import clsx from "clsx";
+import type { FC } from "react";
+import { useAppStore } from "src/store/app";
+import { PUBLICATION } from "src/tracking";
 
-import Delete from './Delete';
-import Embed from './Embed';
-import Permalink from './Permalink';
-import Report from './Report';
+import Delete from "./Delete";
+import Embed from "./Embed";
+import Permalink from "./Permalink";
+import Report from "./Report";
 
 interface Props {
   publication: LensterPublication;
@@ -19,7 +19,7 @@ interface Props {
 
 const PublicationMenu: FC<Props> = ({ publication }) => {
   const currentProfile = useAppStore((state) => state.currentProfile);
-  const iconClassName = 'w-[15px] sm:w-[18px]';
+  const iconClassName = "w-[15px] sm:w-[18px]";
 
   return (
     <Menu as="div" className="relative">
@@ -31,7 +31,7 @@ const PublicationMenu: FC<Props> = ({ publication }) => {
         }}
         aria-label="More"
       >
-        <DotsVerticalIcon className={clsx('lt-text-gray-500', iconClassName)} />
+        <DotsVerticalIcon className={clsx("lt-text-gray-500", iconClassName)} />
       </Menu.Button>
       <MenuTransition>
         <Menu.Items

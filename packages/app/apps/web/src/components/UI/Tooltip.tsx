@@ -1,12 +1,12 @@
-import 'tippy.js/dist/tippy.css';
+import "tippy.js/dist/tippy.css";
 
-import Tippy from '@tippyjs/react';
-import clsx from 'clsx';
-import type { FC, ReactNode } from 'react';
+import Tippy from "@tippyjs/react";
+import clsx from "clsx";
+import type { FC, ReactNode } from "react";
 interface Props {
   children: ReactNode;
   content: ReactNode;
-  placement?: 'top' | 'right';
+  placement?: "top" | "right";
   className?: string;
   withDelay?: boolean;
 }
@@ -14,9 +14,9 @@ interface Props {
 export const Tooltip: FC<Props> = ({
   children,
   content,
-  placement = 'right',
-  className = '',
-  withDelay = false
+  placement = "right",
+  className = "",
+  withDelay = false,
 }) => {
   return (
     <Tippy

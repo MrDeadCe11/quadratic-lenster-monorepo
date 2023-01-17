@@ -1,12 +1,12 @@
-import Unfollow from '@components/Shared/Unfollow';
-import UserProfile from '@components/Shared/UserProfile';
-import { ChevronLeftIcon } from '@heroicons/react/outline';
-import type { Profile } from 'lens';
-import { useRouter } from 'next/router';
-import type { FC } from 'react';
-import { useEffect, useState } from 'react';
+import Unfollow from "@components/Shared/Unfollow";
+import UserProfile from "@components/Shared/UserProfile";
+import { ChevronLeftIcon } from "@heroicons/react/outline";
+import type { Profile } from "lens";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import { useEffect, useState } from "react";
 
-import Follow from '../Shared/Follow';
+import Follow from "../Shared/Follow";
 
 interface Props {
   profile?: Profile;
@@ -17,7 +17,7 @@ const MessageHeader: FC<Props> = ({ profile }) => {
   const [following, setFollowing] = useState(true);
 
   const onBackClick = () => {
-    router.push('/messages');
+    router.push("/messages");
   };
 
   useEffect(() => {
@@ -31,7 +31,10 @@ const MessageHeader: FC<Props> = ({ profile }) => {
   return (
     <div className="dark:border-gray-700 flex items-center justify-between px-4 py-2 border-b-[1px]">
       <div className="flex items-center">
-        <ChevronLeftIcon onClick={onBackClick} className="w-6 h-6 mr-1 lg:hidden cursor-pointer" />
+        <ChevronLeftIcon
+          onClick={onBackClick}
+          className="w-6 h-6 mr-1 lg:hidden cursor-pointer"
+        />
         <UserProfile profile={profile} />
       </div>
       {!following ? (

@@ -1,7 +1,7 @@
-import { LS_KEYS } from 'data/constants';
-import type { Profile } from 'lens';
-import create from 'zustand';
-import { persist } from 'zustand/middleware';
+import { LS_KEYS } from "data/constants";
+import type { Profile } from "lens";
+import create from "zustand";
+import { persist } from "zustand/middleware";
 
 interface AppState {
   profiles: Profile[] | [];
@@ -22,7 +22,7 @@ export const useAppStore = create<AppState>((set) => ({
   userSigNonce: 0,
   setUserSigNonce: (userSigNonce) => set(() => ({ userSigNonce })),
   isPro: false,
-  setIsPro: (isPro) => set(() => ({ isPro }))
+  setIsPro: (isPro) => set(() => ({ isPro })),
 }));
 
 interface AppPersistState {
@@ -42,7 +42,8 @@ export const useAppPersistStore = create(
       staffMode: false,
       setStaffMode: (staffMode) => set(() => ({ staffMode })),
       notificationCount: 0,
-      setNotificationCount: (notificationCount) => set(() => ({ notificationCount }))
+      setNotificationCount: (notificationCount) =>
+        set(() => ({ notificationCount })),
     }),
     { name: LS_KEYS.LENSTER_STORE }
   )

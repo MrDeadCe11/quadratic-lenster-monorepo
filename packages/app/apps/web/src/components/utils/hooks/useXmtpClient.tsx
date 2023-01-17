@@ -1,13 +1,14 @@
-import { Client } from '@xmtp/xmtp-js';
-import { APP_NAME, APP_VERSION, LS_KEYS, XMTP_ENV } from 'data/constants';
-import { useCallback, useEffect, useState } from 'react';
-import { useAppStore } from 'src/store/app';
-import { useMessageStore } from 'src/store/message';
-import { useSigner } from 'wagmi';
+import { Client } from "@xmtp/xmtp-js";
+import { APP_NAME, APP_VERSION, LS_KEYS, XMTP_ENV } from "data/constants";
+import { useCallback, useEffect, useState } from "react";
+import { useAppStore } from "src/store/app";
+import { useMessageStore } from "src/store/message";
+import { useSigner } from "wagmi";
 
-const ENCODING = 'binary';
+const ENCODING = "binary";
 
-const buildLocalStorageKey = (walletAddress: string) => `xmtp:${XMTP_ENV}:keys:${walletAddress}`;
+const buildLocalStorageKey = (walletAddress: string) =>
+  `xmtp:${XMTP_ENV}:keys:${walletAddress}`;
 
 const loadKeys = (walletAddress: string): Uint8Array | null => {
   const val = localStorage.getItem(buildLocalStorageKey(walletAddress));
@@ -20,7 +21,10 @@ const loadKeys = (walletAddress: string): Uint8Array | null => {
  * of your LocalStorage before implementing something like this.
  */
 const storeKeys = (walletAddress: string, keys: Uint8Array) => {
-  localStorage.setItem(buildLocalStorageKey(walletAddress), Buffer.from(keys).toString(ENCODING));
+  localStorage.setItem(
+    buildLocalStorageKey(walletAddress),
+    Buffer.from(keys).toString(ENCODING)
+  );
 };
 
 const wipeKeys = (walletAddress: string) => {
@@ -45,15 +49,15 @@ const useXmtpClient = (cacheOnly = false) => {
           setAwaitingXmtpAuth(true);
           keys = await Client.getKeys(signer, {
             env: XMTP_ENV,
-            appVersion: APP_NAME + '/' + APP_VERSION
+            appVersion: APP_NAME + "/" + APP_VERSION,
           });
           storeKeys(await signer.getAddress(), keys);
         }
 
         const xmtp = await Client.create(null, {
           env: XMTP_ENV,
-          appVersion: APP_NAME + '/' + APP_VERSION,
-          privateKeyOverride: keys
+          appVersion: APP_NAME + "/" + APP_VERSION,
+          privateKeyOverride: keys,
         });
         setClient(xmtp);
         setAwaitingXmtpAuth(false);
@@ -71,7 +75,7 @@ const useXmtpClient = (cacheOnly = false) => {
 
   return {
     client: client,
-    loading: isLoading || awaitingXmtpAuth
+    loading: isLoading || awaitingXmtpAuth,
   };
 };
 

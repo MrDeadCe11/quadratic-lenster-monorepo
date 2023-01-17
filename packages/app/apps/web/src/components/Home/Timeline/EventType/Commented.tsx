@@ -1,7 +1,7 @@
-import ThreadBody from '@components/Publication/ThreadBody';
-import type { LensterPublication } from '@generated/types';
-import type { Comment, FeedItem } from 'lens';
-import type { FC } from 'react';
+import ThreadBody from "@components/Publication/ThreadBody";
+import type { LensterPublication } from "@generated/types";
+import type { Comment, FeedItem } from "lens";
+import type { FC } from "react";
 
 interface Props {
   feedItem: FeedItem;

@@ -1,5 +1,5 @@
-import { ReferenceModules } from 'lens';
-import create from 'zustand';
+import { ReferenceModules } from "lens";
+import create from "zustand";
 
 interface ReferenceModuleState {
   selectedReferenceModule: ReferenceModules;
@@ -12,9 +12,11 @@ interface ReferenceModuleState {
 
 export const useReferenceModuleStore = create<ReferenceModuleState>((set) => ({
   selectedReferenceModule: ReferenceModules.DegreesOfSeparationReferenceModule,
-  setSelectedReferenceModule: (selectedReferenceModule) => set(() => ({ selectedReferenceModule })),
+  setSelectedReferenceModule: (selectedReferenceModule) =>
+    set(() => ({ selectedReferenceModule })),
   onlyFollowers: false,
   setOnlyFollowers: (onlyFollowers) => set(() => ({ onlyFollowers })),
   degreesOfSeparation: 2,
-  setDegreesOfSeparation: (degreesOfSeparation) => set(() => ({ degreesOfSeparation }))
+  setDegreesOfSeparation: (degreesOfSeparation) =>
+    set(() => ({ degreesOfSeparation })),
 }));

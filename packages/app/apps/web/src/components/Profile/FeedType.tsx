@@ -1,11 +1,16 @@
-import TabButton from '@components/UI/TabButton';
-import { ChatAlt2Icon, FilmIcon, PencilAltIcon, PhotographIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import { t } from '@lingui/macro';
-import type { Dispatch, FC } from 'react';
-import { PROFILE } from 'src/tracking';
+import TabButton from "@components/UI/TabButton";
+import {
+  ChatAlt2Icon,
+  FilmIcon,
+  PencilAltIcon,
+  PhotographIcon,
+} from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import { t } from "@lingui/macro";
+import type { Dispatch, FC } from "react";
+import { PROFILE } from "src/tracking";
 
-import MediaFilter from './Filters/MediaFilter';
+import MediaFilter from "./Filters/MediaFilter";
 
 interface Props {
   setFeedType: Dispatch<string>;
@@ -19,41 +24,41 @@ const FeedType: FC<Props> = ({ setFeedType, feedType }) => {
         <TabButton
           name={t`Feed`}
           icon={<PencilAltIcon className="w-4 h-4" />}
-          active={feedType === 'FEED'}
+          active={feedType === "FEED"}
           onClick={() => {
-            setFeedType('FEED');
+            setFeedType("FEED");
             Analytics.track(PROFILE.SWITCH_FEED);
           }}
         />
         <TabButton
           name={t`Replies`}
           icon={<ChatAlt2Icon className="w-4 h-4" />}
-          active={feedType === 'REPLIES'}
+          active={feedType === "REPLIES"}
           onClick={() => {
-            setFeedType('REPLIES');
+            setFeedType("REPLIES");
             Analytics.track(PROFILE.SWITCH_REPLIES);
           }}
         />
         <TabButton
           name={t`Media`}
           icon={<FilmIcon className="w-4 h-4" />}
-          active={feedType === 'MEDIA'}
+          active={feedType === "MEDIA"}
           onClick={() => {
-            setFeedType('MEDIA');
+            setFeedType("MEDIA");
             Analytics.track(PROFILE.SWITCH_MEDIA);
           }}
         />
         <TabButton
           name={t`NFTs`}
           icon={<PhotographIcon className="w-4 h-4" />}
-          active={feedType === 'NFT'}
+          active={feedType === "NFT"}
           onClick={() => {
-            setFeedType('NFT');
+            setFeedType("NFT");
             Analytics.track(PROFILE.SWITCH_NFTS);
           }}
         />
       </div>
-      <div>{feedType === 'MEDIA' && <MediaFilter />}</div>
+      <div>{feedType === "MEDIA" && <MediaFilter />}</div>
     </div>
   );
 };

@@ -1,19 +1,19 @@
-import Slug from '@components/Shared/Slug';
-import UserPreview from '@components/Shared/UserPreview';
-import { Analytics } from '@lib/analytics';
-import formatHandle from '@lib/formatHandle';
-import { Matcher } from 'interweave';
-import type { Profile } from 'lens';
-import Link from 'next/link';
-import { createElement } from 'react';
-import { PUBLICATION } from 'src/tracking';
+import Slug from "@components/Shared/Slug";
+import UserPreview from "@components/Shared/UserPreview";
+import { Analytics } from "@lib/analytics";
+import formatHandle from "@lib/formatHandle";
+import { Matcher } from "interweave";
+import type { Profile } from "lens";
+import Link from "next/link";
+import { createElement } from "react";
+import { PUBLICATION } from "src/tracking";
 
 export const Mention = ({ ...props }: any) => {
   const profile = {
-    __typename: 'Profile',
+    __typename: "Profile",
     handle: props?.display.slice(1),
     name: null,
-    id: null
+    id: null,
   };
 
   return (
@@ -45,7 +45,7 @@ export class MentionMatcher extends Matcher {
   }
 
   asTag(): string {
-    return 'a';
+    return "a";
   }
 
   match(value: string) {

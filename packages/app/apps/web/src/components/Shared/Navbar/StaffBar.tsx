@@ -1,14 +1,20 @@
-import { GlobeAltIcon, HashtagIcon, TemplateIcon } from '@heroicons/react/outline';
-import { GIT_COMMIT_SHA, IS_MAINNET, IS_PRODUCTION } from 'data/constants';
-import Link from 'next/link';
-import type { FC, ReactNode } from 'react';
+import {
+  GlobeAltIcon,
+  HashtagIcon,
+  TemplateIcon,
+} from "@heroicons/react/outline";
+import { GIT_COMMIT_SHA, IS_MAINNET, IS_PRODUCTION } from "data/constants";
+import Link from "next/link";
+import type { FC, ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
 }
 
 const Badge: FC<Props> = ({ children }) => (
-  <span className="py-0.5 px-1.5 text-xs font-bold bg-gray-300 rounded-md dark:bg-gray-900">{children}</span>
+  <span className="py-0.5 px-1.5 text-xs font-bold bg-gray-300 rounded-md dark:bg-gray-900">
+    {children}
+  </span>
 );
 
 const StaffBar: FC = () => {
@@ -19,14 +25,20 @@ const StaffBar: FC = () => {
           <div className="flex items-center space-x-1">
             <GlobeAltIcon className="w-4 h-4 text-green-500" />
             <Badge>
-              prod <span className="text-[10px]">({IS_MAINNET ? 'mainnet' : 'testnet'})</span>
+              prod{" "}
+              <span className="text-[10px]">
+                ({IS_MAINNET ? "mainnet" : "testnet"})
+              </span>
             </Badge>
           </div>
         ) : (
           <div className="flex items-center space-x-1">
             <GlobeAltIcon className="w-4 h-4 text-yellow-500" />
             <Badge>
-              dev <span className="text-[10px]">({IS_MAINNET ? 'mainnet' : 'testnet'})</span>
+              dev{" "}
+              <span className="text-[10px]">
+                ({IS_MAINNET ? "mainnet" : "testnet"})
+              </span>
             </Badge>
           </div>
         )}

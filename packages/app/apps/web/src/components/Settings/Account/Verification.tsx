@@ -1,11 +1,11 @@
-import { Card } from '@components/UI/Card';
-import { BadgeCheckIcon } from '@heroicons/react/solid';
-import { Analytics } from '@lib/analytics';
-import isVerified from '@lib/isVerified';
-import { Trans } from '@lingui/macro';
-import type { FC } from 'react';
-import { useAppStore } from 'src/store/app';
-import { SETTINGS } from 'src/tracking';
+import { Card } from "@components/UI/Card";
+import { BadgeCheckIcon } from "@heroicons/react/solid";
+import { Analytics } from "@lib/analytics";
+import isVerified from "@lib/isVerified";
+import { Trans } from "@lingui/macro";
+import type { FC } from "react";
+import { useAppStore } from "src/store/app";
+import { SETTINGS } from "src/tracking";
 
 const Verification: FC = () => {
   const currentProfile = useAppStore((state) => state.currentProfile);
@@ -22,7 +22,7 @@ const Verification: FC = () => {
         </div>
       ) : (
         <div>
-          <Trans>No.</Trans>{' '}
+          <Trans>No.</Trans>{" "}
           <a
             href="https://tally.so/r/wgDajK"
             onClick={() => {

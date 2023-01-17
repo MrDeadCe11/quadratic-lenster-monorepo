@@ -1,23 +1,27 @@
-import MenuTransition from '@components/Shared/MenuTransition';
-import { Spinner } from '@components/UI/Spinner';
-import { Tooltip } from '@components/UI/Tooltip';
-import useOnClickOutside from '@components/utils/hooks/useOnClickOutside';
-import useUploadAttachments from '@components/utils/hooks/useUploadAttachments';
-import { Menu } from '@headlessui/react';
-import { MusicNoteIcon, PhotographIcon, VideoCameraIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import clsx from 'clsx';
+import MenuTransition from "@components/Shared/MenuTransition";
+import { Spinner } from "@components/UI/Spinner";
+import { Tooltip } from "@components/UI/Tooltip";
+import useOnClickOutside from "@components/utils/hooks/useOnClickOutside";
+import useUploadAttachments from "@components/utils/hooks/useUploadAttachments";
+import { Menu } from "@headlessui/react";
+import {
+  MusicNoteIcon,
+  PhotographIcon,
+  VideoCameraIcon,
+} from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import clsx from "clsx";
 import {
   ALLOWED_AUDIO_TYPES,
   ALLOWED_IMAGE_TYPES,
   ALLOWED_MEDIA_TYPES,
-  ALLOWED_VIDEO_TYPES
-} from 'data/constants';
-import type { ChangeEvent, FC } from 'react';
-import { useId, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
-import { usePublicationStore } from 'src/store/publication';
-import { PUBLICATION } from 'src/tracking';
+  ALLOWED_VIDEO_TYPES,
+} from "data/constants";
+import type { ChangeEvent, FC } from "react";
+import { useId, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { usePublicationStore } from "src/store/publication";
+import { PUBLICATION } from "src/tracking";
 
 const Attachment: FC = () => {
   const attachments = usePublicationStore((state) => state.attachments);
@@ -79,19 +83,23 @@ const Attachment: FC = () => {
     try {
       const { files } = evt.target;
       // Count check
-      if (files && (hasVideos(files) || (isImageType(files) && files.length + attachments.length > 4))) {
-        return toast.error('Please choose either 1 video or up to 4 photos.');
+      if (
+        files &&
+        (hasVideos(files) ||
+          (isImageType(files) && files.length + attachments.length > 4))
+      ) {
+        return toast.error("Please choose either 1 video or up to 4 photos.");
       }
 
       // Type check
       if (isTypeAllowed(files)) {
         await handleUploadAttachments(files);
-        evt.target.value = '';
+        evt.target.value = "";
       } else {
-        return toast.error('File format not allowed.');
+        return toast.error("File format not allowed.");
       }
     } catch {
-      toast.error('Something went wrong while uploading!');
+      toast.error("Something went wrong while uploading!");
     }
   };
 
@@ -120,8 +128,8 @@ const Attachment: FC = () => {
             as="label"
             className={({ active }) =>
               clsx(
-                { 'dropdown-active': active },
-                '!flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item'
+                { "dropdown-active": active },
+                "!flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item"
               )
             }
             htmlFor={`image_${id}`}
@@ -132,9 +140,11 @@ const Attachment: FC = () => {
               id={`image_${id}`}
               type="file"
               multiple
-              accept={ALLOWED_IMAGE_TYPES.join(',')}
+              accept={ALLOWED_IMAGE_TYPES.join(",")}
               className="hidden"
-              onClick={() => Analytics.track(PUBLICATION.NEW.ATTACHMENT.UPLOAD_IMAGES)}
+              onClick={() =>
+                Analytics.track(PUBLICATION.NEW.ATTACHMENT.UPLOAD_IMAGES)
+              }
               onChange={handleAttachment}
               disabled={attachments.length >= 4}
             />
@@ -143,8 +153,8 @@ const Attachment: FC = () => {
             as="label"
             className={({ active }) =>
               clsx(
-                { 'dropdown-active': active },
-                '!flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item'
+                { "dropdown-active": active },
+                "!flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item"
               )
             }
             htmlFor={`video_${id}`}
@@ -154,9 +164,11 @@ const Attachment: FC = () => {
             <input
               id={`video_${id}`}
               type="file"
-              accept={ALLOWED_VIDEO_TYPES.join(',')}
+              accept={ALLOWED_VIDEO_TYPES.join(",")}
               className="hidden"
-              onClick={() => Analytics.track(PUBLICATION.NEW.ATTACHMENT.UPLOAD_VIDEO)}
+              onClick={() =>
+                Analytics.track(PUBLICATION.NEW.ATTACHMENT.UPLOAD_VIDEO)
+              }
               onChange={handleAttachment}
               disabled={attachments.length >= 4}
             />
@@ -165,8 +177,8 @@ const Attachment: FC = () => {
             as="label"
             className={({ active }) =>
               clsx(
-                { 'dropdown-active': active },
-                '!flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item'
+                { "dropdown-active": active },
+                "!flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item"
               )
             }
             htmlFor={`audio_${id}`}
@@ -176,9 +188,11 @@ const Attachment: FC = () => {
             <input
               id={`audio_${id}`}
               type="file"
-              accept={ALLOWED_AUDIO_TYPES.join(',')}
+              accept={ALLOWED_AUDIO_TYPES.join(",")}
               className="hidden"
-              onClick={() => Analytics.track(PUBLICATION.NEW.ATTACHMENT.UPLOAD_AUDIO)}
+              onClick={() =>
+                Analytics.track(PUBLICATION.NEW.ATTACHMENT.UPLOAD_AUDIO)
+              }
               onChange={handleAttachment}
               disabled={attachments.length >= 4}
             />

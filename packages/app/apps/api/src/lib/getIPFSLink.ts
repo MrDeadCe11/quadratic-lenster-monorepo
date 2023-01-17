@@ -1,4 +1,4 @@
-import { IPFS_GATEWAY } from 'data/constants';
+import { IPFS_GATEWAY } from "data/constants";
 
 /**
  *
@@ -7,14 +7,14 @@ import { IPFS_GATEWAY } from 'data/constants';
  */
 const getIPFSLink = (hash: string): string => {
   if (!hash) {
-    return '';
+    return "";
   }
   const gateway = IPFS_GATEWAY;
 
   return hash
     .replace(/^Qm[1-9A-Za-z]{44}/gm, `${gateway}${hash}`)
-    .replace('https://ipfs.io/ipfs/', gateway)
-    .replace('ipfs://', gateway);
+    .replace("https://ipfs.io/ipfs/", gateway)
+    .replace("ipfs://", gateway);
 };
 
 export default getIPFSLink;

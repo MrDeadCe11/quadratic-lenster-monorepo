@@ -1,4 +1,4 @@
-import create from 'zustand';
+import create from "zustand";
 
 interface AuthState {
   showAuthModal: boolean;
@@ -7,5 +7,5 @@ interface AuthState {
 
 export const useAuthStore = create<AuthState>((set) => ({
   showAuthModal: false,
-  setShowAuthModal: (showAuthModal) => set(() => ({ showAuthModal }))
+  setShowAuthModal: (showAuthModal) => set(() => ({ showAuthModal })),
 }));

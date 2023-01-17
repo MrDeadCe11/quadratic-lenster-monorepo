@@ -1,7 +1,7 @@
-import { Card } from '@components/UI/Card';
-import type { FC } from 'react';
+import { Card } from "@components/UI/Card";
+import type { FC } from "react";
 
-import PublicationShimmer from './PublicationShimmer';
+import PublicationShimmer from "./PublicationShimmer";
 
 const PublicationsShimmer: FC = () => {
   return (

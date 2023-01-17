@@ -1,22 +1,33 @@
-import { Dialog, Transition } from '@headlessui/react';
-import { XIcon } from '@heroicons/react/outline';
-import clsx from 'clsx';
-import type { FC, ReactNode } from 'react';
-import { Fragment } from 'react';
+import { Dialog, Transition } from "@headlessui/react";
+import { XIcon } from "@heroicons/react/outline";
+import clsx from "clsx";
+import type { FC, ReactNode } from "react";
+import { Fragment } from "react";
 
 interface Props {
   icon?: ReactNode;
   title: ReactNode;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   show: boolean;
   children: ReactNode[] | ReactNode;
   onClose?: () => void;
 }
 
-export const Modal: FC<Props> = ({ icon, title, size = 'sm', show, children, onClose }) => {
+export const Modal: FC<Props> = ({
+  icon,
+  title,
+  size = "sm",
+  show,
+  children,
+  onClose,
+}) => {
   return (
     <Transition.Root show={show} as={Fragment}>
-      <Dialog as="div" className="overflow-y-auto fixed inset-0 z-10" onClose={() => onClose?.()}>
+      <Dialog
+        as="div"
+        className="overflow-y-auto fixed inset-0 z-10"
+        onClose={() => onClose?.()}
+      >
         <div className="flex justify-center items-center p-4 min-h-screen text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -29,7 +40,10 @@ export const Modal: FC<Props> = ({ icon, title, size = 'sm', show, children, onC
           >
             <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 dark:bg-gray-900 dark:bg-opacity-80 transition-opacity" />
           </Transition.Child>
-          <span className="hidden sm:inline-block sm:h-screen sm:align-middle" aria-hidden="true" />
+          <span
+            className="hidden sm:inline-block sm:h-screen sm:align-middle"
+            aria-hidden="true"
+          />
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-100"
@@ -41,10 +55,10 @@ export const Modal: FC<Props> = ({ icon, title, size = 'sm', show, children, onC
           >
             <div
               className={clsx(
-                { 'sm:max-w-5xl': size === 'lg' },
-                { 'sm:max-w-3xl': size === 'md' },
-                { 'sm:max-w-lg': size === 'sm' },
-                'inline-block align-bottom bg-white dark:bg-gray-800 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full rounded-xl'
+                { "sm:max-w-5xl": size === "lg" },
+                { "sm:max-w-3xl": size === "md" },
+                { "sm:max-w-lg": size === "sm" },
+                "inline-block align-bottom bg-white dark:bg-gray-800 text-left shadow-xl transform transition-all sm:my-8 sm:align-middle w-full rounded-xl"
               )}
             >
               <div className="flex justify-between items-center py-3.5 px-5 divider">

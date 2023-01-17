@@ -1,9 +1,9 @@
-import { gql, useQuery } from '@apollo/client';
-import { Button } from '@components/UI/Button';
-import { Spinner } from '@components/UI/Spinner';
-import { ArrowRightIcon } from '@heroicons/react/outline';
-import Link from 'next/link';
-import type { FC } from 'react';
+import { gql, useQuery } from "@apollo/client";
+import { Button } from "@components/UI/Button";
+import { Spinner } from "@components/UI/Spinner";
+import { ArrowRightIcon } from "@heroicons/react/outline";
+import Link from "next/link";
+import type { FC } from "react";
 
 const HAS_PUBLICATION_INDEXED_QUERY = gql`
   query HasPubicationIndexed($request: PublicationQueryRequest!) {
@@ -26,7 +26,7 @@ interface Props {
 const Pending: FC<Props> = ({ txHash, indexing, indexed, type, urlPrefix }) => {
   const { data, loading } = useQuery(HAS_PUBLICATION_INDEXED_QUERY, {
     variables: { request: { txHash } },
-    pollInterval: 1000
+    pollInterval: 1000,
   });
 
   return (
@@ -42,7 +42,10 @@ const Pending: FC<Props> = ({ txHash, indexing, indexed, type, urlPrefix }) => {
           <div>{indexed}</div>
           <div className="pt-3">
             <Link href={`/${urlPrefix}/${data?.publication?.id}`}>
-              <Button className="mx-auto" icon={<ArrowRightIcon className="mr-1 w-4 h-4" />}>
+              <Button
+                className="mx-auto"
+                icon={<ArrowRightIcon className="mr-1 w-4 h-4" />}
+              >
                 Go to {type}
               </Button>
             </Link>

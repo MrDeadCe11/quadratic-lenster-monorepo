@@ -1,10 +1,10 @@
-import WalletSelector from '@components/Shared/Login/WalletSelector';
-import { Trans } from '@lingui/macro';
-import { APP_NAME, IS_MAINNET, STATIC_IMAGES_URL } from 'data/constants';
-import type { FC } from 'react';
-import { useState } from 'react';
+import WalletSelector from "@components/Shared/Login/WalletSelector";
+import { Trans } from "@lingui/macro";
+import { APP_NAME, IS_MAINNET, STATIC_IMAGES_URL } from "data/constants";
+import type { FC } from "react";
+import { useState } from "react";
 
-import NewProfile from './New';
+import NewProfile from "./New";
 
 const Login: FC = () => {
   const [hasConnected, setHasConnected] = useState(false);
@@ -20,7 +20,10 @@ const Login: FC = () => {
                 <Trans>Please sign the message</Trans>.
               </div>
               <div className="text-sm lt-text-gray-500">
-                <Trans>{APP_NAME} uses this signature to verify that you're the owner of this address.</Trans>
+                <Trans>
+                  {APP_NAME} uses this signature to verify that you're the owner
+                  of this address.
+                </Trans>
               </div>
             </div>
           ) : (
@@ -29,11 +32,17 @@ const Login: FC = () => {
                 <Trans>Connect your wallet</Trans>.
               </div>
               <div className="text-sm lt-text-gray-500">
-                <Trans>Connect with one of our available wallet providers or create a new one.</Trans>
+                <Trans>
+                  Connect with one of our available wallet providers or create a
+                  new one.
+                </Trans>
               </div>
             </div>
           )}
-          <WalletSelector setHasConnected={setHasConnected} setHasProfile={setHasProfile} />
+          <WalletSelector
+            setHasConnected={setHasConnected}
+            setHasProfile={setHasProfile}
+          />
         </div>
       ) : IS_MAINNET ? (
         <div className="mb-2 space-y-4">
@@ -47,7 +56,7 @@ const Login: FC = () => {
           <div className="text-xl font-bold">Claim your Lens profile 🌿</div>
           <div className="space-y-1">
             <div className="linkify">
-              Visit{' '}
+              Visit{" "}
               <a
                 className="font-bold"
                 href="https://claim.lens.xyz"
@@ -55,10 +64,12 @@ const Login: FC = () => {
                 rel="noreferrer noopener"
               >
                 claiming site
-              </a>{' '}
+              </a>{" "}
               to claim your profile now 🏃‍♂️
             </div>
-            <div className="text-sm lt-text-gray-500">Make sure to check back here when done!</div>
+            <div className="text-sm lt-text-gray-500">
+              Make sure to check back here when done!
+            </div>
           </div>
         </div>
       ) : (

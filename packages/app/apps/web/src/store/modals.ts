@@ -1,5 +1,5 @@
-import type { LensterPublication } from '@generated/types';
-import create from 'zustand';
+import type { LensterPublication } from "@generated/types";
+import create from "zustand";
 
 interface GlobalModalState {
   showReportModal: boolean;
@@ -21,5 +21,5 @@ export const useGlobalModalStateStore = create<GlobalModalState>((set) => ({
   setShowReportModal: (showReportModal, reportPublication, reportConfig) =>
     set(() => ({ showReportModal, reportPublication, reportConfig })),
   showStatusModal: false,
-  setShowStatusModal: (showStatusModal) => set(() => ({ showStatusModal }))
+  setShowStatusModal: (showStatusModal) => set(() => ({ showStatusModal })),
 }));

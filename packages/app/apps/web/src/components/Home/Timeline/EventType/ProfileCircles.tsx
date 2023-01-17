@@ -1,8 +1,8 @@
-import formatHandle from '@lib/formatHandle';
-import getAvatar from '@lib/getAvatar';
-import type { Profile } from 'lens';
-import Link from 'next/link';
-import type { FC, ReactNode } from 'react';
+import formatHandle from "@lib/formatHandle";
+import getAvatar from "@lib/getAvatar";
+import type { Profile } from "lens";
+import Link from "next/link";
+import type { FC, ReactNode } from "react";
 
 interface Props {
   profiles: Profile[];
@@ -40,7 +40,9 @@ const ProfileCircles: FC<Props> = ({ profiles, context }) => {
     return (
       <Wrapper>
         <Link href={`/u/${formatHandle(profileOne?.handle)}`}>
-          <span className="whitespace-nowrap">{profileOne?.name ?? formatHandle(profileOne?.handle)}</span>
+          <span className="whitespace-nowrap">
+            {profileOne?.name ?? formatHandle(profileOne?.handle)}
+          </span>
         </Link>
       </Wrapper>
     );
@@ -55,7 +57,9 @@ const ProfileCircles: FC<Props> = ({ profiles, context }) => {
           </span>
         </Link>
         <Link href={`/u/${formatHandle(profileTwo?.handle)}`}>
-          <span className="whitespace-nowrap">{profileTwo?.name ?? formatHandle(profileTwo?.handle)}</span>
+          <span className="whitespace-nowrap">
+            {profileTwo?.name ?? formatHandle(profileTwo?.handle)}
+          </span>
         </Link>
       </Wrapper>
     );
@@ -68,13 +72,15 @@ const ProfileCircles: FC<Props> = ({ profiles, context }) => {
     return (
       <Wrapper>
         <Link href={`/u/${formatHandle(profileOne?.handle)}`}>
-          <span className="whitespace-nowrap">{profileOne?.name ?? formatHandle(profileOne?.handle)}, </span>
+          <span className="whitespace-nowrap">
+            {profileOne?.name ?? formatHandle(profileOne?.handle)},{" "}
+          </span>
         </Link>
         <span className="whitespace-nowrap">
           <Link href={`/u/${formatHandle(profileTwo?.handle)}`}>
             {profileTwo?.name ?? formatHandle(profileTwo?.handle)}
           </Link>
-          {isZero ? ' and ' : ', '}
+          {isZero ? " and " : ", "}
         </span>
         <Link href={`/u/${formatHandle(profileThree?.handle)}`}>
           <span className="whitespace-nowrap">
@@ -83,7 +89,7 @@ const ProfileCircles: FC<Props> = ({ profiles, context }) => {
         </Link>
         {!isZero && (
           <span className="whitespace-nowrap">
-            and {calculatedCount} {calculatedCount === 1 ? 'other' : 'others'}
+            and {calculatedCount} {calculatedCount === 1 ? "other" : "others"}
           </span>
         )}
       </Wrapper>

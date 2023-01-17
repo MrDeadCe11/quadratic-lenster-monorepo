@@ -1,21 +1,25 @@
-import { Analytics } from '@lib/analytics';
-import formatHandle from '@lib/formatHandle';
-import getAvatar from '@lib/getAvatar';
-import { Trans } from '@lingui/macro';
-import clsx from 'clsx';
-import type { Profile } from 'lens';
-import { useMutualFollowersQuery } from 'lens';
-import type { Dispatch, FC, ReactNode } from 'react';
-import { useAppStore } from 'src/store/app';
-import { PROFILE } from 'src/tracking';
+import { Analytics } from "@lib/analytics";
+import formatHandle from "@lib/formatHandle";
+import getAvatar from "@lib/getAvatar";
+import { Trans } from "@lingui/macro";
+import clsx from "clsx";
+import type { Profile } from "lens";
+import { useMutualFollowersQuery } from "lens";
+import type { Dispatch, FC, ReactNode } from "react";
+import { useAppStore } from "src/store/app";
+import { PROFILE } from "src/tracking";
 
 interface Props {
   setShowMutualFollowersModal?: Dispatch<boolean>;
   profile: Profile;
-  variant?: 'xs' | 'sm';
+  variant?: "xs" | "sm";
 }
 
-const MutualFollowers: FC<Props> = ({ setShowMutualFollowersModal, profile, variant = 'sm' }) => {
+const MutualFollowers: FC<Props> = ({
+  setShowMutualFollowersModal,
+  profile,
+  variant = "sm",
+}) => {
   const currentProfile = useAppStore((state) => state.currentProfile);
 
   const { data, loading, error } = useMutualFollowersQuery({
@@ -23,10 +27,10 @@ const MutualFollowers: FC<Props> = ({ setShowMutualFollowersModal, profile, vari
       request: {
         viewingProfileId: profile?.id,
         yourProfileId: currentProfile?.id,
-        limit: 3
-      }
+        limit: 3,
+      },
     },
-    skip: !profile?.id || !currentProfile?.id
+    skip: !profile?.id || !currentProfile?.id,
   });
 
   const profiles = data?.mutualFollowersProfiles?.items ?? [];
@@ -34,10 +38,13 @@ const MutualFollowers: FC<Props> = ({ setShowMutualFollowersModal, profile, vari
 
   const Wrapper = ({ children }: { children: ReactNode }) => (
     <div
-      className={clsx('lt-text-gray-500 flex items-center space-x-2.5 cursor-pointer', {
-        'text-sm': variant === 'sm',
-        'text-xs': variant === 'xs'
-      })}
+      className={clsx(
+        "lt-text-gray-500 flex items-center space-x-2.5 cursor-pointer",
+        {
+          "text-sm": variant === "sm",
+          "text-xs": variant === "xs",
+        }
+      )}
       onClick={() => {
         setShowMutualFollowersModal?.(true);
         Analytics.track(PROFILE.OPEN_MUTUAL_FOLLOWERS);
@@ -55,7 +62,7 @@ const MutualFollowers: FC<Props> = ({ setShowMutualFollowersModal, profile, vari
       </div>
       <div>
         <span>
-          <Trans>Followed by</Trans>{' '}
+          <Trans>Followed by</Trans>{" "}
         </span>
         {children}
       </div>
@@ -96,12 +103,12 @@ const MutualFollowers: FC<Props> = ({ setShowMutualFollowersModal, profile, vari
         <span>{profileOne?.name ?? formatHandle(profileOne?.handle)}, </span>
         <span>
           {profileTwo?.name ?? formatHandle(profileTwo?.handle)}
-          {isZero ? ' and ' : ', '}
+          {isZero ? " and " : ", "}
         </span>
         <span>{profileThree?.name ?? formatHandle(profileThree?.handle)} </span>
         {!isZero && (
           <span>
-            and {calculatedCount} {calculatedCount === 1 ? 'other' : 'others'}
+            and {calculatedCount} {calculatedCount === 1 ? "other" : "others"}
           </span>
         )}
       </Wrapper>

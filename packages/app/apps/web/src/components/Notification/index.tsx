@@ -1,20 +1,26 @@
-import MetaTags from '@components/Common/MetaTags';
-import TabButton from '@components/UI/TabButton';
-import { AtSymbolIcon, ChatAlt2Icon, LightningBoltIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import { t } from '@lingui/macro';
-import { APP_NAME } from 'data/constants';
-import type { FC } from 'react';
-import { useState } from 'react';
-import Custom404 from 'src/pages/404';
-import { useAppStore } from 'src/store/app';
-import { NOTIFICATION } from 'src/tracking';
+import MetaTags from "@components/Common/MetaTags";
+import TabButton from "@components/UI/TabButton";
+import {
+  AtSymbolIcon,
+  ChatAlt2Icon,
+  LightningBoltIcon,
+} from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import { t } from "@lingui/macro";
+import { APP_NAME } from "data/constants";
+import type { FC } from "react";
+import { useState } from "react";
+import Custom404 from "src/pages/404";
+import { useAppStore } from "src/store/app";
+import { NOTIFICATION } from "src/tracking";
 
-import List from './List';
+import List from "./List";
 
 const Notification: FC = () => {
   const currentProfile = useAppStore((state) => state.currentProfile);
-  const [feedType, setFeedType] = useState<'ALL' | 'MENTIONS' | 'COMMENTS'>('ALL');
+  const [feedType, setFeedType] = useState<"ALL" | "MENTIONS" | "COMMENTS">(
+    "ALL"
+  );
 
   if (!currentProfile) {
     return <Custom404 />;
@@ -28,27 +34,27 @@ const Notification: FC = () => {
           <TabButton
             name={t`All notifications`}
             icon={<LightningBoltIcon className="w-4 h-4" />}
-            active={feedType === 'ALL'}
+            active={feedType === "ALL"}
             onClick={() => {
-              setFeedType('ALL');
+              setFeedType("ALL");
               Analytics.track(NOTIFICATION.SWITCH_ALL);
             }}
           />
           <TabButton
             name={t`Mentions`}
             icon={<AtSymbolIcon className="w-4 h-4" />}
-            active={feedType === 'MENTIONS'}
+            active={feedType === "MENTIONS"}
             onClick={() => {
-              setFeedType('MENTIONS');
+              setFeedType("MENTIONS");
               Analytics.track(NOTIFICATION.SWITCH_MENTIONS);
             }}
           />
           <TabButton
             name={t`Comments`}
             icon={<ChatAlt2Icon className="w-4 h-4" />}
-            active={feedType === 'COMMENTS'}
+            active={feedType === "COMMENTS"}
             onClick={() => {
-              setFeedType('COMMENTS');
+              setFeedType("COMMENTS");
               Analytics.track(NOTIFICATION.SWITCH_COMMENTS);
             }}
           />

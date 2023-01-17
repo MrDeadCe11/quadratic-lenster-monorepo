@@ -1,6 +1,6 @@
-import type { FC } from 'react';
+import type { FC } from "react";
 
-import UserProfileShimmer from './UserProfileShimmer';
+import UserProfileShimmer from "./UserProfileShimmer";
 
 const PublicationShimmer: FC = () => {
   return (

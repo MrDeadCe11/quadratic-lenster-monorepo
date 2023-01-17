@@ -1,23 +1,23 @@
-import Markup from '@components/Shared/Markup';
-import { Card } from '@components/UI/Card';
-import { EmojiSadIcon } from '@heroicons/react/outline';
-import formatHandle from '@lib/formatHandle';
-import formatTime from '@lib/formatTime';
-import getAvatar from '@lib/getAvatar';
-import { Trans } from '@lingui/macro';
-import type { DecodedMessage } from '@xmtp/xmtp-js';
-import clsx from 'clsx';
-import dayjs from 'dayjs';
-import type { Profile } from 'lens';
-import type { FC, ReactNode } from 'react';
-import { memo } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
+import Markup from "@components/Shared/Markup";
+import { Card } from "@components/UI/Card";
+import { EmojiSadIcon } from "@heroicons/react/outline";
+import formatHandle from "@lib/formatHandle";
+import formatTime from "@lib/formatTime";
+import getAvatar from "@lib/getAvatar";
+import { Trans } from "@lingui/macro";
+import type { DecodedMessage } from "@xmtp/xmtp-js";
+import clsx from "clsx";
+import dayjs from "dayjs";
+import type { Profile } from "lens";
+import type { FC, ReactNode } from "react";
+import { memo } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const isOnSameDay = (d1?: Date, d2?: Date): boolean => {
-  return dayjs(d1).format('YYYYMMDD') === dayjs(d2).format('YYYYMMDD');
+  return dayjs(d1).format("YYYYMMDD") === dayjs(d2).format("YYYYMMDD");
 };
 
-const formatDate = (d?: Date) => dayjs(d).format('MMMM D, YYYY');
+const formatDate = (d?: Date) => dayjs(d).format("MMMM D, YYYY");
 
 interface MessageTileProps {
   message: DecodedMessage;
@@ -25,14 +25,18 @@ interface MessageTileProps {
   currentProfile?: Profile | null;
 }
 
-const MessageTile: FC<MessageTileProps> = ({ message, profile, currentProfile }) => {
+const MessageTile: FC<MessageTileProps> = ({
+  message,
+  profile,
+  currentProfile,
+}) => {
   const address = currentProfile?.ownedBy;
 
   return (
     <div
       className={clsx(
-        address === message.senderAddress ? 'items-end mr-4' : 'items-start',
-        'flex flex-col mx-auto mb-4'
+        address === message.senderAddress ? "items-end mr-4" : "items-start",
+        "flex flex-col mx-auto mb-4"
       )}
     >
       <div className="flex max-w-[60%]">
@@ -45,24 +49,29 @@ const MessageTile: FC<MessageTileProps> = ({ message, profile, currentProfile })
         )}
         <div
           className={clsx(
-            address === message.senderAddress ? 'bg-brand-500' : 'bg-gray-100 dark:bg-gray-700',
-            'px-4 py-2 rounded-lg w-full'
+            address === message.senderAddress
+              ? "bg-brand-500"
+              : "bg-gray-100 dark:bg-gray-700",
+            "px-4 py-2 rounded-lg w-full"
           )}
         >
           <span
             className={clsx(
-              address === message.senderAddress && 'text-white',
-              'block text-md break-words linkify-message'
+              address === message.senderAddress && "text-white",
+              "block text-md break-words linkify-message"
             )}
           >
             {message.error
               ? `Error: ${message.error?.message}`
-              : <Markup matchOnlyUrl>{message.content}</Markup> ?? ''}
+              : <Markup matchOnlyUrl>{message.content}</Markup> ?? ""}
           </span>
         </div>
       </div>
-      <div className={clsx(address !== message.senderAddress ? 'ml-12' : '')}>
-        <span className="text-xs place-self-end text-gray-400" title={formatTime(message.sent)}>
+      <div className={clsx(address !== message.senderAddress ? "ml-12" : "")}>
+        <span
+          className="text-xs place-self-end text-gray-400"
+          title={formatTime(message.sent)}
+        >
           {dayjs(message.sent).fromNow()}
         </span>
       </div>
@@ -85,13 +94,18 @@ const DateDividerBorder: FC<Props> = ({ children }) => (
 const DateDivider: FC<{ date?: Date }> = ({ date }) => (
   <div className="flex align-items-center items-center p-4 pt-0 pl-2">
     <DateDividerBorder>
-      <span className="mx-11 flex-none text-gray-300 text-sm font-bold">{formatDate(date)}</span>
+      <span className="mx-11 flex-none text-gray-300 text-sm font-bold">
+        {formatDate(date)}
+      </span>
     </DateDividerBorder>
   </div>
 );
 
 const MissingXmtpAuth: FC = () => (
-  <Card as="aside" className="mb-2 mr-4 border-gray-400 !bg-gray-300 !bg-opacity-20 space-y-2.5 p-5">
+  <Card
+    as="aside"
+    className="mb-2 mr-4 border-gray-400 !bg-gray-300 !bg-opacity-20 space-y-2.5 p-5"
+  >
     <div className="flex items-center space-x-2 font-bold">
       <EmojiSadIcon className="w-5 h-5" />
       <p>
@@ -133,14 +147,17 @@ const MessagesList: FC<MessageListProps> = ({
   profile,
   currentProfile,
   hasMore,
-  missingXmtpAuth
+  missingXmtpAuth,
 }) => {
   let lastMessageDate: Date | undefined;
 
   return (
     <div className="flex-grow flex h-[75%]">
       <div className="relative w-full h-full pl-4 flex">
-        <div id="scrollableDiv" className="flex flex-col-reverse h-full overflow-y-auto w-full">
+        <div
+          id="scrollableDiv"
+          className="flex flex-col-reverse h-full overflow-y-auto w-full"
+        >
           {missingXmtpAuth && <MissingXmtpAuth />}
           <InfiniteScroll
             dataLength={messages.length}
@@ -153,11 +170,19 @@ const MessagesList: FC<MessageListProps> = ({
             scrollableTarget="scrollableDiv"
           >
             {messages?.map((msg: DecodedMessage, index) => {
-              const dateHasChanged = lastMessageDate ? !isOnSameDay(lastMessageDate, msg.sent) : false;
+              const dateHasChanged = lastMessageDate
+                ? !isOnSameDay(lastMessageDate, msg.sent)
+                : false;
               const messageDiv = (
                 <div key={`${msg.id}_${index}`}>
-                  <MessageTile currentProfile={currentProfile} profile={profile} message={msg} />
-                  {dateHasChanged ? <DateDivider date={lastMessageDate} /> : null}
+                  <MessageTile
+                    currentProfile={currentProfile}
+                    profile={profile}
+                    message={msg}
+                  />
+                  {dateHasChanged ? (
+                    <DateDivider date={lastMessageDate} />
+                  ) : null}
                 </div>
               );
               lastMessageDate = msg.sent;

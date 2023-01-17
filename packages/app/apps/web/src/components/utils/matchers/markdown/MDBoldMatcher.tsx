@@ -1,5 +1,5 @@
-import type { ChildrenNode } from 'interweave';
-import { Matcher } from 'interweave';
+import type { ChildrenNode } from "interweave";
+import { Matcher } from "interweave";
 
 export class MDBoldMatcher extends Matcher {
   replaceWith(children: ChildrenNode) {
@@ -7,12 +7,12 @@ export class MDBoldMatcher extends Matcher {
   }
 
   asTag(): string {
-    return 'b';
+    return "b";
   }
 
   match(value: string) {
     return this.doMatch(value, /\*\*([^**]*?)\*\*/u, (matches) => ({
-      match: matches[1]
+      match: matches[1],
     }));
   }
 }

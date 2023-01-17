@@ -1,19 +1,26 @@
-import MenuTransition from '@components/Shared/MenuTransition';
-import { Checkbox } from '@components/UI/Checkbox';
-import { Tooltip } from '@components/UI/Tooltip';
-import { Menu } from '@headlessui/react';
-import { AdjustmentsIcon } from '@heroicons/react/outline';
-import { t } from '@lingui/macro';
-import clsx from 'clsx';
-import type { ChangeEvent, FC } from 'react';
-import { useTimelinePersistStore } from 'src/store/timeline';
+import MenuTransition from "@components/Shared/MenuTransition";
+import { Checkbox } from "@components/UI/Checkbox";
+import { Tooltip } from "@components/UI/Tooltip";
+import { Menu } from "@headlessui/react";
+import { AdjustmentsIcon } from "@heroicons/react/outline";
+import { t } from "@lingui/macro";
+import clsx from "clsx";
+import type { ChangeEvent, FC } from "react";
+import { useTimelinePersistStore } from "src/store/timeline";
 
 const FeedEventFilters: FC = () => {
-  const feedEventFilters = useTimelinePersistStore((state) => state.feedEventFilters);
-  const setFeedEventFilters = useTimelinePersistStore((state) => state.setFeedEventFilters);
+  const feedEventFilters = useTimelinePersistStore(
+    (state) => state.feedEventFilters
+  );
+  const setFeedEventFilters = useTimelinePersistStore(
+    (state) => state.setFeedEventFilters
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFeedEventFilters({ ...feedEventFilters, [e.target.name]: e.target.checked });
+    setFeedEventFilters({
+      ...feedEventFilters,
+      [e.target.name]: e.target.checked,
+    });
   };
 
   return (
@@ -32,8 +39,8 @@ const FeedEventFilters: FC = () => {
             as="label"
             className={({ active }) =>
               clsx(
-                { 'dropdown-active': active },
-                'flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item'
+                { "dropdown-active": active },
+                "flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item"
               )
             }
           >
@@ -48,8 +55,8 @@ const FeedEventFilters: FC = () => {
             as="label"
             className={({ active }) =>
               clsx(
-                { 'dropdown-active': active },
-                'flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item'
+                { "dropdown-active": active },
+                "flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item"
               )
             }
           >
@@ -64,8 +71,8 @@ const FeedEventFilters: FC = () => {
             as="label"
             className={({ active }) =>
               clsx(
-                { 'dropdown-active': active },
-                'flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item'
+                { "dropdown-active": active },
+                "flex rounded-lg gap-1 space-x-1 items-center cursor-pointer menu-item"
               )
             }
           >

@@ -1,59 +1,72 @@
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import type { QueryMatch } from '@lexical/react/LexicalTypeaheadMenuPlugin';
+import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
+import type { QueryMatch } from "@lexical/react/LexicalTypeaheadMenuPlugin";
 import {
   LexicalTypeaheadMenuPlugin,
   TypeaheadOption,
-  useBasicTypeaheadTriggerMatch
-} from '@lexical/react/LexicalTypeaheadMenuPlugin';
-import formatHandle from '@lib/formatHandle';
-import getIPFSLink from '@lib/getIPFSLink';
-import getStampFyiURL from '@lib/getStampFyiURL';
-import imageProxy from '@lib/imageProxy';
-import { AVATAR } from 'data/constants';
-import type { MediaSet, NftImage, Profile, ProfileSearchResult } from 'lens';
-import { SearchRequestTypes, useSearchProfilesLazyQuery } from 'lens';
-import type { TextNode } from 'lexical';
-import type { FC } from 'react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import * as ReactDOM from 'react-dom';
+  useBasicTypeaheadTriggerMatch,
+} from "@lexical/react/LexicalTypeaheadMenuPlugin";
+import formatHandle from "@lib/formatHandle";
+import getIPFSLink from "@lib/getIPFSLink";
+import getStampFyiURL from "@lib/getStampFyiURL";
+import imageProxy from "@lib/imageProxy";
+import { AVATAR } from "data/constants";
+import type { MediaSet, NftImage, Profile, ProfileSearchResult } from "lens";
+import { SearchRequestTypes, useSearchProfilesLazyQuery } from "lens";
+import type { TextNode } from "lexical";
+import type { FC } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import * as ReactDOM from "react-dom";
 
-import { $createMentionNode } from '../Nodes/MentionsNode';
+import { $createMentionNode } from "../Nodes/MentionsNode";
 
-const PUNCTUATION = '\\.,\\+\\*\\?\\$\\@\\|#{}\\(\\)\\^\\-\\[\\]\\\\/!%\'"~=<>_:;';
-const NAME = '\\b[A-Z][^\\s' + PUNCTUATION + ']';
+const PUNCTUATION =
+  "\\.,\\+\\*\\?\\$\\@\\|#{}\\(\\)\\^\\-\\[\\]\\\\/!%'\"~=<>_:;";
+const NAME = "\\b[A-Z][^\\s" + PUNCTUATION + "]";
 
 const DocumentMentionsRegex = {
   NAME,
-  PUNCTUATION
+  PUNCTUATION,
 };
 
 const PUNC = DocumentMentionsRegex.PUNCTUATION;
-const TRIGGERS = ['@'].join('');
-const VALID_CHARS = '[^' + TRIGGERS + PUNC + '\\s]';
-const VALID_JOINS = '(?:' + '\\.[ |$]|' + ' |' + '[' + PUNC + ']|' + ')';
+const TRIGGERS = ["@"].join("");
+const VALID_CHARS = "[^" + TRIGGERS + PUNC + "\\s]";
+const VALID_JOINS = "(?:" + "\\.[ |$]|" + " |" + "[" + PUNC + "]|" + ")";
 const LENGTH_LIMIT = 75;
 const ALIAS_LENGTH_LIMIT = 50;
 const SUGGESTION_LIST_LENGTH_LIMIT = 5;
 
 const AtSignMentionsRegex = new RegExp(
-  '(^|\\s|\\()(' +
-    '[' +
+  "(^|\\s|\\()(" +
+    "[" +
     TRIGGERS +
-    ']' +
-    '((?:' +
+    "]" +
+    "((?:" +
     VALID_CHARS +
     VALID_JOINS +
-    '){0,' +
+    "){0," +
     LENGTH_LIMIT +
-    '})' +
-    ')$'
+    "})" +
+    ")$"
 );
 
 const AtSignMentionsRegexAliasRegex = new RegExp(
-  '(^|\\s|\\()(' + '[' + TRIGGERS + ']' + '((?:' + VALID_CHARS + '){0,' + ALIAS_LENGTH_LIMIT + '})' + ')$'
+  "(^|\\s|\\()(" +
+    "[" +
+    TRIGGERS +
+    "]" +
+    "((?:" +
+    VALID_CHARS +
+    "){0," +
+    ALIAS_LENGTH_LIMIT +
+    "})" +
+    ")$"
 );
 
-const checkForAtSignMentions = (text: string, minMatchLength: number): QueryMatch | null => {
+const checkForAtSignMentions = (
+  text: string,
+  minMatchLength: number
+): QueryMatch | null => {
   let match = AtSignMentionsRegex.exec(text);
 
   if (match === null) {
@@ -67,7 +80,7 @@ const checkForAtSignMentions = (text: string, minMatchLength: number): QueryMatc
       return {
         leadOffset: match.index + maybeLeadingWhitespace.length,
         matchingString,
-        replaceableString: match[2]
+        replaceableString: match[2],
       };
     }
   }
@@ -101,7 +114,12 @@ interface Props {
   option: MentionTypeaheadOption;
 }
 
-const MentionsTypeaheadMenuItem: FC<Props> = ({ isSelected, onClick, onMouseEnter, option }) => {
+const MentionsTypeaheadMenuItem: FC<Props> = ({
+  isSelected,
+  onClick,
+  onMouseEnter,
+  option,
+}) => {
   return (
     <li
       key={option.key}
@@ -138,12 +156,12 @@ const NewMentionsPlugin: FC = () => {
 
   const getUserPicture = (user: Profile | undefined) => {
     const picture = user?.picture;
-    if (picture && picture.hasOwnProperty('original')) {
+    if (picture && picture.hasOwnProperty("original")) {
       const mediaSet = user.picture as MediaSet;
       return mediaSet.original?.url;
     }
 
-    if (picture && picture.hasOwnProperty('uri')) {
+    if (picture && picture.hasOwnProperty("uri")) {
       const nftImage = user.picture as NftImage;
       return nftImage?.uri;
     }
@@ -154,18 +172,26 @@ const NewMentionsPlugin: FC = () => {
   useEffect(() => {
     if (queryString) {
       searchUsers({
-        variables: { request: { type: SearchRequestTypes.Profile, query: queryString, limit: 5 } }
+        variables: {
+          request: {
+            type: SearchRequestTypes.Profile,
+            query: queryString,
+            limit: 5,
+          },
+        },
       }).then(({ data }) => {
         const search = data?.search;
         const profileSearchResult = search as ProfileSearchResult;
         const profiles: Profile[] =
-          search && search.hasOwnProperty('items') ? profileSearchResult?.items : [];
+          search && search.hasOwnProperty("items")
+            ? profileSearchResult?.items
+            : [];
         const profilesResults = profiles.map(
           (user: Profile) =>
             ({
               name: user?.name,
               handle: user?.handle,
-              picture: getUserPicture(user)
+              picture: getUserPicture(user),
             } as Record<string, string>)
         );
         setResults(profilesResults);
@@ -174,28 +200,36 @@ const NewMentionsPlugin: FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [queryString]);
 
-  const checkForSlashTriggerMatch = useBasicTypeaheadTriggerMatch('/', {
-    minLength: 0
+  const checkForSlashTriggerMatch = useBasicTypeaheadTriggerMatch("/", {
+    minLength: 0,
   });
 
   const options = useMemo(
     () =>
       results
         .map(({ name, picture, handle }) => {
-          return new MentionTypeaheadOption(name ?? handle, imageProxy(getIPFSLink(picture), AVATAR), handle);
+          return new MentionTypeaheadOption(
+            name ?? handle,
+            imageProxy(getIPFSLink(picture), AVATAR),
+            handle
+          );
         })
         .slice(0, SUGGESTION_LIST_LENGTH_LIMIT),
     [results]
   );
 
   const onSelectOption = useCallback(
-    (selectedOption: MentionTypeaheadOption, nodeToReplace: TextNode | null, closeMenu: () => void) => {
+    (
+      selectedOption: MentionTypeaheadOption,
+      nodeToReplace: TextNode | null,
+      closeMenu: () => void
+    ) => {
       editor.update(() => {
         const mentionNode = $createMentionNode(selectedOption.handle);
         if (nodeToReplace) {
           nodeToReplace.replace(mentionNode);
         }
-        mentionNode.select().insertText(' ');
+        mentionNode.select().insertText(" ");
         closeMenu();
       });
     },
@@ -217,7 +251,10 @@ const NewMentionsPlugin: FC = () => {
       onSelectOption={onSelectOption}
       triggerFn={checkForMentionMatch}
       options={options}
-      menuRenderFn={(anchorElementRef, { selectedIndex, selectOptionAndCleanUp, setHighlightedIndex }) =>
+      menuRenderFn={(
+        anchorElementRef,
+        { selectedIndex, selectOptionAndCleanUp, setHighlightedIndex }
+      ) =>
         anchorElementRef.current && results.length
           ? ReactDOM.createPortal(
               <div className="bg-white dark:bg-gray-900 mt-8 border dark:border-gray-700 rounded-xl shadow-sm w-52 sticky z-40 bg-brand min-w-full">

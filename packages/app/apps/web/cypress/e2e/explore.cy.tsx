@@ -1,10 +1,10 @@
-context('Explore Page', () => {
+context("Explore Page", () => {
   before(() => {
-    cy.visit(Cypress.env('URL') + '/explore');
+    cy.visit(Cypress.env("URL") + "/explore");
   });
 
-  it('should render footer', () => {
-    cy.get('[data-test=footer]');
+  it("should render footer", () => {
+    cy.get("[data-test=footer]");
   });
 });
 

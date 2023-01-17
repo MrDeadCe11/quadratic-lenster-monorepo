@@ -1,26 +1,32 @@
-import MetaTags from '@components/Common/MetaTags';
-import NewPost from '@components/Composer/Post/New';
-import ExploreFeed from '@components/Explore/Feed';
-import BetaWarning from '@components/Home/BetaWarning';
-import Footer from '@components/Shared/Footer';
-import { GridItemEight, GridItemFour, GridLayout } from '@components/UI/GridLayout';
-import type { NextPage } from 'next';
-import { useState } from 'react';
-import { useAppStore } from 'src/store/app';
+import MetaTags from "@components/Common/MetaTags";
+import NewPost from "@components/Composer/Post/New";
+import ExploreFeed from "@components/Explore/Feed";
+import BetaWarning from "@components/Home/BetaWarning";
+import Footer from "@components/Shared/Footer";
+import {
+  GridItemEight,
+  GridItemFour,
+  GridLayout,
+} from "@components/UI/GridLayout";
+import type { NextPage } from "next";
+import { useState } from "react";
+import { useAppStore } from "src/store/app";
 
-import EnableDispatcher from './EnableDispatcher';
-import EnableMessages from './EnableMessages';
-import FeedType from './FeedType';
-import Hero from './Hero';
-import Highlights from './Highlights';
-import RecommendedProfiles from './RecommendedProfiles';
-import SetDefaultProfile from './SetDefaultProfile';
-import SetProfile from './SetProfile';
-import Timeline from './Timeline';
+import EnableDispatcher from "./EnableDispatcher";
+import EnableMessages from "./EnableMessages";
+import FeedType from "./FeedType";
+import Hero from "./Hero";
+import Highlights from "./Highlights";
+import RecommendedProfiles from "./RecommendedProfiles";
+import SetDefaultProfile from "./SetDefaultProfile";
+import SetProfile from "./SetProfile";
+import Timeline from "./Timeline";
 
 const Home: NextPage = () => {
   const currentProfile = useAppStore((state) => state.currentProfile);
-  const [feedType, setFeedType] = useState<'TIMELINE' | 'HIGHLIGHTS'>('TIMELINE');
+  const [feedType, setFeedType] = useState<"TIMELINE" | "HIGHLIGHTS">(
+    "TIMELINE"
+  );
 
   return (
     <>
@@ -32,7 +38,7 @@ const Home: NextPage = () => {
             <>
               <NewPost />
               <FeedType feedType={feedType} setFeedType={setFeedType} />
-              {feedType === 'TIMELINE' ? <Timeline /> : <Highlights />}
+              {feedType === "TIMELINE" ? <Timeline /> : <Highlights />}
             </>
           ) : (
             <ExploreFeed />

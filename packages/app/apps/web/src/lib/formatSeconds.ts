@@ -5,7 +5,7 @@
  */
 const getTimeFromSeconds = (seconds: string | undefined) => {
   if (!seconds) {
-    return '';
+    return "";
   }
   const parsed = parseFloat(seconds);
   if (parsed < 3600) {

@@ -1,25 +1,25 @@
-import { i18n } from '@lingui/core';
-import { IS_PREVIEW, IS_PRODUCTION, LS_KEYS } from 'data/constants';
-import dayjs from 'dayjs';
-import { en, es, ta } from 'make-plural/plurals';
+import { i18n } from "@lingui/core";
+import { IS_PREVIEW, IS_PRODUCTION, LS_KEYS } from "data/constants";
+import dayjs from "dayjs";
+import { en, es, ta } from "make-plural/plurals";
 
 export const supportedLocales: Record<string, string> = {
-  en: 'English',
-  es: 'Español',
-  ta: 'தமிழ்'
+  en: "English",
+  es: "Español",
+  ta: "தமிழ்",
 };
 
 if (!IS_PRODUCTION || IS_PREVIEW) {
-  supportedLocales.qaa = 'PseudoLanguage';
+  supportedLocales.qaa = "PseudoLanguage";
 }
 
-const defaultLocale = 'en';
+const defaultLocale = "en";
 
 i18n.loadLocaleData({
   en: { plurals: en },
   es: { plurals: es },
   ta: { plurals: ta },
-  qaa: { plurals: en }
+  qaa: { plurals: en },
 });
 
 /**
@@ -28,7 +28,7 @@ i18n.loadLocaleData({
  */
 export async function setLocale(locale: string) {
   if (!supportedLocales.hasOwnProperty(locale)) {
-    console.error('warning: unknown locale', locale);
+    console.error("warning: unknown locale", locale);
     locale = defaultLocale;
   }
   localStorage.setItem(LS_KEYS.SELECTED_LOCALE, JSON.stringify(locale));

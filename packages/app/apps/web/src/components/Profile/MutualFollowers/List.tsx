@@ -1,14 +1,14 @@
-import Loader from '@components/Shared/Loader';
-import UserProfile from '@components/Shared/UserProfile';
-import { ErrorMessage } from '@components/UI/ErrorMessage';
-import InfiniteLoader from '@components/UI/InfiniteLoader';
-import { t } from '@lingui/macro';
-import { SCROLL_THRESHOLD } from 'data/constants';
-import type { Profile } from 'lens';
-import { useMutualFollowersListQuery } from 'lens';
-import type { FC } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { useAppStore } from 'src/store/app';
+import Loader from "@components/Shared/Loader";
+import UserProfile from "@components/Shared/UserProfile";
+import { ErrorMessage } from "@components/UI/ErrorMessage";
+import InfiniteLoader from "@components/UI/InfiniteLoader";
+import { t } from "@lingui/macro";
+import { SCROLL_THRESHOLD } from "data/constants";
+import type { Profile } from "lens";
+import { useMutualFollowersListQuery } from "lens";
+import type { FC } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { useAppStore } from "src/store/app";
 
 interface Props {
   profileId: string;
@@ -21,12 +21,12 @@ const MutualFollowersList: FC<Props> = ({ profileId }) => {
   const request = {
     viewingProfileId: profileId,
     yourProfileId: currentProfile?.id,
-    limit: 10
+    limit: 10,
   };
 
   const { data, loading, error, fetchMore } = useMutualFollowersListQuery({
     variables: { request },
-    skip: !profileId
+    skip: !profileId,
   });
 
   const profiles = data?.mutualFollowersProfiles?.items;
@@ -35,7 +35,7 @@ const MutualFollowersList: FC<Props> = ({ profileId }) => {
 
   const loadMore = async () => {
     await fetchMore({
-      variables: { request: { ...request, cursor: pageInfo?.next } }
+      variables: { request: { ...request, cursor: pageInfo?.next } },
     });
   };
 
@@ -45,7 +45,11 @@ const MutualFollowersList: FC<Props> = ({ profileId }) => {
 
   return (
     <div className="overflow-y-auto max-h-[80vh]" id="scrollableDiv">
-      <ErrorMessage className="m-5" title={t`Failed to load mutual followers`} error={error} />
+      <ErrorMessage
+        className="m-5"
+        title={t`Failed to load mutual followers`}
+        error={error}
+      />
       <InfiniteScroll
         dataLength={profiles?.length ?? 0}
         scrollThreshold={SCROLL_THRESHOLD}

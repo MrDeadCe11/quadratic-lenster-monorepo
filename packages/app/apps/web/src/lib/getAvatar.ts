@@ -1,8 +1,8 @@
-import { AVATAR, ZERO_ADDRESS } from 'data/constants';
+import { AVATAR, ZERO_ADDRESS } from "data/constants";
 
-import getIPFSLink from './getIPFSLink';
-import getStampFyiURL from './getStampFyiURL';
-import imageProxy from './imageProxy';
+import getIPFSLink from "./getIPFSLink";
+import getStampFyiURL from "./getStampFyiURL";
+import imageProxy from "./imageProxy";
 
 /**
  *

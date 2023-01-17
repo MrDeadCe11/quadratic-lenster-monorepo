@@ -7,7 +7,9 @@ const getTags = (inputText: string) => {
     matches.push(match[1]);
   }
 
-  return matches.filter((item, pos) => matches.indexOf(item) == pos).slice(0, 5);
+  return matches
+    .filter((item, pos) => matches.indexOf(item) == pos)
+    .slice(0, 5);
 };
 
 export default getTags;

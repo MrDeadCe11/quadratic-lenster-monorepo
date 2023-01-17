@@ -1,37 +1,42 @@
-import AllowanceButton from '@components/Settings/Allowance/Button';
-import { Button } from '@components/UI/Button';
-import { Spinner } from '@components/UI/Spinner';
-import { WarningMessage } from '@components/UI/WarningMessage';
-import type { LensterFollowModule } from '@generated/types';
-import { StarIcon, UserIcon } from '@heroicons/react/outline';
-import { Analytics } from '@lib/analytics';
-import formatAddress from '@lib/formatAddress';
-import formatHandle from '@lib/formatHandle';
-import getSignature from '@lib/getSignature';
-import getTokenImage from '@lib/getTokenImage';
-import onError from '@lib/onError';
-import splitSignature from '@lib/splitSignature';
-import { t } from '@lingui/macro';
-import { LensHubProxy } from 'abis';
-import { LENSHUB_PROXY, POLYGONSCAN_URL, SIGN_WALLET } from 'data/constants';
-import type { Profile } from 'lens';
+import AllowanceButton from "@components/Settings/Allowance/Button";
+import { Button } from "@components/UI/Button";
+import { Spinner } from "@components/UI/Spinner";
+import { WarningMessage } from "@components/UI/WarningMessage";
+import type { LensterFollowModule } from "@generated/types";
+import { StarIcon, UserIcon } from "@heroicons/react/outline";
+import { Analytics } from "@lib/analytics";
+import formatAddress from "@lib/formatAddress";
+import formatHandle from "@lib/formatHandle";
+import getSignature from "@lib/getSignature";
+import getTokenImage from "@lib/getTokenImage";
+import onError from "@lib/onError";
+import splitSignature from "@lib/splitSignature";
+import { t } from "@lingui/macro";
+import { LensHubProxy } from "abis";
+import { LENSHUB_PROXY, POLYGONSCAN_URL, SIGN_WALLET } from "data/constants";
+import type { Profile } from "lens";
 import {
   FollowModules,
   useApprovedModuleAllowanceAmountQuery,
   useBroadcastMutation,
   useCreateFollowTypedDataMutation,
-  useSuperFollowQuery
-} from 'lens';
-import type { Dispatch, FC } from 'react';
-import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { useAppStore } from 'src/store/app';
-import { PROFILE } from 'src/tracking';
-import { useAccount, useBalance, useContractWrite, useSignTypedData } from 'wagmi';
+  useSuperFollowQuery,
+} from "lens";
+import type { Dispatch, FC } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useAppStore } from "src/store/app";
+import { PROFILE } from "src/tracking";
+import {
+  useAccount,
+  useBalance,
+  useContractWrite,
+  useSignTypedData,
+} from "wagmi";
 
-import Loader from '../Loader';
-import Slug from '../Slug';
-import Uniswap from '../Uniswap';
+import Loader from "../Loader";
+import Slug from "../Slug";
+import Uniswap from "../Uniswap";
 
 interface Props {
   profile: Profile;
@@ -40,90 +45,106 @@ interface Props {
   again: boolean;
 }
 
-const FollowModule: FC<Props> = ({ profile, setFollowing, setShowFollowModal, again }) => {
+const FollowModule: FC<Props> = ({
+  profile,
+  setFollowing,
+  setShowFollowModal,
+  again,
+}) => {
   const userSigNonce = useAppStore((state) => state.userSigNonce);
   const setUserSigNonce = useAppStore((state) => state.setUserSigNonce);
   const currentProfile = useAppStore((state) => state.currentProfile);
   const [allowed, setAllowed] = useState(true);
   const { address } = useAccount();
-  const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData({ onError });
+  const { isLoading: signLoading, signTypedDataAsync } = useSignTypedData({
+    onError,
+  });
 
   const onCompleted = () => {
     setFollowing(true);
     setShowFollowModal(false);
-    toast.success('Followed successfully!');
+    toast.success("Followed successfully!");
     Analytics.track(PROFILE.SUPER_FOLLOW);
   };
 
   const { isLoading: writeLoading, write } = useContractWrite({
     address: LENSHUB_PROXY,
     abi: LensHubProxy,
-    functionName: 'followWithSig',
-    mode: 'recklesslyUnprepared',
+    functionName: "followWithSig",
+    mode: "recklesslyUnprepared",
     onSuccess: onCompleted,
-    onError
+    onError,
   });
 
   const { data, loading } = useSuperFollowQuery({
     variables: { request: { profileId: profile?.id } },
-    skip: !profile?.id
+    skip: !profile?.id,
   });
 
   const followModule: any = data?.profile?.followModule;
 
-  const { data: allowanceData, loading: allowanceLoading } = useApprovedModuleAllowanceAmountQuery({
-    variables: {
-      request: {
-        currencies: followModule?.amount?.asset?.address,
-        followModules: [FollowModules.FeeFollowModule],
-        collectModules: [],
-        referenceModules: []
-      }
-    },
-    skip: !followModule?.amount?.asset?.address || !currentProfile,
-    onCompleted: (data) => {
-      setAllowed(data?.approvedModuleAllowanceAmount[0]?.allowance !== '0x00');
-    }
-  });
+  const { data: allowanceData, loading: allowanceLoading } =
+    useApprovedModuleAllowanceAmountQuery({
+      variables: {
+        request: {
+          currencies: followModule?.amount?.asset?.address,
+          followModules: [FollowModules.FeeFollowModule],
+          collectModules: [],
+          referenceModules: [],
+        },
+      },
+      skip: !followModule?.amount?.asset?.address || !currentProfile,
+      onCompleted: (data) => {
+        setAllowed(
+          data?.approvedModuleAllowanceAmount[0]?.allowance !== "0x00"
+        );
+      },
+    });
 
   const { data: balanceData } = useBalance({
     address: currentProfile?.ownedBy,
     token: followModule?.amount?.asset?.address,
     formatUnits: followModule?.amount?.asset?.decimals,
-    watch: true
+    watch: true,
   });
   let hasAmount = false;
 
-  if (balanceData && parseFloat(balanceData?.formatted) < parseFloat(followModule?.amount?.value)) {
+  if (
+    balanceData &&
+    parseFloat(balanceData?.formatted) < parseFloat(followModule?.amount?.value)
+  ) {
     hasAmount = false;
   } else {
     hasAmount = true;
   }
 
   const [broadcast, { loading: broadcastLoading }] = useBroadcastMutation({
-    onCompleted
+    onCompleted,
   });
-  const [createFollowTypedData, { loading: typedDataLoading }] = useCreateFollowTypedDataMutation({
-    onCompleted: async ({ createFollowTypedData }) => {
-      const { id, typedData } = createFollowTypedData;
-      const { profileIds, datas: followData, deadline } = typedData.value;
-      const signature = await signTypedDataAsync(getSignature(typedData));
-      const { v, r, s } = splitSignature(signature);
-      const sig = { v, r, s, deadline };
-      const inputStruct = {
-        follower: address,
-        profileIds,
-        datas: followData,
-        sig
-      };
-      setUserSigNonce(userSigNonce + 1);
-      const { data } = await broadcast({ variables: { request: { id, signature } } });
-      if (data?.broadcast.__typename === 'RelayError') {
-        return write?.({ recklesslySetUnpreparedArgs: [inputStruct] });
-      }
-    },
-    onError
-  });
+  const [createFollowTypedData, { loading: typedDataLoading }] =
+    useCreateFollowTypedDataMutation({
+      onCompleted: async ({ createFollowTypedData }) => {
+        const { id, typedData } = createFollowTypedData;
+        const { profileIds, datas: followData, deadline } = typedData.value;
+        const signature = await signTypedDataAsync(getSignature(typedData));
+        const { v, r, s } = splitSignature(signature);
+        const sig = { v, r, s, deadline };
+        const inputStruct = {
+          follower: address,
+          profileIds,
+          datas: followData,
+          sig,
+        };
+        setUserSigNonce(userSigNonce + 1);
+        const { data } = await broadcast({
+          variables: { request: { id, signature } },
+        });
+        if (data?.broadcast.__typename === "RelayError") {
+          return write?.({ recklesslySetUnpreparedArgs: [inputStruct] });
+        }
+      },
+      onError,
+    });
 
   const createFollow = async () => {
     if (!currentProfile) {
@@ -142,14 +163,14 @@ const FollowModule: FC<Props> = ({ profile, setFollowing, setShowFollowModal, ag
                   feeFollowModule: {
                     amount: {
                       currency: followModule?.amount?.asset?.address,
-                      value: followModule?.amount?.value
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        }
+                      value: followModule?.amount?.value,
+                    },
+                  },
+                },
+              },
+            ],
+          },
+        },
       });
     } catch {}
   };
@@ -162,9 +183,12 @@ const FollowModule: FC<Props> = ({ profile, setFollowing, setShowFollowModal, ag
     <div className="p-5">
       <div className="pb-2 space-y-1.5">
         <div className="text-lg font-bold">
-          Super follow <Slug slug={formatHandle(profile?.handle)} prefix="@" /> {again ? 'again' : ''}
+          Super follow <Slug slug={formatHandle(profile?.handle)} prefix="@" />{" "}
+          {again ? "again" : ""}
         </div>
-        <div className="lt-text-gray-500">Follow {again ? 'again' : ''} and get some awesome perks!</div>
+        <div className="lt-text-gray-500">
+          Follow {again ? "again" : ""} and get some awesome perks!
+        </div>
       </div>
       <div className="flex items-center py-2 space-x-1.5">
         <img
@@ -176,7 +200,9 @@ const FollowModule: FC<Props> = ({ profile, setFollowing, setShowFollowModal, ag
           title={followModule?.amount?.asset?.name}
         />
         <span className="space-x-1">
-          <span className="text-2xl font-bold">{followModule?.amount?.value}</span>
+          <span className="text-2xl font-bold">
+            {followModule?.amount?.value}
+          </span>
           <span className="text-xs">{followModule?.amount?.asset?.symbol}</span>
         </span>
       </div>
@@ -199,19 +225,28 @@ const FollowModule: FC<Props> = ({ profile, setFollowing, setShowFollowModal, ag
         <ul className="space-y-1 text-sm lt-text-gray-500">
           <li className="flex space-x-2 tracking-normal leading-6">
             <div>•</div>
-            <div>You can comment on @{formatHandle(profile?.handle)}'s publications</div>
+            <div>
+              You can comment on @{formatHandle(profile?.handle)}'s publications
+            </div>
           </li>
           <li className="flex space-x-2 tracking-normal leading-6">
             <div>•</div>
-            <div>You can collect @{formatHandle(profile?.handle)}'s publications</div>
+            <div>
+              You can collect @{formatHandle(profile?.handle)}'s publications
+            </div>
           </li>
           <li className="flex space-x-2 tracking-normal leading-6">
             <div>•</div>
-            <div>You will get super follow badge in @{formatHandle(profile?.handle)}'s profile</div>
+            <div>
+              You will get super follow badge in @
+              {formatHandle(profile?.handle)}'s profile
+            </div>
           </li>
           <li className="flex space-x-2 tracking-normal leading-6">
             <div>•</div>
-            <div>You will have high voting power if you followed multiple times</div>
+            <div>
+              You will have high voting power if you followed multiple times
+            </div>
           </li>
           <li className="flex space-x-2 tracking-normal leading-6">
             <div>•</div>
@@ -229,16 +264,24 @@ const FollowModule: FC<Props> = ({ profile, setFollowing, setShowFollowModal, ag
               variant="super"
               outline
               onClick={createFollow}
-              disabled={typedDataLoading || signLoading || writeLoading || broadcastLoading}
+              disabled={
+                typedDataLoading ||
+                signLoading ||
+                writeLoading ||
+                broadcastLoading
+              }
               icon={
-                typedDataLoading || signLoading || writeLoading || broadcastLoading ? (
+                typedDataLoading ||
+                signLoading ||
+                writeLoading ||
+                broadcastLoading ? (
                   <Spinner variant="super" size="xs" />
                 ) : (
                   <StarIcon className="w-4 h-4" />
                 )
               }
             >
-              Super follow {again ? 'again' : 'now'}
+              Super follow {again ? "again" : "now"}
             </Button>
           ) : (
             <WarningMessage
