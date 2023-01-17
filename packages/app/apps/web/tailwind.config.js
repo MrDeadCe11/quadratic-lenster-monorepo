@@ -1,14 +1,14 @@
 /** @type {import('tailwindcss').Config} */
-const defaultTheme = require('tailwindcss/defaultTheme');
-const colors = require('tailwindcss/colors');
+const defaultTheme = require("tailwindcss/defaultTheme");
+const colors = require("tailwindcss/colors");
 
 module.exports = {
-  content: ['./src/**/*.{ts,tsx}'],
-  darkMode: 'class',
+  content: ["./src/**/*.{ts,tsx}"],
+  darkMode: "class",
   theme: {
     screens: {
-      xs: '300px',
-      ...defaultTheme.screens
+      xs: "300px",
+      ...defaultTheme.screens,
     },
     extend: {
       colors: {
@@ -16,16 +16,16 @@ module.exports = {
         green: colors.emerald,
         purple: colors.violet,
         yellow: colors.yellow,
-        brand: colors.violet
-      }
-    }
+        brand: colors.violet,
+      },
+    },
   },
   variants: {
-    extend: {}
+    extend: {},
   },
   plugins: [
-    require('@tailwindcss/aspect-ratio'),
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/line-clamp')
-  ]
+    require("@tailwindcss/aspect-ratio"),
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/line-clamp"),
+  ],
 };
