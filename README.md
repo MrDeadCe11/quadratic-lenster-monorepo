@@ -1,4 +1,5 @@
 # Quadratic Lenster
+## This repo is archived.  Please find the updated version over in the supermodular repo.
 
 :warning: This application is under development and only supports Lens Sandbox :warning:
 
